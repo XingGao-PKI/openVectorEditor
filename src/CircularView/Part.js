@@ -11,7 +11,7 @@ export default function Part({
   doesOverlapSelf,
   className
 }) {
-  let path = drawDirectedPiePiece({
+  const path = drawDirectedPiePiece({
     radius,
     doesOverlapSelf,
     annotationHeight,
@@ -27,7 +27,8 @@ export default function Part({
       className={className}
       strokeWidth="0.5"
       stroke={colorToUse}
-      // fill={colorToUse}
+      fill={colorToUse}
+      fillOpacity={0.2}
       d={path.print()}
     />
   );

@@ -9,17 +9,6 @@ module.exports = {
     // esModules: console.log("commentMeBackOut") || false,
     // cjs: console.log("commentMeBackOut") || false
   },
-  babel: {
-    // runtime: false, //tnr: comment this back in once we're at a higher version of cypress on lims
-    // env: {
-    //   targets: {
-    //     chrome: "59"
-    //   }
-    // },
-    ...(process.env.WITH_COVERAGE && {
-      plugins: ["istanbul"]
-    })
-  },
   webpack: {
     aliases: {
       // **** You can comment one or more of these in to override an npm module with a local module. *****

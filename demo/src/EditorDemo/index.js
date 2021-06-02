@@ -53,7 +53,7 @@ const defaultState = {
   showAvailability: true,
   showDemoOptions: !isMobile(),
   shouldAutosave: false,
-  generatePng: false,
+  generatePng: true,
   isFullscreen: false,
   isProtein: false,
   forceHeightMode: false,
