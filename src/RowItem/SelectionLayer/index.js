@@ -13,8 +13,8 @@ import {
   preventDefaultStopPropagation
 } from "../../utils/editorUtils";
 
-function SelectionLayer(props) {
-  let {
+const SelectionLayer = (props) => {
+  const {
     charWidth,
     isDraggable,
     row,
@@ -28,23 +28,23 @@ function SelectionLayer(props) {
     color: topLevelColor,
     hideCarets: topLevelHideCarets = false,
     selectionLayerRightClicked,
-    className: globalClassname = "",
+    className: globalClassName = "",
     onClick
   } = props;
   let hasSelection = false;
 
   const toReturn = (
     <React.Fragment>
-      {regions.map(function (selectionLayer, topIndex) {
+      {regions.map((selectionLayer, topIndex) => {
         const _onClick = onClick
-          ? function (event) {
+          ? (event) => {
               onClick({
                 event,
                 annotation: selectionLayer
               });
             }
           : undefined;
-        let {
+        const {
           className = "",
           style = {},
           start,
@@ -73,16 +73,16 @@ function SelectionLayer(props) {
             });
         };
 
-        let classNameToPass = className + " " + globalClassname;
+        const classNameToPass = `${className} ${globalClassName}`;
         if (start > -1) {
-          let overlaps = getOverlapsOfPotentiallyCircularRanges(
+          const overlaps = getOverlapsOfPotentiallyCircularRanges(
             selectionLayer,
             row,
             sequenceLength
           );
           //DRAW SELECTION LAYER
           if (overlaps.length) hasSelection = true;
-          return overlaps.map(function (overlap, index) {
+          return overlaps.map((overlap, index) => {
             const key = topIndex + "-" + index;
             let isTrueStart = false;
             let isTrueEnd = false;
@@ -92,7 +92,7 @@ function SelectionLayer(props) {
             if (overlap.end === selectionLayer.end) {
               isTrueEnd = true;
             }
-            let { xStart, width } = getXStartAndWidthOfRangeWrtRow({
+            const { xStart, width } = getXStartAndWidthOfRangeWrtRow({
               range: overlap,
               row,
               charWidth,
@@ -177,6 +177,6 @@ function SelectionLayer(props) {
     </React.Fragment>
   );
   return hasSelection ? toReturn : null;
-}
+};
 
 export default pureNoFunc(SelectionLayer);

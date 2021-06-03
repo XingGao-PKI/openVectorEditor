@@ -1,12 +1,10 @@
 import React from "react";
 import classnames from "classnames";
-// import pure from "../../utils/pureNoFunc";
 import "./style.css";
 import { getSelectionMessage } from "../../utils/editorUtils";
-// import draggableClassnames from "../../constants/draggableClassnames";
 
-function Caret(props) {
-  let {
+const Caret = (props) => {
+  const {
     charWidth,
     row,
     sequenceLength,
@@ -26,16 +24,10 @@ function Caret(props) {
     (row.end === sequenceLength - 1 && row.end < caretPosition)
   ) {
     //the second logical operator catches the special case where we're at the very end of the sequence..
-    let cursorEl = (
+    return (
       <div
         onClick={onClick}
-        onContextMenu={
-          onRightClick
-            ? (e) => {
-                onRightClick(e);
-              }
-            : undefined
-        }
+        onContextMenu={onRightClick || undefined}
         title={
           selectionMessage ||
           getSelectionMessage({ caretPosition, isProtein, sequenceLength })
@@ -54,11 +46,10 @@ function Caret(props) {
         }}
       />
     );
-    return cursorEl;
   } else {
     return null;
   }
-}
+};
 
 export default Caret;
 // export default pure(Caret);
