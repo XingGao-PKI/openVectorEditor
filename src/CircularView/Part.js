@@ -1,8 +1,8 @@
 import React from "react";
-import { startsWith } from "lodash";
+import * as R from "ramda";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
 
-export default function Part({
+const Part = ({
   radius,
   arrowheadLength = 0.5,
   annotationHeight,
@@ -10,8 +10,8 @@ export default function Part({
   color,
   doesOverlapSelf,
   className
-}) {
-  let path = drawDirectedPiePiece({
+}) => {
+  const path = drawDirectedPiePiece({
     radius,
     doesOverlapSelf,
     annotationHeight,
@@ -19,7 +19,7 @@ export default function Part({
     arrowheadLength,
     tailThickness: 1 //feature specific
   });
-  const colorToUse = startsWith(color, "override_")
+  const colorToUse = R.startsWith(color, "override_")
     ? color.replace("override_", "")
     : "purple";
   return (
@@ -27,8 +27,10 @@ export default function Part({
       className={className}
       strokeWidth="0.5"
       stroke={colorToUse}
-      // fill={colorToUse}
+      fill={colorToUse}
+      fillOpacity={0.2}
       d={path.print()}
     />
   );
-}
+};
+export default Part;
