@@ -15,10 +15,7 @@ module.exports = {
     //   targets: {
     //     chrome: "59"
     //   }
-    // },
-    ...(process.env.WITH_COVERAGE && {
-      plugins: ["istanbul"]
-    })
+    // }
   },
   webpack: {
     aliases: {
