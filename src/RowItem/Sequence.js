@@ -1,8 +1,8 @@
-import React from "react";
-import { times, map } from "lodash";
-import { DNAComplementMap } from "ve-sequence-utils";
-import { view } from "@risingstack/react-easy-state";
-import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
+import React from 'react';
+import { times, map } from 'lodash';
+import { DNAComplementMap } from 've-sequence-utils';
+import { view } from '@risingstack/react-easy-state';
+import { getVisibleStartEnd } from '../utils/getVisibleStartEnd';
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
@@ -37,7 +37,7 @@ class Sequence extends React.Component {
       // seqReadWidth = charWidth * sequence.length;
     }
     let style = {
-      position: "relative",
+      position: 'relative',
       height,
       left: gapsBeforeSequence * charWidth,
       ...containerStyle
@@ -60,38 +60,36 @@ class Sequence extends React.Component {
       return (
         <div
           style={style}
-          className={(className ? className : "") + " ve-row-item-sequence"}
+          className={(className ? className : '') + ' ve-row-item-sequence'}
         >
           {!hideBps && (
             <svg
               style={{
                 left: startOffset * charWidth,
                 height,
-                position: "absolute"
+                position: 'absolute'
               }}
               ref="rowViewTextContainer"
               className="rowViewTextContainer"
               height={Math.max(0, Number(height))}
             >
-              {times(numChunks, (i) => {
+              {times(numChunks, i => {
                 const seqChunk = getChunk(sequence, chunkSize, i);
 
                 const textLength = charWidth * seqChunk.length;
                 const x = i * chunkWidth;
-                if (x > visibleEnd || x + textLength < visibleStart)
-                  return null;
+                if (x > visibleEnd || x + textLength < visibleStart) return null;
                 return (
                   <text
                     key={i}
                     className={
-                      "ve-monospace-font " +
-                      (isReverse ? " ve-sequence-reverse" : "")
+                      've-monospace-font ' + (isReverse ? ' ve-sequence-reverse' : '')
                     }
                     {...{
                       textLength: textLength - fudge,
                       x: x + fudge / 2,
                       y: height - height / 4,
-                      lengthAdjust: "spacing"
+                      lengthAdjust: 'spacing'
                     }}
                   >
                     {seqChunk}
@@ -108,14 +106,14 @@ class Sequence extends React.Component {
       return (
         <div
           style={style}
-          className={(className ? className : "") + " ve-row-item-sequence"}
+          className={(className ? className : '') + ' ve-row-item-sequence'}
         >
           {!hideBps && (
             <svg
               style={{
                 left: startOffset * charWidth,
                 height,
-                position: "absolute"
+                position: 'absolute'
               }}
               ref="rowViewTextContainer"
               className="rowViewTextContainer"
@@ -123,8 +121,7 @@ class Sequence extends React.Component {
             >
               <text
                 className={
-                  "ve-monospace-font " +
-                  (isReverse ? " ve-sequence-reverse" : "")
+                  've-monospace-font ' + (isReverse ? ' ve-sequence-reverse' : '')
                 }
                 {...{
                   x: 0 + fudge / 2,
@@ -147,17 +144,16 @@ class Sequence extends React.Component {
 export default view(Sequence);
 
 const dnaToColor = {
-  a: "lightgreen",
-  c: "#658fff",
-  g: "yellow",
-  t: "#EE6262"
+  a: 'lightgreen',
+  c: '#658fff',
+  g: 'yellow',
+  t: '#EE6262'
 };
 
 function getDnaColor(char, isReverse) {
   return (
-    dnaToColor[
-      isReverse ? DNAComplementMap[char.toLowerCase()] : char.toLowerCase()
-    ] || "lightgrey"
+    dnaToColor[isReverse ? DNAComplementMap[char.toLowerCase()] : char.toLowerCase()] ||
+    'lightgrey'
   );
 }
 
@@ -165,8 +161,8 @@ class ColoredSequence extends React.Component {
   shouldComponentUpdate(newProps) {
     const { props } = this;
     if (
-      ["charWidth", "sequence", "height", "isReverse", "width"].some(
-        (key) => props[key] !== newProps[key]
+      ['charWidth', 'sequence', 'height', 'isReverse', 'width'].some(
+        key => props[key] !== newProps[key]
       )
     )
       return true;
@@ -176,23 +172,21 @@ class ColoredSequence extends React.Component {
   drawRects = () => {
     let { charWidth, sequence, height, isReverse, alignmentData } = this.props;
     if (alignmentData) {
-      sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
+      sequence = sequence.replace(/^-+/g, '').replace(/-+$/g, '');
     }
     //we use big paths instead of many individual rects to improve performance
     const colorPaths = Object.values(dnaToColor).reduce((acc, color) => {
-      acc[color] = "";
+      acc[color] = '';
       return acc;
     }, {});
 
-    sequence.split("").forEach((char, i) => {
+    sequence.split('').forEach((char, i) => {
       const width = charWidth;
       const x = i * charWidth;
       const y = 0;
       colorPaths[getDnaColor(char, isReverse)] =
-        (colorPaths[getDnaColor(char, isReverse)] || "") +
-        `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${
-          y + height
-        }`;
+        (colorPaths[getDnaColor(char, isReverse)] || '') +
+        `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${y + height}`;
     });
     return (
       <g>
@@ -206,7 +200,7 @@ class ColoredSequence extends React.Component {
     const { height } = this.props;
     // if (sequence.length > 100000) return null
     return (
-      <svg style={{ display: "block" }} height={Math.max(0, Number(height))}>
+      <svg style={{ display: 'block' }} height={Math.max(0, Number(height))}>
         {this.drawRects()}
       </svg>
     );

@@ -1,11 +1,8 @@
-import React from "react";
-import withEditorProps from "../withEditorProps";
-import {
-  TgSelect,
-  getKeyedTagsAndTagOptions
-} from "teselagen-react-components";
-import { flatMap } from "lodash";
-import { uniqBy } from "lodash";
+import React from 'react';
+import withEditorProps from '../withEditorProps';
+import { TgSelect, getKeyedTagsAndTagOptions } from 'teselagen-react-components';
+import { flatMap } from 'lodash';
+import { uniqBy } from 'lodash';
 
 export const PartTagSearch = withEditorProps(PartToolDropdown);
 
@@ -30,22 +27,22 @@ function PartToolDropdown({
 
   const tags = uniqBy(
     flatMap(sequenceData.parts, ({ tags }) => {
-      return flatMap(tags, (t) => {
+      return flatMap(tags, t => {
         const tag = keyedTags[t];
         if (!tag) return [];
         return tag;
       });
     }),
-    "value"
+    'value'
   );
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: '100%' }}>
       <div>Search Parts By Tag: </div>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <TgSelect
           value={selectedPartTags.parts}
           onChange={(...args) => {
-            annotationVisibilityShow("parts");
+            annotationVisibilityShow('parts');
             updateSelectedPartTags(...args);
           }}
           isTagSelect
@@ -58,7 +55,7 @@ function PartToolDropdown({
                 enabled: false
               },
               flip: {
-                boundariesElement: "viewport"
+                boundariesElement: 'viewport'
               }
             }
           }}

@@ -1,36 +1,33 @@
-import VeWarning from "../helperComponents/VeWarning";
-import Labels from "./Labels";
-import SelectionLayer from "./SelectionLayer";
-import Caret from "./Caret";
-import Axis from "./Axis";
-import Orf from "./Orf";
-import Feature from "./Feature";
-import Primer from "./Primer";
-import Cutsite from "./Cutsite";
-import sortBy from "lodash/sortBy";
-import {
-  normalizePositionByRangeLength,
-  getPositionFromAngle
-} from "ve-range-utils";
-import React, { useRef, useState } from "react";
-import Draggable from "react-draggable";
-import withEditorInteractions from "../withEditorInteractions";
-import Part from "./Part";
-import drawAnnotations from "./drawAnnotations";
-import "./style.css";
-import draggableClassnames from "../constants/draggableClassnames";
-import { getOrfColor } from "../constants/orfFrameToColorMap";
-import { getSingular } from "../utils/annotationTypes";
-import { upperFirst, map } from "lodash";
+import VeWarning from '../helperComponents/VeWarning';
+import Labels from './Labels';
+import SelectionLayer from './SelectionLayer';
+import Caret from './Caret';
+import Axis from './Axis';
+import Orf from './Orf';
+import Feature from './Feature';
+import Primer from './Primer';
+import Cutsite from './Cutsite';
+import sortBy from 'lodash/sortBy';
+import { normalizePositionByRangeLength, getPositionFromAngle } from 've-range-utils';
+import React, { useRef, useState } from 'react';
+import Draggable from 'react-draggable';
+import withEditorInteractions from '../withEditorInteractions';
+import Part from './Part';
+import drawAnnotations from './drawAnnotations';
+import './style.css';
+import draggableClassnames from '../constants/draggableClassnames';
+import { getOrfColor } from '../constants/orfFrameToColorMap';
+import { getSingular } from '../utils/annotationTypes';
+import { upperFirst, map } from 'lodash';
 
-import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
-import useAnnotationLimits from "../utils/useAnnotationLimits";
+import UncontrolledSliderWithPlusMinusBtns from '../helperComponents/UncontrolledSliderWithPlusMinusBtns';
+import useAnnotationLimits from '../utils/useAnnotationLimits';
 import {
   getClientX,
   getClientY,
   getParedDownWarning,
   pareDownAnnotations
-} from "../utils/editorUtils";
+} from '../utils/editorUtils';
 
 function noop() {}
 
@@ -42,11 +39,7 @@ export function CircularView(props) {
   const [limits] = useAnnotationLimits();
   const [rotationRadians, setRotationRadians] = useState(0);
   const circRef = useRef();
-  function getNearestCursorPositionToMouseEvent(
-    event,
-    sequenceLength,
-    callback
-  ) {
+  function getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
     const clientX = getClientX(event);
     const clientY = getClientY(event);
     if (!clientX) {
@@ -119,9 +112,9 @@ export function CircularView(props) {
     labelSize
   } = props;
 
-  let { sequence = "atgc", circular } = sequenceData;
+  let { sequence = 'atgc', circular } = sequenceData;
   let sequenceLength = sequence.length;
-  let sequenceName = hideName ? "" : sequenceData.name || "";
+  let sequenceName = hideName ? '' : sequenceData.name || '';
   circularAndLinearTickSpacing =
     circularAndLinearTickSpacing ||
     (sequenceLength < 10
@@ -144,17 +137,17 @@ export function CircularView(props) {
   //<PositionAnnotationOnCircle>
 
   let layersToDraw = [
-    { zIndex: 10, layerName: "sequenceChars" },
+    { zIndex: 10, layerName: 'sequenceChars' },
     {
       zIndex: 20,
-      layerName: "features",
+      layerName: 'features',
       isAnnotation: true,
       // spaceBefore: 10,
       spaceAfter: 5
     },
     {
       zIndex: 0,
-      layerName: "axis",
+      layerName: 'axis',
       Comp: Axis,
       showAxisNumbers: !(annotationVisibility.axisNumbers === false),
       circularAndLinearTickSpacing,
@@ -162,30 +155,30 @@ export function CircularView(props) {
       spaceAfter: 0
     },
 
-    { zIndex: 15, alwaysShow: true, layerName: "caret", Comp: drawCaret },
+    { zIndex: 15, alwaysShow: true, layerName: 'caret', Comp: drawCaret },
 
     {
       zIndex: 10,
       alwaysShow: true,
-      layerName: "selectionLayer",
+      layerName: 'selectionLayer',
       Comp: drawSelectionLayer
     },
     {
       zIndex: 20,
-      layerName: "replacementLayers",
+      layerName: 'replacementLayers',
       isAnnotation: true,
       spaceAfter: 20
     },
     {
       zIndex: 20,
-      layerName: "deletionLayers",
+      layerName: 'deletionLayers',
       isAnnotation: true,
       spaceAfter: 20
     },
     {
       zIndex: 10,
-      layerName: "cutsites",
-      fontStyle: "italic",
+      layerName: 'cutsites',
+      fontStyle: 'italic',
       Comp: Cutsite,
       useStartAngle: true,
       allOnSameLevel: true,
@@ -198,7 +191,7 @@ export function CircularView(props) {
       Comp: Orf,
       showLabels: false,
       getColor: getOrfColor,
-      layerName: "orfs",
+      layerName: 'orfs',
       isAnnotation: true,
       spaceBefore: 10
     },
@@ -208,32 +201,32 @@ export function CircularView(props) {
       zIndex: 20,
       Comp: Primer,
       isAnnotation: true,
-      layerName: "primers"
+      layerName: 'primers'
     },
     {
       zIndex: 20,
       Comp: Part,
-      layerName: "parts",
+      layerName: 'parts',
       isAnnotation: true,
       spaceBefore: 15
     },
     {
       zIndex: 20,
-      layerName: "lineageAnnotations",
+      layerName: 'lineageAnnotations',
       isAnnotation: true,
       spaceBefore: 10,
       spaceAfter: 5
     },
     {
       zIndex: 20,
-      layerName: "assemblyPieces",
+      layerName: 'assemblyPieces',
       isAnnotation: true,
       spaceBefore: 10,
       spaceAfter: 5
     },
     {
       zIndex: 20,
-      layerName: "warnings",
+      layerName: 'warnings',
       isAnnotation: true,
       spaceBefore: 10,
       spaceAfter: 5
@@ -241,7 +234,7 @@ export function CircularView(props) {
     {
       zIndex: 30,
       alwaysShow: true,
-      layerName: "labels",
+      layerName: 'labels',
       Comp: Labels,
       circularViewWidthVsHeightRatio: width / height,
       passLabels: true,
@@ -254,7 +247,7 @@ export function CircularView(props) {
   const paredDownMessages = [];
 
   let output = layersToDraw
-    .map((opts) => {
+    .map(opts => {
       const {
         layerName,
         maxToDisplay,
@@ -282,9 +275,9 @@ export function CircularView(props) {
         radius,
         noRedux,
         isProtein,
-        onClick: props[singularName + "Clicked"],
-        onDoubleClick: props[singularName + "DoubleClicked"],
-        onRightClicked: props[singularName + "RightClicked"],
+        onClick: props[singularName + 'Clicked'],
+        onDoubleClick: props[singularName + 'DoubleClicked'],
+        onRightClicked: props[singularName + 'RightClicked'],
         sequenceLength,
         editorName,
         ...rest
@@ -302,9 +295,7 @@ export function CircularView(props) {
             : limits[layerName]) || 50;
         let [annotations, paredDown] = isAnnotation
           ? pareDownAnnotations(
-              sequenceData["filtered" + nameUpper] ||
-                sequenceData[layerName] ||
-                {},
+              sequenceData['filtered' + nameUpper] || sequenceData[layerName] || {},
               maxToShow
             )
           : [];
@@ -329,7 +320,7 @@ export function CircularView(props) {
           annotationHeight,
           spaceBetweenAnnotations,
           ...sharedProps,
-          ...props[singularName + "Options"]
+          ...props[singularName + 'Options']
         });
       } else {
         //we're drawing axis/selectionLayer/caret/etc (something that doesn't live on the seqData)
@@ -357,7 +348,7 @@ export function CircularView(props) {
       return !!i;
     });
 
-  annotationsSvgs = sortBy(output, "zIndex").reduce(function (arr, { result }) {
+  annotationsSvgs = sortBy(output, 'zIndex').reduce(function (arr, { result }) {
     return arr.concat(result);
   }, []);
 
@@ -375,25 +366,19 @@ export function CircularView(props) {
     ];
     return selectionLayers
       .map(function (selectionLayer, index) {
-        if (
-          selectionLayer.start >= 0 &&
-          selectionLayer.end >= 0 &&
-          sequenceLength > 0
-        ) {
+        if (selectionLayer.start >= 0 && selectionLayer.end >= 0 && sequenceLength > 0) {
           return (
             <SelectionLayer
               {...{
                 index,
                 isDraggable: true,
                 isProtein,
-                key: "veCircularViewSelectionLayer" + index,
+                key: 'veCircularViewSelectionLayer' + index,
                 selectionLayer,
                 onRightClicked: selectionLayer.isSearchLayer
                   ? searchLayerRightClicked
                   : selectionLayerRightClicked,
-                onClick: selectionLayer.isSearchLayer
-                  ? searchLayerClicked
-                  : undefined,
+                onClick: selectionLayer.isSearchLayer ? searchLayerClicked : undefined,
                 sequenceLength,
                 baseRadius,
                 radius,
@@ -405,18 +390,14 @@ export function CircularView(props) {
           return null;
         }
       })
-      .filter((el) => {
+      .filter(el => {
         return !!el;
       });
   }
 
   function drawCaret() {
     //DRAW CARET
-    if (
-      caretPosition !== -1 &&
-      selectionLayer.start < 0 &&
-      sequenceLength >= 0
-    ) {
+    if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength >= 0) {
       //only render if there is no selection layer
       return (
         <Caret
@@ -426,7 +407,7 @@ export function CircularView(props) {
             isProtein,
             innerRadius,
             outerRadius: radius,
-            key: "veCircularViewCaret"
+            key: 'veCircularViewCaret'
           }}
         />
       );
@@ -455,19 +436,11 @@ export function CircularView(props) {
       <Draggable
         // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-        onDrag={(event) => {
-          getNearestCursorPositionToMouseEvent(
-            event,
-            sequenceLength,
-            editorDragged
-          );
+        onDrag={event => {
+          getNearestCursorPositionToMouseEvent(event, sequenceLength, editorDragged);
         }}
-        onStart={(event) => {
-          getNearestCursorPositionToMouseEvent(
-            event,
-            sequenceLength,
-            editorDragStarted
-          );
+        onStart={event => {
+          getNearestCursorPositionToMouseEvent(event, sequenceLength, editorDragStarted);
         }}
         onStop={editorDragStopped}
       >
@@ -475,16 +448,16 @@ export function CircularView(props) {
           {!hideName && (
             <div
               style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                pointerEvents: "none"
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                pointerEvents: 'none'
               }}
             >
               <div
                 key="circViewSvgCenterText"
                 className="veCircularViewMiddleOfVectorText"
-                style={{ width: innerRadius, textAlign: "center" }}
+                style={{ width: innerRadius, textAlign: 'center' }}
               >
                 <span>{sequenceName} </span>
                 <br />
@@ -498,7 +471,7 @@ export function CircularView(props) {
           )}
           <svg
             key="circViewSvg"
-            onClick={(event) => {
+            onClick={event => {
               instantiated &&
                 getNearestCursorPositionToMouseEvent(
                   event,
@@ -506,21 +479,21 @@ export function CircularView(props) {
                   editorClicked
                 );
             }}
-            onContextMenu={(e) => {
+            onContextMenu={e => {
               getNearestCursorPositionToMouseEvent(
                 e,
                 sequenceLength,
                 backgroundRightClicked
               );
             }}
-            style={{ overflow: "visible", display: "block" }}
+            style={{ overflow: 'visible', display: 'block' }}
             width={widthToUse}
             height={heightToUse}
             ref={circRef}
             className="circularViewSvg"
-            viewBox={`-${radius * scale} -${radius * scale} ${
+            viewBox={`-${radius * scale} -${radius * scale} ${radius * 2 * scale} ${
               radius * 2 * scale
-            } ${radius * 2 * scale}`}
+            }`}
           >
             {annotationsSvgs}
           </svg>
@@ -585,29 +558,25 @@ function positionCutsites(annotation) {
 
 function RotateCircularView({ setRotationRadians, editorName }) {
   return (
-    <div style={{ zIndex: 1000, position: "absolute" }}>
+    <div style={{ zIndex: 1000, position: 'absolute' }}>
       <UncontrolledSliderWithPlusMinusBtns
-        onChange={(val) => {
-          const el = document.querySelector(
-            `.veEditor.${editorName} .circularViewSvg`
-          );
+        onChange={val => {
+          const el = document.querySelector(`.veEditor.${editorName} .circularViewSvg`);
           el.style.transform = `rotate(${val}deg)`;
-          el.classList.add("veHideLabels");
+          el.classList.add('veHideLabels');
           document.querySelector(
             `.veEditor.${editorName} .circularViewSvg .veLabels`
           ).style.transform = `rotate(-${val}deg)`;
         }}
-        onRelease={(val) => {
+        onRelease={val => {
           setRotationRadians((val * Math.PI) / 180);
-          const el = document.querySelector(
-            `.veEditor.${editorName} .circularViewSvg`
-          );
-          el.classList.remove("veHideLabels");
+          const el = document.querySelector(`.veEditor.${editorName} .circularViewSvg`);
+          el.classList.remove('veHideLabels');
         }}
         leftIcon="arrow-left"
         rightIcon="arrow-right"
         title="Rotate"
-        style={{ paddingTop: "4px", width: 120 }}
+        style={{ paddingTop: '4px', width: 120 }}
         className="ove-slider"
         labelRenderer={false}
         stepSize={3}

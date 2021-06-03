@@ -2,47 +2,44 @@ import {
   normalizePositionByRangeLength,
   getSequenceWithinRange,
   getOverlapsOfPotentiallyCircularRanges
-} from "ve-range-utils";
-import { map, camelCase, startCase, startsWith, flatMap, assign } from "lodash";
-import { getComplementSequenceString } from "ve-sequence-utils";
-import React from "react";
-import pluralize from "pluralize";
-import SelectionLayer from "./SelectionLayer";
-import Sequence from "./Sequence";
-import Axis from "./Axis";
-import Orfs from "./Orfs";
-import Translations from "./Translations";
+} from 've-range-utils';
+import { map, camelCase, startCase, startsWith, flatMap, assign } from 'lodash';
+import { getComplementSequenceString } from 've-sequence-utils';
+import React from 'react';
+import pluralize from 'pluralize';
+import SelectionLayer from './SelectionLayer';
+import Sequence from './Sequence';
+import Axis from './Axis';
+import Orfs from './Orfs';
+import Translations from './Translations';
 
-import Labels from "./Labels";
-import Cutsites from "./Cutsites";
-import Caret from "./Caret";
-import StackedAnnotations from "./StackedAnnotations";
-import "./style.css";
-import Chromatogram from "./Chromatograms/Chromatogram";
-import { rowHeights } from "../RowView/estimateRowHeight";
+import Labels from './Labels';
+import Cutsites from './Cutsites';
+import Caret from './Caret';
+import StackedAnnotations from './StackedAnnotations';
+import './style.css';
+import Chromatogram from './Chromatograms/Chromatogram';
+import { rowHeights } from '../RowView/estimateRowHeight';
 
 function noop() {}
 
 function getPropsForType(props, type, pluralType) {
   const upperPluralType = startCase(pluralType);
   const toRet = {
-    annotationColor: props[pluralType + "Color"],
-    annotationHeight:
-      props[pluralType + "Height"] || rowHeights[pluralType].height,
+    annotationColor: props[pluralType + 'Color'],
+    annotationHeight: props[pluralType + 'Height'] || rowHeights[pluralType].height,
     spaceBetweenAnnotations:
-      props["spaceBetweenAnnotations" + upperPluralType] ||
+      props['spaceBetweenAnnotations' + upperPluralType] ||
       rowHeights[pluralType].spaceBetweenAnnotations,
-    marginTop:
-      props[pluralType + "MarginTop"] || rowHeights[pluralType].marginTop,
+    marginTop: props[pluralType + 'MarginTop'] || rowHeights[pluralType].marginTop,
     marginBottom:
-      props[pluralType + "MarginBottom"] || rowHeights[pluralType].marginBottom,
+      props[pluralType + 'MarginBottom'] || rowHeights[pluralType].marginBottom,
     annotationRanges: props.row[pluralType],
     showLabels:
-      props.annotationLabelVisibility &&
-      props.annotationLabelVisibility[pluralType],
-    onClick: props[type + "Clicked"],
-    onRightClick: props[type + "RightClicked"],
-    onDoubleClick: props[type + "DoubleClicked"]
+      props.annotationLabelVisibility && props.annotationLabelVisibility[pluralType],
+    onClick: props[type + 'Clicked'],
+    onRightClick: props[type + 'RightClicked'],
+    onDoubleClick: props[type + 'DoubleClicked']
   };
 
   return toRet;
@@ -73,7 +70,7 @@ export class RowItem extends React.PureComponent {
       additionalSelectionLayers = [],
       caretPosition = -1,
       row = {
-        sequence: "",
+        sequence: '',
         start: 0,
         end: 0,
         rowNumber: 0
@@ -84,7 +81,7 @@ export class RowItem extends React.PureComponent {
       alignmentData,
       sequenceLength = row.sequence.length,
       chromatogramData,
-      fullSequence = "",
+      fullSequence = '',
       replacementLayerClicked = noop,
       replacementLayerRightClicked = noop,
       searchLayerClicked = noop,
@@ -115,7 +112,7 @@ export class RowItem extends React.PureComponent {
       sequence: showSequence
     } = annotationVisibility;
 
-    let { sequence = "", cutsites = [] } = row;
+    let { sequence = '', cutsites = [] } = row;
 
     let reverseSequence = getComplementSequenceString(
       (alignmentData && alignmentData.sequence) || sequence
@@ -133,9 +130,9 @@ export class RowItem extends React.PureComponent {
       charWidth = width / Math.max(bpsPerRow, 1);
     }
     const rowContainerStyle = {
-      position: "relative",
+      position: 'relative',
       minHeight,
-      width: width + "px"
+      width: width + 'px'
     };
     let getGaps = () => ({
       gapsBefore: 0,
@@ -144,11 +141,10 @@ export class RowItem extends React.PureComponent {
     if (alignmentData) {
       const gapMap = getGapMap(alignmentData.sequence);
       //this function is used to calculate the number of spaces that come before or inside a range
-      getGaps = (rangeOrCaretPosition) => {
-        if (typeof rangeOrCaretPosition !== "object") {
+      getGaps = rangeOrCaretPosition => {
+        if (typeof rangeOrCaretPosition !== 'object') {
           return {
-            gapsBefore:
-              gapMap[Math.min(rangeOrCaretPosition, gapMap.length - 1)]
+            gapsBefore: gapMap[Math.min(rangeOrCaretPosition, gapMap.length - 1)]
           };
         }
         //otherwise it is a range!
@@ -180,13 +176,12 @@ export class RowItem extends React.PureComponent {
       }
       const pluralType = pluralize(type);
       const ranges =
-        annotationLabelVisibility[pluralType] &&
-        annotationVisibility[pluralType]
-          ? map(row[pluralType], (a) =>
+        annotationLabelVisibility[pluralType] && annotationVisibility[pluralType]
+          ? map(row[pluralType], a =>
               assign(a, {
-                onClick: this.props[type + "Clicked"],
-                onRightClick: this.props[type + "RightClicked"],
-                onDoubleClick: this.props[type + "DoubleClicked"]
+                onClick: this.props[type + 'Clicked'],
+                onRightClick: this.props[type + 'RightClicked'],
+                onDoubleClick: this.props[type + 'DoubleClicked']
               })
             )
           : [];
@@ -222,12 +217,10 @@ export class RowItem extends React.PureComponent {
       const CompToUse = CompOverride || StackedAnnotations;
       return (
         <CompToUse
-          externalLabels={externalLabels === "true"}
+          externalLabels={externalLabels === 'true'}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           type={type}
-          containerClassName={camelCase(
-            "veRowView-" + pluralType + "Container"
-          )}
+          containerClassName={camelCase('veRowView-' + pluralType + 'Container')}
           alignmentType={alignmentType}
           {...annotationCommonProps}
           {...getPropsForType(this.props, type, pluralType)}
@@ -260,15 +253,15 @@ export class RowItem extends React.PureComponent {
           const width = (layer.end - layer.start + 1) * charWidth;
           return (
             <div
-              key={"deletionLayer" + index}
+              key={'deletionLayer' + index}
               className="ve_sequence_strikethrough"
               style={{
                 left,
                 width,
                 top: 10,
                 height: 2,
-                position: "absolute",
-                background: "black"
+                position: 'absolute',
+                background: 'black'
               }}
             />
           );
@@ -285,9 +278,9 @@ export class RowItem extends React.PureComponent {
       getExtraInnerCompProps: function (annotationRange) {
         const { annotation } = annotationRange;
         const { color } = annotation;
-        const colorToUse = startsWith(color, "override_")
-          ? color.replace("override_", "")
-          : "purple";
+        const colorToUse = startsWith(color, 'override_')
+          ? color.replace('override_', '')
+          : 'purple';
         return {
           textColor: colorToUse,
           stroke: colorToUse
@@ -317,9 +310,7 @@ export class RowItem extends React.PureComponent {
             {...annotationCommonProps}
             selectionLayerRightClicked={searchLayerRightClicked}
             row={
-              alignmentData
-                ? { start: 0, end: alignmentData.sequence.length - 1 }
-                : row
+              alignmentData ? { start: 0, end: alignmentData.sequence.length - 1 } : row
             }
             onClick={searchLayerClicked}
           />
@@ -328,9 +319,7 @@ export class RowItem extends React.PureComponent {
             selectionLayerRightClicked={selectionLayerRightClicked}
             {...annotationCommonProps}
             row={
-              alignmentData
-                ? { start: 0, end: alignmentData.sequence.length - 1 }
-                : row
+              alignmentData ? { start: 0, end: alignmentData.sequence.length - 1 } : row
             }
             regions={selectionLayers}
           />
@@ -364,21 +353,21 @@ export class RowItem extends React.PureComponent {
             ]}
             annotationHeight={cutsiteLabelHeight}
           /> */}
-          {drawAnnotations("warning")}
-          {drawAnnotations("assemblyPiece")}
-          {drawAnnotations("lineageAnnotation")}
-          {drawLabels("part", externalLabels !== "true")}
-          {drawAnnotations("part", partProps)}
+          {drawAnnotations('warning')}
+          {drawAnnotations('assemblyPiece')}
+          {drawAnnotations('lineageAnnotation')}
+          {drawLabels('part', externalLabels !== 'true')}
+          {drawAnnotations('part', partProps)}
           {/* {!externalLabels && drawAnnotations("part", partProps)} */}
-          {drawLabels("primer", externalLabels !== "true")}
+          {drawLabels('primer', externalLabels !== 'true')}
 
-          {drawAnnotations("primer", {
+          {drawAnnotations('primer', {
             sequence: fullSequence
           })}
-          {drawAnnotations("orf", {
+          {drawAnnotations('orf', {
             CompOverride: Orfs
           })}
-          {drawAnnotations("translation", {
+          {drawAnnotations('translation', {
             ...translationCommonProps,
             onDoubleClick: translationDoubleClicked
           })}
@@ -394,12 +383,9 @@ export class RowItem extends React.PureComponent {
               {...annotationCommonProps}
             />
           )}
-          {drawLabels("cutsite", !isRowView)}
+          {drawLabels('cutsite', !isRowView)}
 
-          <div
-            className="veRowItemSequenceContainer"
-            style={{ position: "relative" }}
-          >
+          <div className="veRowItemSequenceContainer" style={{ position: 'relative' }}>
             {showSequence && (
               <Sequence
                 cutsites={cutsites} //pass this in order to get children cutsites to re-render
@@ -484,16 +470,14 @@ export class RowItem extends React.PureComponent {
                       hideTitle
                       {...annotationCommonProps}
                       {...{
-                        key: "restrictionSiteRange" + index,
-                        height: showReverseSequence
-                          ? sequenceHeight * 2
-                          : sequenceHeight,
+                        key: 'restrictionSiteRange' + index,
+                        height: showReverseSequence ? sequenceHeight * 2 : sequenceHeight,
                         hideCarets: true,
                         opacity: 0.3,
-                        className: "cutsiteLabelSelectionLayer",
-                        border: `2px solid ${"lightblue"}`,
+                        className: 'cutsiteLabelSelectionLayer',
+                        border: `2px solid ${'lightblue'}`,
                         // background: 'none',
-                        background: "lightblue",
+                        background: 'lightblue',
                         regions: [layer],
                         row: alignmentData
                           ? { start: 0, end: alignmentData.sequence.length - 1 }
@@ -504,9 +488,9 @@ export class RowItem extends React.PureComponent {
                 );
               })}
           </div>
-          {drawLabels("feature", externalLabels !== "true")}
+          {drawLabels('feature', externalLabels !== 'true')}
           {/* {externalLabels && drawAnnotations("part", partProps)} */}
-          {drawAnnotations("feature")}
+          {drawAnnotations('feature')}
 
           {map(replacementLayers, function (replacementLayer) {
             if (!replacementLayer) return null;
@@ -560,7 +544,7 @@ export class RowItem extends React.PureComponent {
                     style={{
                       left: startOffset * charWidth,
                       height: sequenceHeight,
-                      position: "absolute"
+                      position: 'absolute'
                     }}
                     ref="rowViewTextContainer"
                     onClick={function (event) {
@@ -582,9 +566,7 @@ export class RowItem extends React.PureComponent {
                     <polyline
                       points={`${-bufferLeft},0 ${-bufferLeft},${-arrowHeight}, ${
                         charWidth / 2
-                      },0 ${width},0 ${width},${
-                        height + bufferBottom
-                      } ${-bufferLeft},${
+                      },0 ${width},0 ${width},${height + bufferBottom} ${-bufferLeft},${
                         height + bufferBottom
                       } ${-bufferLeft},0`}
                       fill="none"
@@ -603,11 +585,11 @@ export class RowItem extends React.PureComponent {
             {...annotationCommonProps}
           /> */}
 
-          {drawAnnotations("primaryProteinSequence", {
+          {drawAnnotations('primaryProteinSequence', {
             ...translationCommonProps,
             noPlural: true
           })}
-          {drawLabels("cutsite", isRowView)}
+          {drawLabels('cutsite', isRowView)}
           {showAxis && (
             <Axis
               scrollData={scrollData}
@@ -623,9 +605,7 @@ export class RowItem extends React.PureComponent {
               caretPosition={caretPosition}
               {...{ ...annotationCommonProps, ...{ getGaps: undefined } }}
               row={
-                alignmentData
-                  ? { start: 0, end: alignmentData.sequence.length - 1 }
-                  : row
+                alignmentData ? { start: 0, end: alignmentData.sequence.length - 1 } : row
               }
             />
           )}
@@ -641,8 +621,8 @@ export default RowItem;
 
 function getGapMap(sequence) {
   const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
-  sequence.split("").forEach((char) => {
-    if (char === "-") {
+  sequence.split('').forEach(char => {
+    if (char === '-') {
       gapMap[Math.max(0, gapMap.length - 1)] =
         (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;
     } else {

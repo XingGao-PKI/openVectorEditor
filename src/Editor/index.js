@@ -1,6 +1,6 @@
-import { debounce, get, some } from "lodash";
+import { debounce, get, some } from 'lodash';
 // import sizeMe from "react-sizeme";
-import { showContextMenu } from "teselagen-react-components";
+import { showContextMenu } from 'teselagen-react-components';
 import {
   Button,
   ButtonGroup,
@@ -8,49 +8,49 @@ import {
   Icon,
   Tooltip,
   ContextMenu
-} from "@blueprintjs/core";
-import PropTypes from "prop-types";
+} from '@blueprintjs/core';
+import PropTypes from 'prop-types';
 
-import VersionHistoryView from "../VersionHistoryView";
-import { importSequenceFromFile } from "../withEditorProps";
-import getAdditionalEnzymesSelector from "../selectors/getAdditionalEnzymesSelector";
-import "tg-react-reflex/styles.css";
-import React from "react";
+import VersionHistoryView from '../VersionHistoryView';
+import { importSequenceFromFile } from '../withEditorProps';
+import getAdditionalEnzymesSelector from '../selectors/getAdditionalEnzymesSelector';
+import 'tg-react-reflex/styles.css';
+import React from 'react';
 // import DrawChromatogram from "./DrawChromatogram";
-import AlignmentView from "../AlignmentView";
+import AlignmentView from '../AlignmentView';
 // import * as customIcons from "teselagen-react-components";
 // import { Button } from "@blueprintjs/core";
-import { compose } from "redux";
+import { compose } from 'redux';
 //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 /* eslint-disable */
-import { connectToEditor, handleSave } from "../withEditorProps";
-import { withHandlers } from "recompose";
+import { connectToEditor, handleSave } from '../withEditorProps';
+import { withHandlers } from 'recompose';
 
-import CommandHotkeyHandler from "./CommandHotkeyHandler";
+import CommandHotkeyHandler from './CommandHotkeyHandler';
 
-import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
+import { ReflexContainer, ReflexSplitter, ReflexElement } from '../Reflex';
 /* eslint-enable */
 
-import { flatMap, map, filter, pick, camelCase } from "lodash";
+import { flatMap, map, filter, pick, camelCase } from 'lodash';
 
-import ToolBar from "../ToolBar";
-import CircularView from "../CircularView";
-import LinearView from "../LinearView";
-import RowView from "../RowView";
-import StatusBar from "../StatusBar";
-import DropHandler from "./DropHandler";
-import Properties from "../helperComponents/PropertiesDialog";
-import "./style.css";
+import ToolBar from '../ToolBar';
+import CircularView from '../CircularView';
+import LinearView from '../LinearView';
+import RowView from '../RowView';
+import StatusBar from '../StatusBar';
+import DropHandler from './DropHandler';
+import Properties from '../helperComponents/PropertiesDialog';
+import './style.css';
 
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import DigestTool from "../DigestTool/DigestTool";
-import { insertItem, removeItem } from "../utils/arrayUtils";
-import Mismatches from "../AlignmentView/Mismatches";
-import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
-import { userDefinedHandlersAndOpts } from "./userDefinedHandlersAndOpts";
-import { GlobalDialog } from "../GlobalDialog";
-import isMobile from "is-mobile";
-import { getClientX, getClientY } from "../utils/editorUtils";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import DigestTool from '../DigestTool/DigestTool';
+import { insertItem, removeItem } from '../utils/arrayUtils';
+import Mismatches from '../AlignmentView/Mismatches';
+import SimpleCircularOrLinearView from '../SimpleCircularOrLinearView';
+import { userDefinedHandlersAndOpts } from './userDefinedHandlersAndOpts';
+import { GlobalDialog } from '../GlobalDialog';
+import isMobile from 'is-mobile';
+import { getClientX, getClientY } from '../utils/editorUtils';
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -66,7 +66,7 @@ const _panelMap = {
   digestTool: DigestTool,
   properties: {
     comp: Properties,
-    panelSpecificPropsToSpread: ["PropertiesProps"]
+    panelSpecificPropsToSpread: ['PropertiesProps']
   },
   mismatches: Mismatches
 };
@@ -84,34 +84,34 @@ const tabHeight = 34;
 
 const getListStyle = (isDraggingOver /* isDragging */) => {
   return {
-    display: "flex",
-    alignItems: "flex-end",
-    flex: "0 0 auto",
-    flexDirection: "row",
-    overflowX: "auto", //can't be overflowX: "scroll" because firefox has issues with hiding the scroll bar https://github.com/TeselaGen/openVectorEditor/issues/352
-    borderBottom: "1px solid lightgray",
-    borderTop: "1px solid lightgray",
+    display: 'flex',
+    alignItems: 'flex-end',
+    flex: '0 0 auto',
+    flexDirection: 'row',
+    overflowX: 'auto', //can't be overflowX: "scroll" because firefox has issues with hiding the scroll bar https://github.com/TeselaGen/openVectorEditor/issues/352
+    borderBottom: '1px solid lightgray',
+    borderTop: '1px solid lightgray',
     paddingTop: 3,
     paddingBottom: 3,
     // ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
-    ...(isDraggingOver && { background: "#e5f3ff" })
+    ...(isDraggingOver && { background: '#e5f3ff' })
   };
 };
 
 const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
   return {
-    position: "absolute",
+    position: 'absolute',
     // top: "-20px",
-    height: "100%",
+    height: '100%',
     // background: "lightgreen",
-    width: "50%",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-    wordWrap: "normal",
+    width: '50%',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    wordWrap: 'normal',
     opacity: 0,
-    ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
-    ...(isDraggingOver && { background: "lightblue" }),
-    left: "50%"
+    ...(isDragging && { opacity: 0.7, zIndex: 10000, background: 'lightgrey' }),
+    ...(isDraggingOver && { background: 'lightblue' }),
+    left: '50%'
   };
 };
 
@@ -128,7 +128,7 @@ export class Editor extends React.Component {
 
   getChildContext() {
     //tnrtodo this will need to be updated once blueprint uses the react 16 api
-    return { blueprintPortalClassName: "ove-portal" };
+    return { blueprintPortalClassName: 'ove-portal' };
   }
   componentDidUpdate(prevProps) {
     //autosave if necessary!
@@ -136,8 +136,7 @@ export class Editor extends React.Component {
       this.props.shouldAutosave &&
       prevProps.sequenceData &&
       prevProps.sequenceData.stateTrackingId &&
-      this.props.sequenceData.stateTrackingId !==
-        prevProps.sequenceData.stateTrackingId
+      this.props.sequenceData.stateTrackingId !== prevProps.sequenceData.stateTrackingId
     ) {
       this.props.handleSave();
     }
@@ -150,7 +149,7 @@ export class Editor extends React.Component {
   componentDidMount() {
     if (isMobile()) {
       let firstActivePanelId;
-      some(this.getPanelsToShow()[0], (panel) => {
+      some(this.getPanelsToShow()[0], panel => {
         if (panel.active) {
           firstActivePanelId = panel.id;
           return true;
@@ -158,18 +157,18 @@ export class Editor extends React.Component {
       });
       this.props.collapseSplitScreen(firstActivePanelId);
     }
-    window.addEventListener("resize", this.updateDimensions);
+    window.addEventListener('resize', this.updateDimensions);
     this.forceUpdate(); //we need to do this to get an accurate height measurement on first render
   }
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   onTabDragStart = () => {
     this.setState({ tabDragging: true });
   };
 
-  onTabDragEnd = (result) => {
+  onTabDragEnd = result => {
     this.setState({ tabDragging: false });
     const { panelsShownUpdate, panelsShown } = this.props;
     // dropped outside the list
@@ -184,32 +183,30 @@ export class Editor extends React.Component {
       const panelsToMapOver = [...panelsShown, ...secondPanel];
       newPanelsShown = map(panelsToMapOver, (panelGroup, groupIndex) => {
         const panelToMove =
-          panelsShown[
-            Number(result.source.droppableId.replace("droppable-id-", ""))
-          ][result.source.index];
+          panelsShown[Number(result.source.droppableId.replace('droppable-id-', ''))][
+            result.source.index
+          ];
         if (
           Number(groupIndex) ===
-          Number(result.destination.droppableId.replace("droppable-id-", ""))
+          Number(result.destination.droppableId.replace('droppable-id-', ''))
         ) {
           //we're adding to this group
           return insertItem(
-            panelGroup.map((tabPanel) => ({ ...tabPanel, active: false })),
+            panelGroup.map(tabPanel => ({ ...tabPanel, active: false })),
             { ...panelToMove, active: true },
             result.destination.index
           );
         } else if (
           Number(groupIndex) ===
-          Number(result.source.droppableId.replace("droppable-id-", ""))
+          Number(result.source.droppableId.replace('droppable-id-', ''))
         ) {
           // we're removing from this group
-          return removeItem(panelGroup, result.source.index).map(
-            (tabPanel, index) => {
-              return {
-                ...tabPanel,
-                ...(panelToMove.active && index === 0 && { active: true })
-              };
-            }
-          );
+          return removeItem(panelGroup, result.source.index).map((tabPanel, index) => {
+            return {
+              ...tabPanel,
+              ...(panelToMove.active && index === 0 && { active: true })
+            };
+          });
         } else {
           return panelGroup;
         }
@@ -219,7 +216,7 @@ export class Editor extends React.Component {
       newPanelsShown = map(panelsShown, (panelGroup, groupIndex) => {
         if (
           Number(groupIndex) ===
-          Number(result.destination.droppableId.replace("droppable-id-", ""))
+          Number(result.destination.droppableId.replace('droppable-id-', ''))
         ) {
           //we'removing a tab around in this group
           return reorder(
@@ -236,7 +233,7 @@ export class Editor extends React.Component {
         return panelGroup;
       });
     }
-    filter(newPanelsShown, (panelGroup) => {
+    filter(newPanelsShown, panelGroup => {
       return panelGroup.length;
     });
     panelsShownUpdate(newPanelsShown);
@@ -248,7 +245,7 @@ export class Editor extends React.Component {
     return map(panelsShown);
   };
 
-  onPreviewModeButtonContextMenu = (event) => {
+  onPreviewModeButtonContextMenu = event => {
     const { previewModeButtonMenu } = this.props;
     event.preventDefault();
     if (previewModeButtonMenu) {
@@ -277,9 +274,7 @@ export class Editor extends React.Component {
   };
 
   render() {
-    const {
-      previewModeFullscreen: uncontrolledPreviewModeFullscreen
-    } = this.state;
+    const { previewModeFullscreen: uncontrolledPreviewModeFullscreen } = this.state;
     const {
       ToolBarProps = {},
       StatusBarProps = {},
@@ -342,15 +337,12 @@ export class Editor extends React.Component {
       isFullscreen
     );
     const editorNode =
-      document.querySelector(".veEditor") ||
-      document.querySelector(".preview-mode-container");
+      document.querySelector('.veEditor') ||
+      document.querySelector('.preview-mode-container');
 
     let height = Math.max(
       minHeight,
-      (editorNode &&
-        editorNode.parentNode &&
-        editorNode.parentNode.clientHeight) ||
-        0
+      (editorNode && editorNode.parentNode && editorNode.parentNode.clientHeight) || 0
     );
 
     if (_height) height = Math.max(minHeight, _height);
@@ -364,9 +356,9 @@ export class Editor extends React.Component {
     try {
       //tnr: fixes https://github.com/TeselaGen/openVectorEditor/issues/689
       if (previewModeFullscreen) {
-        window.document.body.classList.add("tg-no-scroll-body");
+        window.document.body.classList.add('tg-no-scroll-body');
       } else {
-        window.document.body.classList.remove("tg-no-scroll-body");
+        window.document.body.classList.remove('tg-no-scroll-body');
       }
     } catch (e) {
       console.warn(`Error 3839458:`, e);
@@ -375,7 +367,7 @@ export class Editor extends React.Component {
     if (withPreviewMode && !previewModeFullscreen) {
       return (
         <div style={{ ...style }} className="preview-mode-container">
-          <div style={{ position: "relative" }}>
+          <div style={{ position: 'relative' }}>
             <div className="preview-mode-buttons">
               <ButtonGroup className="preview-mode-view-fullscreen">
                 <Button
@@ -392,10 +384,7 @@ export class Editor extends React.Component {
                 )}
               </ButtonGroup>
             </div>
-            <div
-              style={{ padding: 40 }}
-              className="preview-mode-simple-sequence-view"
-            >
+            <div style={{ padding: 40 }} className="preview-mode-simple-sequence-view">
               <SimpleCircularOrLinearView
                 sequenceData={sequenceData}
                 tabHeight={tabHeight}
@@ -425,7 +414,7 @@ export class Editor extends React.Component {
     let w = window,
       d = document,
       e = d.documentElement,
-      g = d.getElementsByTagName("body")[0],
+      g = d.getElementsByTagName('body')[0],
       x = w.innerWidth || e.clientWidth || g.clientWidth,
       y = w.innerHeight || e.clientHeight || g.clientHeight;
     const windowDimensions = {
@@ -438,27 +427,24 @@ export class Editor extends React.Component {
       // resizeHeight: true,
       renderOnResizeRate: 50,
       renderOnResize: true,
-      className: "ve-panel"
+      className: 've-panel'
     };
 
     const panelsToShow = this.getPanelsToShow();
     this.hasFullscreenPanel = false;
-    map(panelsToShow, (panelGroup) => {
+    map(panelsToShow, panelGroup => {
       panelGroup.forEach(({ fullScreen }) => {
         if (fullScreen) this.hasFullscreenPanel = true;
       });
     });
-    const pickedUserDefinedHandlersAndOpts = pick(
-      this.props,
-      userDefinedHandlersAndOpts
-    );
+    const pickedUserDefinedHandlersAndOpts = pick(this.props, userDefinedHandlersAndOpts);
     const panels = flatMap(panelsToShow, (panelGroup, index) => {
       // let activePanelId
       let activePanelId;
       let activePanelType;
       let isFullScreen;
       let panelPropsToSpread = {};
-      panelGroup.forEach((panelProps) => {
+      panelGroup.forEach(panelProps => {
         const { type, id, active, fullScreen } = panelProps;
         if (fullScreen) isFullScreen = true;
         if (active) {
@@ -487,11 +473,9 @@ export class Editor extends React.Component {
         (panelMap[activePanelType] && panelMap[activePanelType].comp) ||
         panelMap[activePanelType];
       const panelSpecificProps =
-        panelMap[activePanelType] &&
-        panelMap[activePanelType].panelSpecificProps;
+        panelMap[activePanelType] && panelMap[activePanelType].panelSpecificProps;
       const panelSpecificPropsToSpread =
-        panelMap[activePanelType] &&
-        panelMap[activePanelType].panelSpecificPropsToSpread;
+        panelMap[activePanelType] && panelMap[activePanelType].panelSpecificPropsToSpread;
       let panel = Panel ? (
         <Panel
           withRotateCircularView={withRotateCircularView}
@@ -530,15 +514,13 @@ export class Editor extends React.Component {
                   : expandTabToSplitScreen(tabIdToUse);
               },
               text:
-                panelsToShow.length > 1
-                  ? "Collapse Split Screen"
-                  : "View in Split Screen"
+                panelsToShow.length > 1 ? 'Collapse Split Screen' : 'View in Split Screen'
             },
             {
               onClick: () => {
                 togglePanelFullScreen(tabIdToUse);
               },
-              text: "View in Fullscreen"
+              text: 'View in Fullscreen'
             }
           ],
           undefined,
@@ -552,7 +534,7 @@ export class Editor extends React.Component {
       if (index > 0) {
         toReturn.push(
           <ReflexSplitter
-            key={activePanelId + "splitter"}
+            key={activePanelId + 'splitter'}
             style={{
               // height: height + 38,
               zIndex: 1
@@ -570,14 +552,14 @@ export class Editor extends React.Component {
         >
           {[
             <Droppable //the tab holder
-              key={"droppable-id-" + index.toString()}
+              key={'droppable-id-' + index.toString()}
               direction="horizontal"
-              droppableId={"droppable-id-" + index.toString()}
+              droppableId={'droppable-id-' + index.toString()}
             >
               {(provided, snapshot) => (
                 <div
                   className="ve-draggable-tabs"
-                  data-test={"ve-draggable-tabs" + index}
+                  data-test={'ve-draggable-tabs' + index}
                   ref={provided.innerRef}
                   style={{
                     height: tabHeight,
@@ -588,7 +570,7 @@ export class Editor extends React.Component {
                   {panelGroup.map(({ id, name, canClose }, index) => {
                     let nameToShow = name || id;
                     if (isMobile()) {
-                      nameToShow = nameToShow.replace("Map", "");
+                      nameToShow = nameToShow.replace('Map', '');
                     }
                     return (
                       <Draggable
@@ -600,17 +582,17 @@ export class Editor extends React.Component {
                         {(provided, snapshot) => (
                           <div
                             style={{
-                              wordWrap: "normal",
-                              flex: "0 0 auto",
-                              maxWidth: "100%",
-                              fontSize: "14px"
+                              wordWrap: 'normal',
+                              flex: '0 0 auto',
+                              maxWidth: '100%',
+                              fontSize: '14px'
                             }}
                             onClick={() => {
                               setPanelAsActive(id);
                             }}
                           >
                             <div
-                              onContextMenu={(e) => {
+                              onContextMenu={e => {
                                 showTabRightClickContextMenu(e, id);
                               }}
                               ref={provided.innerRef}
@@ -618,13 +600,11 @@ export class Editor extends React.Component {
                               {...provided.dragHandleProps}
                               style={{
                                 // some basic styles to make the items look a bit nicer
-                                userSelect: "none",
+                                userSelect: 'none',
                                 // change background colour if dragging
-                                background: snapshot.isDragging
-                                  ? "lightgreen"
-                                  : "none",
-                                cursor: "move",
-                                flex: "0 0 auto",
+                                background: snapshot.isDragging ? 'lightgreen' : 'none',
+                                cursor: 'move',
+                                flex: '0 0 auto',
                                 ...provided.draggableProps.style
                               }}
                             >
@@ -632,34 +612,26 @@ export class Editor extends React.Component {
                                 style={{
                                   padding: 3,
                                   borderBottom:
-                                    id === activePanelId
-                                      ? "2px solid #106ba3"
-                                      : "none",
-                                  color:
-                                    id === activePanelId
-                                      ? "#106ba3"
-                                      : "undefined",
+                                    id === activePanelId ? '2px solid #106ba3' : 'none',
+                                  color: id === activePanelId ? '#106ba3' : 'undefined',
                                   marginLeft: 13,
                                   marginRight: 13
                                 }}
                                 className={
-                                  (id === activePanelId ? "veTabActive " : "") +
-                                  camelCase("veTab-" + nameToShow)
+                                  (id === activePanelId ? 'veTabActive ' : '') +
+                                  camelCase('veTab-' + nameToShow)
                                 }
                               >
                                 {isFullScreen && (
                                   <div //we need this div to wrap the tooltip to help the tooltip stay in the correct position https://github.com/TeselaGen/openVectorEditor/issues/436
                                     style={{
                                       zIndex: 15002,
-                                      position: "fixed",
+                                      position: 'fixed',
                                       top: 15,
                                       right: 25
                                     }}
                                   >
-                                    <Tooltip
-                                      position="left"
-                                      content="Minimize Tab"
-                                    >
+                                    <Tooltip position="left" content="Minimize Tab">
                                       <Button
                                         minimal
                                         icon="minimize"
@@ -698,7 +670,7 @@ export class Editor extends React.Component {
                   <Droppable //extra add tab box (only shown when there is 1 tab being shown)!
                     key="extra-drop-box"
                     direction="horizontal"
-                    droppableId={"droppable-id-" + (index + 1).toString()}
+                    droppableId={'droppable-id-' + (index + 1).toString()}
                   >
                     {(provided, snapshot) => (
                       <div
@@ -710,13 +682,13 @@ export class Editor extends React.Component {
                       >
                         <div
                           style={{
-                            position: "absolute",
-                            left: "45%",
-                            top: "45%",
+                            position: 'absolute',
+                            left: '45%',
+                            top: '45%',
                             fontSize: 26
                           }}
                         >
-                          {" "}
+                          {' '}
                           + Add Tab
                         </div>
                         {provided.placeholder}
@@ -731,7 +703,7 @@ export class Editor extends React.Component {
                 className="veWhiteBackground"
                 style={{
                   zIndex: 15000,
-                  position: "fixed",
+                  position: 'fixed',
                   top: 0,
                   left: 0,
                   ...windowDimensions
@@ -776,22 +748,22 @@ export class Editor extends React.Component {
         importSequenceFromFile={this.props.importSequenceFromFile}
         disabled={readOnly || hideSingleImport}
         style={{
-          width: "100%",
-          maxWidth: "100%",
+          width: '100%',
+          maxWidth: '100%',
           // ...(fitHeight && {
           // height: "100%",
           //  }),
-          position: "relative",
+          position: 'relative',
           // height: "100%",
           // ...(fitHeight && {
           height,
           minHeight,
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           ...(previewModeFullscreen && {
-            background: "white",
+            background: 'white',
             zIndex: 15000,
-            position: "fixed",
+            position: 'fixed',
             // paddingTop: 20,
             top: yOffset || 0,
             left: xOffset || 0,
@@ -800,16 +772,16 @@ export class Editor extends React.Component {
           ...style
         }}
         className={`veEditor ${editorName} ${
-          previewModeFullscreen ? "previewModeFullscreen" : ""
+          previewModeFullscreen ? 'previewModeFullscreen' : ''
         }`}
       >
         <GlobalDialog
           editorName={editorName}
           {...pickedUserDefinedHandlersAndOpts}
           dialogOverrides={pick(this.props, [
-            "AddOrEditFeatureDialogOverride",
-            "AddOrEditPartDialogOverride",
-            "AddOrEditPrimerDialogOverride"
+            'AddOrEditFeatureDialogOverride',
+            'AddOrEditPartDialogOverride',
+            'AddOrEditPrimerDialogOverride'
           ])}
         />
         <ToolBar
@@ -818,9 +790,7 @@ export class Editor extends React.Component {
           key="toolbar"
           showMenuBar={showMenuBar}
           displayMenuBarAboveTools={displayMenuBarAboveTools}
-          handleFullscreenClose={
-            handleFullscreenClose || this.togglePreviewFullscreen
-          }
+          handleFullscreenClose={handleFullscreenClose || this.togglePreviewFullscreen}
           isProtein={sequenceData.isProtein}
           userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
           closeFullscreen={
@@ -848,10 +818,10 @@ export class Editor extends React.Component {
 
         <div
           style={{
-            position: "relative",
-            flexGrow: "1",
+            position: 'relative',
+            flexGrow: '1',
             minHeight: 0,
-            display: "flex"
+            display: 'flex'
           }}
           className="tg-editor-container"
           id="section-to-print"
@@ -889,15 +859,9 @@ Editor.childContextTypes = {
 
 export default compose(
   connectToEditor(
-    (
-      { panelsShown, versionHistory, sequenceData = {} },
-      { additionalEnzymes }
-    ) => {
+    ({ panelsShown, versionHistory, sequenceData = {} }, { additionalEnzymes }) => {
       return {
-        additionalEnzymes: getAdditionalEnzymesSelector(
-          null,
-          additionalEnzymes
-        ),
+        additionalEnzymes: getAdditionalEnzymesSelector(null, additionalEnzymes),
         panelsShown,
         versionHistory,
         sequenceData

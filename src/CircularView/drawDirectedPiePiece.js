@@ -1,4 +1,4 @@
-import Path from "paths-js/path";
+import Path from 'paths-js/path';
 function polarToSpecialCartesian(radius, angleInRadians) {
   //the 0 angle returns the 0,1 point on the unit circle instead of the 1,0 point like normal
   return {
@@ -38,10 +38,7 @@ export default function drawDirectedPiePiece({
 
   let arrowheadPointInner = polarToSpecialCartesian(radius, -stickOutThisMuch);
 
-  let arrowheadBottom = polarToSpecialCartesian(
-    arrowheadInnerRadius,
-    arrowheadAngle
-  );
+  let arrowheadBottom = polarToSpecialCartesian(arrowheadInnerRadius, arrowheadAngle);
   let arcLeftBottom = polarToSpecialCartesian(tailInnerRadius, arrowheadAngle);
   let arcRightBottom = polarToSpecialCartesian(tailInnerRadius, totalAngle);
   let arcRightTop = polarToSpecialCartesian(tailOuterRadius, totalAngle);
@@ -51,10 +48,7 @@ export default function drawDirectedPiePiece({
     totalAngle + stickOutThisMuch
   );
   let arcLeftTop = polarToSpecialCartesian(tailOuterRadius, arrowheadAngle);
-  let arrowheadTop = polarToSpecialCartesian(
-    arrowheadOuterRadius,
-    arrowheadAngle
-  );
+  let arrowheadTop = polarToSpecialCartesian(arrowheadOuterRadius, arrowheadAngle);
 
   let largeArcFlag = arcAngle > Math.PI ? 1 : 0;
   let path = Path().moveto(arrowheadPoint.x, arrowheadPoint.y);

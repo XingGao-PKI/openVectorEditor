@@ -1,19 +1,15 @@
-import React from "react";
-import {
-  CmdCheckbox,
-  DataTable,
-  withSelectedEntities
-} from "teselagen-react-components";
-import { map, get } from "lodash";
-import CutsiteFilter from "../../CutsiteFilter";
-import { Button } from "@blueprintjs/core";
-import { connectToEditor } from "../../withEditorProps";
-import { compose } from "recompose";
-import selectors from "../../selectors";
-import commands from "../../commands";
-import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
-import { pick } from "lodash";
-import SingleEnzymeCutsiteInfo from "./SingleEnzymeCutsiteInfo";
+import React from 'react';
+import { CmdCheckbox, DataTable, withSelectedEntities } from 'teselagen-react-components';
+import { map, get } from 'lodash';
+import CutsiteFilter from '../../CutsiteFilter';
+import { Button } from '@blueprintjs/core';
+import { connectToEditor } from '../../withEditorProps';
+import { compose } from 'recompose';
+import selectors from '../../selectors';
+import commands from '../../commands';
+import { userDefinedHandlersAndOpts } from '../../Editor/userDefinedHandlersAndOpts';
+import { pick } from 'lodash';
+import SingleEnzymeCutsiteInfo from './SingleEnzymeCutsiteInfo';
 
 class CutsiteProperties extends React.Component {
   constructor(props) {
@@ -21,7 +17,7 @@ class CutsiteProperties extends React.Component {
     this.commands = commands(this);
   }
 
-  SubComponent = (row) => {
+  SubComponent = row => {
     return (
       <SingleEnzymeCutsiteInfo
         {...{
@@ -37,13 +33,13 @@ class CutsiteProperties extends React.Component {
 
   schema = {
     fields: [
-      { path: "name", type: "string" },
-      { path: "numberOfCuts", type: "number" }
+      { path: 'name', type: 'string' },
+      { path: 'numberOfCuts', type: 'number' }
     ]
   };
 
   onChangeHook = () => {
-    this.props.annotationVisibilityShow("cutsites");
+    this.props.annotationVisibilityShow('cutsites');
   };
   render() {
     const {
@@ -55,7 +51,7 @@ class CutsiteProperties extends React.Component {
 
     const { cutsitesByName, cutsitesById } = allCutsites;
 
-    const cutsitesToUse = map(cutsitesByName, (cutsiteGroup) => {
+    const cutsitesToUse = map(cutsitesByName, cutsiteGroup => {
       const name = cutsiteGroup[0].restrictionEnzyme.name;
       return {
         cutsiteGroup,
@@ -67,18 +63,18 @@ class CutsiteProperties extends React.Component {
       };
     });
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div
           style={{
             marginBottom: 10,
             paddingTop: 10,
-            display: "flex",
-            alignItems: "center"
+            display: 'flex',
+            alignItems: 'center'
           }}
         >
           <CmdCheckbox prefix="Show " cmd={this.commands.toggleCutsites} />
           <Button
-            style={{ marginLeft: 10, cursor: "auto" }}
+            style={{ marginLeft: 10, cursor: 'auto' }}
             disabled
             minimal
             icon="filter"
@@ -100,10 +96,7 @@ class CutsiteProperties extends React.Component {
           </Button>
         </div>
         <DataTable
-          selectedIds={get(
-            cutsitesById[selectedAnnotationId],
-            "restrictionEnzyme.name"
-          )}
+          selectedIds={get(cutsitesById[selectedAnnotationId], 'restrictionEnzyme.name')}
           compact
           noSelect
           noHeader
@@ -111,7 +104,7 @@ class CutsiteProperties extends React.Component {
           withExpandAndCollapseAllButton
           noFullscreenButton
           noPadding
-          defaults={{ order: ["numberOfCuts"] }}
+          defaults={{ order: ['numberOfCuts'] }}
           maxHeight={400}
           formName="cutsiteProperties"
           noRouter
@@ -139,5 +132,5 @@ export default compose(
       cutsites: cutsites.cutsitesArray
     };
   }),
-  withSelectedEntities("cutsiteProperties")
+  withSelectedEntities('cutsiteProperties')
 )(CutsiteProperties);

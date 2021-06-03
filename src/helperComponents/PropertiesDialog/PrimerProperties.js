@@ -1,6 +1,6 @@
-import genericAnnotationProperties from "./GenericAnnotationProperties";
+import genericAnnotationProperties from './GenericAnnotationProperties';
 export default genericAnnotationProperties({
-  annotationType: "primer",
+  annotationType: 'primer',
   noColor: true,
   noType: true
 });

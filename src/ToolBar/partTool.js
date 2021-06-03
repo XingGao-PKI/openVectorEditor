@@ -1,21 +1,19 @@
-import { Icon } from "@blueprintjs/core";
+import { Icon } from '@blueprintjs/core';
 // import { Checkbox, Button } from "@blueprintjs/core";
-import React from "react";
+import React from 'react';
 // import { connect } from "react-redux";
 // import { convertRangeTo1Based } from "ve-range-utils";
 //import { partIcon } from "teselagen-react-components";
-import ToolbarItem from "./ToolbarItem";
-import { connectToEditor } from "../withEditorProps";
-import { PartTagSearch } from "../helperComponents/partTagSearch";
+import ToolbarItem from './ToolbarItem';
+import { connectToEditor } from '../withEditorProps';
+import { PartTagSearch } from '../helperComponents/partTagSearch';
 
-export default connectToEditor(
-  ({ annotationVisibility = {}, toolBar = {} }) => {
-    return {
-      toggled: annotationVisibility.parts,
-      isOpen: toolBar.openItem === "partTool"
-    };
-  }
-)(
+export default connectToEditor(({ annotationVisibility = {}, toolBar = {} }) => {
+  return {
+    toggled: annotationVisibility.parts,
+    isOpen: toolBar.openItem === 'partTool'
+  };
+})(
   ({
     allPartTags,
     editTagsLink,
@@ -29,16 +27,16 @@ export default connectToEditor(
         {...{
           Icon: <Icon icon="doughnut-chart" />,
           onIconClick: function () {
-            annotationVisibilityToggle("parts");
+            annotationVisibilityToggle('parts');
           },
           toggled,
           editTagsLink,
           allPartTags,
-          tooltip: "Show parts",
-          tooltipToggled: "Hide parts",
+          tooltip: 'Show parts',
+          tooltipToggled: 'Hide parts',
           noDropdownIcon: !allPartTags,
           Dropdown: PartTagSearch,
-          dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Part Options",
+          dropdowntooltip: (!isOpen ? 'Show' : 'Hide') + ' Part Options',
           ...toolbarItemProps
         }}
       />

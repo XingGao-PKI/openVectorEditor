@@ -1,9 +1,9 @@
-import React from "react";
-import { Icon } from "@blueprintjs/core";
-import Dropzone from "react-dropzone";
-import ToolbarItem from "./ToolbarItem";
-import { compose, withHandlers } from "recompose";
-import { importSequenceFromFile, connectToEditor } from "../withEditorProps";
+import React from 'react';
+import { Icon } from '@blueprintjs/core';
+import Dropzone from 'react-dropzone';
+import ToolbarItem from './ToolbarItem';
+import { compose, withHandlers } from 'recompose';
+import { importSequenceFromFile, connectToEditor } from '../withEditorProps';
 
 export default compose(
   connectToEditor(),
@@ -17,9 +17,9 @@ export default compose(
         IconWrapperProps: {
           multiple: false,
           style: {},
-          onDrop: (files) => importSequenceFromFile(files[0])
+          onDrop: files => importSequenceFromFile(files[0])
         },
-        tooltip: "Click or drag to import and view files (.fasta .gb .dna)",
+        tooltip: 'Click or drag to import and view files (.fasta .gb .dna)',
         ...toolbarItemProps
       }}
     />

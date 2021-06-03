@@ -1,4 +1,4 @@
-import { forEach } from "lodash";
+import { forEach } from 'lodash';
 
 const debug = 0;
 
@@ -27,8 +27,7 @@ Object.keys(rowHeights).forEach(k => {
   rowHeights[k].type = k;
   rowHeights[k].marginTop = rowHeights[k].marginTop || 0;
   rowHeights[k].marginBottom = rowHeights[k].marginBottom || 0;
-  rowHeights[k].spaceBetweenAnnotations =
-    rowHeights[k].spaceBetweenAnnotations || 0;
+  rowHeights[k].spaceBetweenAnnotations = rowHeights[k].spaceBetweenAnnotations || 0;
 });
 const translations = {
   getHeight: props => {
@@ -77,7 +76,7 @@ const annotationsToCompute = {
     height: rowHeights.axis.type
   },
   cutsiteLabels: {
-    typeOverride: "cutsites",
+    typeOverride: 'cutsites',
     height: rowHeights.cutsiteLabels.type,
     hasYOffset: true
   }
@@ -113,13 +112,9 @@ export default props => {
       // i
     ) => {
       const heightKeys = getHeight ? getHeight(props) : _height;
-      const [annotationHeight, marginHeight] = getSummedHeights(
-        heightKeys,
-        props
-      );
+      const [annotationHeight, marginHeight] = getSummedHeights(heightKeys, props);
 
-      const shouldShow =
-        alwaysVisible || annotationVisibility[typeOverride || key];
+      const shouldShow = alwaysVisible || annotationVisibility[typeOverride || key];
 
       if (!shouldShow) return;
       let heightToAdd = annotationHeight;
@@ -137,8 +132,7 @@ export default props => {
       if (heightToAdd > 0) heightToAdd += marginHeight;
 
       if (debug) {
-        heightToAdd !== 0 &&
-          console.info(`heightToAdd, key:`, heightToAdd, key);
+        heightToAdd !== 0 && console.info(`heightToAdd, key:`, heightToAdd, key);
       }
       totalHeight += heightToAdd;
     }
@@ -153,13 +147,11 @@ export default props => {
 function getHeights(heightKey, props) {
   const annotationHeight = !heightKey
     ? 0
-    : props[heightKey + "Height"] || (rowHeights[heightKey] || {}).height || 0;
+    : props[heightKey + 'Height'] || (rowHeights[heightKey] || {}).height || 0;
 
   const marginHeight =
-    (props[heightKey + "MarginTop"] ||
-      (rowHeights[heightKey] || {}).marginTop ||
-      0) +
-    (props[heightKey + "MarginBottom"] ||
+    (props[heightKey + 'MarginTop'] || (rowHeights[heightKey] || {}).marginTop || 0) +
+    (props[heightKey + 'MarginBottom'] ||
       (rowHeights[heightKey] || {}).marginBottom ||
       0);
   return [annotationHeight, marginHeight];

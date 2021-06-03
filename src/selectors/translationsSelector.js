@@ -1,16 +1,16 @@
-import { reduce } from "lodash";
-import uuid from "shortid";
-import sequenceSelector from "./sequenceSelector";
-import orfsSelector from "./orfsSelector";
-import { createSelector } from "reselect";
+import { reduce } from 'lodash';
+import uuid from 'shortid';
+import sequenceSelector from './sequenceSelector';
+import orfsSelector from './orfsSelector';
+import { createSelector } from 'reselect';
 
-import { getAminoAcidDataForEachBaseOfDna } from "ve-sequence-utils";
-import each from "lodash/each";
-import translationsRawSelector from "./translationsRawSelector";
-import translationSearchMatchesSelector from "./translationSearchMatchesSelector";
-import { normalizePositionByRangeLength } from "ve-range-utils";
-import cdsFeaturesSelector from "./cdsFeaturesSelector";
-import circularSelector from "./circularSelector";
+import { getAminoAcidDataForEachBaseOfDna } from 've-sequence-utils';
+import each from 'lodash/each';
+import translationsRawSelector from './translationsRawSelector';
+import translationSearchMatchesSelector from './translationSearchMatchesSelector';
+import { normalizePositionByRangeLength } from 've-range-utils';
+import cdsFeaturesSelector from './cdsFeaturesSelector';
+import circularSelector from './circularSelector';
 
 function translationsSelector(
   isCircular,
@@ -32,7 +32,7 @@ function translationsSelector(
       acc[id] = {
         ...match,
         id,
-        translationType: "AA Search Match",
+        translationType: 'AA Search Match',
         isOrf: true, //pass isOrf = true here in order to not have it show up in the properties window
         forward: !match.bottomStrand
       };
@@ -44,7 +44,7 @@ function translationsSelector(
         if (!translation.isOrf) {
           acc[translation.id] = {
             ...translation,
-            translationType: "User Created"
+            translationType: 'User Created'
           };
         }
         return acc;
@@ -55,7 +55,7 @@ function translationsSelector(
       ? reduce(
           orfs,
           (acc, orf) => {
-            acc[orf.id] = { ...orf, translationType: "ORF" };
+            acc[orf.id] = { ...orf, translationType: 'ORF' };
             return acc;
           },
           {}
@@ -68,7 +68,7 @@ function translationsSelector(
         (acc, cdsFeature) => {
           acc[cdsFeature.id] = {
             ...cdsFeature,
-            translationType: "CDS Feature"
+            translationType: 'CDS Feature'
           };
           return acc;
         },
@@ -92,14 +92,11 @@ function translationsSelector(
             end:
               isCircular || frameOffset < 0
                 ? normalizePositionByRangeLength(
-                    sequence.length -
-                      1 +
-                      frameOffset +
-                      (frameOffset > 0 ? -1 : 1),
+                    sequence.length - 1 + frameOffset + (frameOffset > 0 ? -1 : 1),
                     sequence.length
                   )
                 : sequence.length - 1,
-            translationType: "Frame",
+            translationType: 'Frame',
             forward: frameOffset > 0,
             isOrf: true //pass isOrf = true here in order to not have it show up in the properties window
           };
@@ -124,14 +121,14 @@ export default createSelector(
   translationSearchMatchesSelector,
   sequenceSelector,
   orfsSelector,
-  (state) => state.annotationVisibility.orfTranslations,
-  (state) => state.annotationVisibility.orfs,
+  state => state.annotationVisibility.orfTranslations,
+  state => state.annotationVisibility.orfs,
   cdsFeaturesSelector,
-  (state) => state.annotationVisibility.cdsFeatureTranslations,
-  (state) => state.annotationVisibility.features,
+  state => state.annotationVisibility.cdsFeatureTranslations,
+  state => state.annotationVisibility.features,
   translationsRawSelector,
-  (state) => state.frameTranslations,
-  (state) => state.sequenceData.isProtein,
-  (state) => state.sequenceData.proteinSequence,
+  state => state.frameTranslations,
+  state => state.sequenceData.isProtein,
+  state => state.sequenceData.proteinSequence,
   translationsSelector
 );

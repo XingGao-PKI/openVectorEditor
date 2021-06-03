@@ -1,9 +1,9 @@
-import React from "react";
-import classnames from "classnames";
-import "./style.css";
-import { getSelectionMessage } from "../../utils/editorUtils";
+import React from 'react';
+import classnames from 'classnames';
+import './style.css';
+import { getSelectionMessage } from '../../utils/editorUtils';
 
-const Caret = (props) => {
+const Caret = props => {
   const {
     charWidth,
     row,
@@ -16,7 +16,7 @@ const Caret = (props) => {
     onRightClick,
     style,
     selectionMessage,
-    className = ""
+    className = ''
   } = props;
 
   if (
@@ -36,8 +36,8 @@ const Caret = (props) => {
           {
             notClickable: !isDraggable
           },
-          "veCaret",
-          "veRowViewCaret",
+          'veCaret',
+          'veRowViewCaret',
           className
         )}
         style={{

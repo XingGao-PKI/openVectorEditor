@@ -4,12 +4,12 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
-import ReflexSplitter from "./ReflexSplitter";
-import ReflexEvents from "./ReflexEvents";
-import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
-import React from "react";
-import { cloneDeep, round } from "lodash";
+import ReflexSplitter from './ReflexSplitter';
+import ReflexEvents from './ReflexEvents';
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { cloneDeep, round } from 'lodash';
 
 class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
@@ -59,13 +59,13 @@ class ReflexContainer extends React.Component {
       flexData
     });
 
-    this.events.on("splitter.startResize", this.onSplitterStartResize);
+    this.events.on('splitter.startResize', this.onSplitterStartResize);
 
-    this.events.on("splitter.stopResize", this.onSplitterStopResize);
+    this.events.on('splitter.stopResize', this.onSplitterStopResize);
 
-    this.events.on("splitter.resize", this.onSplitterResize);
+    this.events.on('splitter.resize', this.onSplitterResize);
 
-    this.events.on("element.size", this.onElementSize);
+    this.events.on('element.size', this.onElementSize);
   }
 
   /////////////////////////////////////////////////////////
@@ -93,10 +93,7 @@ class ReflexContainer extends React.Component {
   componentWillReceiveProps(props) {
     const children = this.getValidChildren(props);
 
-    if (
-      children.length !== this.state.flexData.length ||
-      this.flexHasChanged(props)
-    ) {
+    if (children.length !== this.state.flexData.length || this.flexHasChanged(props)) {
       const flexData = this.computeFlexData(children);
 
       this.setPartialState({
@@ -135,10 +132,10 @@ class ReflexContainer extends React.Component {
     const domElement = ReactDOM.findDOMNode(ref);
 
     switch (this.props.orientation) {
-      case "horizontal":
+      case 'horizontal':
         return domElement.offsetHeight;
 
-      case "vertical":
+      case 'vertical':
       default:
         return domElement.offsetWidth;
     }
@@ -152,10 +149,10 @@ class ReflexContainer extends React.Component {
     const pos = event.changedTouches ? event.changedTouches[0] : event;
 
     switch (this.props.orientation) {
-      case "horizontal":
+      case 'horizontal':
         return pos.pageY - this.previousPos;
 
-      case "vertical":
+      case 'vertical':
       default:
         return pos.pageX - this.previousPos;
     }
@@ -166,19 +163,17 @@ class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   onSplitterStartResize(data) {
-    const pos = data.event.changedTouches
-      ? data.event.changedTouches[0]
-      : data.event;
+    const pos = data.event.changedTouches ? data.event.changedTouches[0] : data.event;
 
     switch (this.props.orientation) {
-      case "horizontal":
-        document.body.style.cursor = "row-resize";
+      case 'horizontal':
+        document.body.style.cursor = 'row-resize';
         this.previousPos = pos.pageY;
         break;
 
-      case "vertical":
+      case 'vertical':
       default:
-        document.body.style.cursor = "col-resize";
+        document.body.style.cursor = 'col-resize';
         this.previousPos = pos.pageX;
         break;
     }
@@ -187,7 +182,7 @@ class ReflexContainer extends React.Component {
 
     this.elements = [this.children[idx - 1], this.children[idx + 1]];
 
-    this.emitElementsEvent(this.elements, "onStartResize");
+    this.emitElementsEvent(this.elements, 'onStartResize');
   }
 
   /////////////////////////////////////////////////////////
@@ -205,7 +200,7 @@ class ReflexContainer extends React.Component {
       if (this.isNegativeWhenCollapsing ? offset > 0 : offset < 0) {
         this.hasCollapsed = false;
         this.setPartialState(this.stateBeforeCollapse).then(() => {
-          this.emitElementsEvent(this.elements, "onResize");
+          this.emitElementsEvent(this.elements, 'onResize');
         });
       }
       return;
@@ -227,20 +222,18 @@ class ReflexContainer extends React.Component {
         this.elements = this.dispatchOffset(idx, availableOffset);
         this.adjustFlex(this.elements);
         this.setPartialState(this.state).then(() => {
-          this.emitElementsEvent(this.elements, "onResize");
+          this.emitElementsEvent(this.elements, 'onResize');
         });
       }
     } else if (availableOffset) {
-      const pos = data.event.changedTouches
-        ? data.event.changedTouches[0]
-        : data.event;
+      const pos = data.event.changedTouches ? data.event.changedTouches[0] : data.event;
 
       switch (this.props.orientation) {
-        case "horizontal":
+        case 'horizontal':
           this.previousPos = pos.pageY;
           break;
 
-        case "vertical":
+        case 'vertical':
         default:
           this.previousPos = pos.pageX;
           break;
@@ -250,7 +243,7 @@ class ReflexContainer extends React.Component {
 
       this.adjustFlex(this.elements);
       this.setPartialState(this.state).then(() => {
-        this.emitElementsEvent(this.elements, "onResize");
+        this.emitElementsEvent(this.elements, 'onResize');
       });
     }
   }
@@ -262,8 +255,8 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   isSplitterElement(element) {
     //https://github.com/leefsmp/Re-Flex/issues/49
-    return process.env.NODE_ENV === "development"
-      ? element.type === <ReflexSplitter />.type
+    return process.env.NODE_ENV === 'development'
+      ? element.type === (<ReflexSplitter />).type
       : element.type === ReflexSplitter;
   }
 
@@ -273,12 +266,11 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   onSplitterStopResize(data) {
     if (this.hasCollapsed) {
-      this.props.onPanelCollapse &&
-        this.props.onPanelCollapse(this.hasCollapsed);
+      this.props.onPanelCollapse && this.props.onPanelCollapse(this.hasCollapsed);
       this.hasCollapsed = false;
     }
 
-    document.body.style.cursor = "auto";
+    document.body.style.cursor = 'auto';
 
     const resizedRefs = this.elements.map(element => {
       return element.ref;
@@ -288,7 +280,7 @@ class ReflexContainer extends React.Component {
       return !this.isSplitterElement(child) && resizedRefs.includes(child.ref);
     });
 
-    this.emitElementsEvent(elements, "onStopResize");
+    this.emitElementsEvent(elements, 'onStopResize');
   }
 
   /////////////////////////////////////////////////////////
@@ -308,10 +300,7 @@ class ReflexContainer extends React.Component {
 
         const splitterIdx = idx + dir;
 
-        const availableOffset = this.computeAvailableOffset(
-          splitterIdx,
-          dir * offset
-        );
+        const availableOffset = this.computeAvailableOffset(splitterIdx, dir * offset);
 
         this.elements = null;
 
@@ -322,7 +311,7 @@ class ReflexContainer extends React.Component {
         }
 
         this.setPartialState(this.state).then(() => {
-          this.emitElementsEvent(this.elements, "onResize");
+          this.emitElementsEvent(this.elements, 'onResize');
 
           resolve();
         });
@@ -416,15 +405,11 @@ class ReflexContainer extends React.Component {
 
     if (availableStretch < Math.abs(offset)) {
       if (this.checkPropagate(idx, -1 * offset)) {
-        const nextOffset =
-          Math.sign(offset) * (Math.abs(offset) - availableStretch);
+        const nextOffset = Math.sign(offset) * (Math.abs(offset) - availableStretch);
 
         return (
           availableStretch +
-          this.computeAvailableStretch(
-            offset < 0 ? idx + 2 : idx - 2,
-            nextOffset
-          )
+          this.computeAvailableStretch(offset < 0 ? idx + 2 : idx - 2, nextOffset)
         );
       }
     }
@@ -450,15 +435,11 @@ class ReflexContainer extends React.Component {
 
     if (availableShrink < Math.abs(offset)) {
       if (this.checkPropagate(idx, offset)) {
-        const nextOffset =
-          Math.sign(offset) * (Math.abs(offset) - availableShrink);
+        const nextOffset = Math.sign(offset) * (Math.abs(offset) - availableShrink);
 
         return (
           availableShrink +
-          this.computeAvailableShrink(
-            offset > 0 ? idx + 2 : idx - 2,
-            nextOffset
-          )
+          this.computeAvailableShrink(offset > 0 ? idx + 2 : idx - 2, nextOffset)
         );
       }
     }
@@ -474,11 +455,11 @@ class ReflexContainer extends React.Component {
     const domElement = ReactDOM.findDOMNode(this);
 
     switch (this.props.orientation) {
-      case "horizontal":
+      case 'horizontal':
         if (domElement.offsetHeight === 0.0) {
           console.warn(
-            "Found ReflexContainer with height=0, " +
-              "this will cause invalid behavior..."
+            'Found ReflexContainer with height=0, ' +
+              'this will cause invalid behavior...'
           );
           console.warn(domElement);
           return 0.0;
@@ -486,12 +467,11 @@ class ReflexContainer extends React.Component {
 
         return 1.0 / domElement.offsetHeight;
 
-      case "vertical":
+      case 'vertical':
       default:
         if (domElement.offsetWidth === 0.0) {
           console.warn(
-            "Found ReflexContainer with width=0, " +
-              "this will cause invalid behavior..."
+            'Found ReflexContainer with width=0, ' + 'this will cause invalid behavior...'
           );
           console.warn(domElement);
           return 0.0;
@@ -516,11 +496,10 @@ class ReflexContainer extends React.Component {
 
     const newFlex =
       currentFlex > 0
-        ? currentFlex * newSize / size
+        ? (currentFlex * newSize) / size
         : this.computePixelFlex() * newSize;
 
-    this.state.flexData[idx].flex =
-      !isFinite(newFlex) || isNaN(newFlex) ? 0 : newFlex;
+    this.state.flexData[idx].flex = !isFinite(newFlex) || isNaN(newFlex) ? 0 : newFlex;
   }
 
   /////////////////////////////////////////////////////////
@@ -548,8 +527,7 @@ class ReflexContainer extends React.Component {
     if (dispatchedStretch < Math.abs(offset)) {
       const nextIdx = idx - Math.sign(offset) * 2;
 
-      const nextOffset =
-        Math.sign(offset) * (Math.abs(offset) - dispatchedStretch);
+      const nextOffset = Math.sign(offset) * (Math.abs(offset) - dispatchedStretch);
 
       return [child, ...this.dispatchStretch(nextIdx, nextOffset)];
     }
@@ -585,8 +563,7 @@ class ReflexContainer extends React.Component {
     if (Math.abs(dispatchedShrink) < Math.abs(offset)) {
       const nextIdx = idx + Math.sign(offset) * 2;
 
-      const nextOffset =
-        Math.sign(offset) * (Math.abs(offset) + dispatchedShrink);
+      const nextOffset = Math.sign(offset) * (Math.abs(offset) + dispatchedShrink);
 
       return [child, ...this.dispatchShrink(nextIdx, nextOffset)];
     }
@@ -599,10 +576,7 @@ class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   dispatchOffset(idx, offset) {
-    return [
-      ...this.dispatchStretch(idx, offset),
-      ...this.dispatchShrink(idx, offset)
-    ];
+    return [...this.dispatchStretch(idx, offset), ...this.dispatchShrink(idx, offset)];
   }
 
   /////////////////////////////////////////////////////////
@@ -676,9 +650,7 @@ class ReflexContainer extends React.Component {
           return entry;
         }
 
-        const proposedFlex = !entry.constrained
-          ? freeFlex / freeElements
-          : entry.flex;
+        const proposedFlex = !entry.constrained ? freeFlex / freeElements : entry.flex;
 
         const constrainedFlex = Math.min(
           entry.sizeFlex,
@@ -712,13 +684,13 @@ class ReflexContainer extends React.Component {
   // Utility method that generates a new unique GUID
   //
   /////////////////////////////////////////////////////////
-  guid(format = "xxxx-xxxx") {
+  guid(format = 'xxxx-xxxx') {
     let d = new Date().getTime();
 
-    return format.replace(/[xy]/g, function(c) {
-      let r = ((d + Math.random() * 16) % 16) | 0;
+    return format.replace(/[xy]/g, function (c) {
+      let r = (d + Math.random() * 16) % 16 | 0;
       d = Math.floor(d / 16);
-      return (c == "x" ? r : (r & 0x7) | 0x8).toString(16);
+      return (c == 'x' ? r : (r & 0x7) | 0x8).toString(16);
     });
   }
 
@@ -739,37 +711,34 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   render() {
     const classNames = [
-      "reflex-layout",
-      "reflex-container",
+      'reflex-layout',
+      'reflex-container',
       this.props.orientation,
-      ...this.props.className.split(" ")
+      ...this.props.className.split(' ')
     ];
 
-    this.children = React.Children.map(
-      this.getValidChildren(),
-      (child, idx) => {
-        if (idx > this.state.flexData.length - 1) {
-          return <div />;
-        }
-
-        const flexData = this.state.flexData[idx];
-
-        const newProps = Object.assign({}, child.props, {
-          maxSize: child.props.maxSize || Number.MAX_VALUE,
-          orientation: this.props.orientation,
-          minSize: child.props.minSize || 1,
-          events: this.events,
-          flex: round(flexData.flex, 5), //tnr: this rounding is necessary because flex was getting computed very slightly off (eg -1.423432e-17). This corrects for that
-          ref: flexData.guid,
-          index: idx
-        });
-
-        return React.cloneElement(child, newProps);
+    this.children = React.Children.map(this.getValidChildren(), (child, idx) => {
+      if (idx > this.state.flexData.length - 1) {
+        return <div />;
       }
-    );
+
+      const flexData = this.state.flexData[idx];
+
+      const newProps = Object.assign({}, child.props, {
+        maxSize: child.props.maxSize || Number.MAX_VALUE,
+        orientation: this.props.orientation,
+        minSize: child.props.minSize || 1,
+        events: this.events,
+        flex: round(flexData.flex, 5), //tnr: this rounding is necessary because flex was getting computed very slightly off (eg -1.423432e-17). This corrects for that
+        ref: flexData.guid,
+        index: idx
+      });
+
+      return React.cloneElement(child, newProps);
+    });
 
     return (
-      <div className={classNames.join(" ")} style={this.props.style}>
+      <div className={classNames.join(' ')} style={this.props.style}>
         {this.children}
       </div>
     );
@@ -781,7 +750,7 @@ class ReflexContainer extends React.Component {
 //
 /////////////////////////////////////////////////////////
 ReflexContainer.propTypes = {
-  orientation: PropTypes.oneOf(["horizontal", "vertical"]),
+  orientation: PropTypes.oneOf(['horizontal', 'vertical']),
   className: PropTypes.string,
   style: PropTypes.object
 };
@@ -791,8 +760,8 @@ ReflexContainer.propTypes = {
 //
 /////////////////////////////////////////////////////////
 ReflexContainer.defaultProps = {
-  orientation: "horizontal",
-  className: "",
+  orientation: 'horizontal',
+  className: '',
   style: {}
 };
 

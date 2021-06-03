@@ -1,4 +1,4 @@
-import { createReducer } from "redux-act";
+import { createReducer } from 'redux-act';
 //simple wrapper function around createReducer to always keep around the default state unless specifically overridden
 // example:
 // defaultState = {features: true, parts: true}
@@ -8,10 +8,7 @@ import { createReducer } from "redux-act";
 // stateToUse = {features: false}
 // these will also be handled differently in the reducer. The __shouldUseMergedState
 // attribute will make them not clear unless full overwritten
-export default function createMergedDefaultStateReducer(
-  handlers,
-  defaultState
-) {
+export default function createMergedDefaultStateReducer(handlers, defaultState) {
   const reducer = createReducer(handlers);
   function enhancedReducer(newState = {}, action) {
     return reducer(

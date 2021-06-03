@@ -6,7 +6,7 @@ export default function getYOffset(iTree, start, end) {
   let potentialPositionsForNewAnnotation = potentiallyOverlappingAnnotations.map(
     () => true
   );
-  potentiallyOverlappingAnnotations.forEach(function(otherAnnotation) {
+  potentiallyOverlappingAnnotations.forEach(function (otherAnnotation) {
     potentialPositionsForNewAnnotation[otherAnnotation.yOffset] = false;
   });
   //get first occurence of empty yOffset

@@ -1,4 +1,4 @@
-import { genericCommandFactory } from "teselagen-react-components";
+import { genericCommandFactory } from 'teselagen-react-components';
 
 export function oveCommandFactory(instance, commandDefs) {
   return genericCommandFactory({

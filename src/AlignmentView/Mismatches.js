@@ -1,5 +1,5 @@
-import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import React from 'react';
+import { DataTable, withSelectedEntities } from 'teselagen-react-components';
 
 class Mismatches extends React.Component {
   UNSAFE_componentWillMount() {
@@ -8,15 +8,15 @@ class Mismatches extends React.Component {
     const mismatchList = this.getMismatchList(alignmentData, mismatches);
     // const mismatchListAll = this.getMismatchList(alignmentId, alignments);
     const schema = {
-      fields: [{ path: "mismatches", type: "number" }]
+      fields: [{ path: 'mismatches', type: 'number' }]
     };
     this.setState({ mismatchList, schema });
   }
 
   getGapMap = sequence => {
     const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
-    sequence.split("").forEach(char => {
-      if (char === "-") {
+    sequence.split('').forEach(char => {
+      if (char === '-') {
         gapMap[Math.max(0, gapMap.length - 1)] =
           (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;
       } else {
@@ -33,7 +33,7 @@ class Mismatches extends React.Component {
     // for (let trackI = 1; trackI < alignments[alignmentId].alignmentTracks.length; trackI++) {
     let mismatchList = [];
     let trackName = alignmentData.name;
-    let editedTrackName = trackName.slice(trackName.indexOf("_") + 1);
+    let editedTrackName = trackName.slice(trackName.indexOf('_') + 1);
 
     let getGaps = () => ({
       gapsBefore: 0,
@@ -41,7 +41,7 @@ class Mismatches extends React.Component {
     });
     const gapMap = this.getGapMap(alignmentData.sequence);
     getGaps = rangeOrCaretPosition => {
-      if (typeof rangeOrCaretPosition !== "object") {
+      if (typeof rangeOrCaretPosition !== 'object') {
         return {
           gapsBefore: gapMap[Math.min(rangeOrCaretPosition, gapMap.length - 1)]
         };
@@ -90,7 +90,7 @@ class Mismatches extends React.Component {
       tableOfMismatches = (
         <DataTable
           maxHeight={168}
-          formName={"mismatchesTable"}
+          formName={'mismatchesTable'}
           isSimple
           compact
           noRouter
@@ -102,14 +102,14 @@ class Mismatches extends React.Component {
     }
 
     return (
-      <div style={{ maxHeight: 180.8, overflowY: "scroll" }}>
+      <div style={{ maxHeight: 180.8, overflowY: 'scroll' }}>
         {/* <div style={{ fontSize: 15, textAlign: "center" }}><b>Positions of Mismatches</b></div> */}
         <div
           style={{
             // margin: 10,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center"
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
           }}
         >
           <div style={{ width: 100, margin: 4 }}>
@@ -131,4 +131,4 @@ class Mismatches extends React.Component {
   }
 }
 
-export default withSelectedEntities("mismatchesTable")(Mismatches);
+export default withSelectedEntities('mismatchesTable')(Mismatches);

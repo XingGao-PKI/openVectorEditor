@@ -1,6 +1,6 @@
-import React from "react";
-import { DataTable } from "teselagen-react-components";
-import EnzymeViewer from "../../EnzymeViewer";
+import React from 'react';
+import { DataTable } from 'teselagen-react-components';
+import EnzymeViewer from '../../EnzymeViewer';
 
 export default function SingleEnzymeCutsiteInfo({
   cutsiteGroup,
@@ -13,7 +13,7 @@ export default function SingleEnzymeCutsiteInfo({
     if (!record) return;
 
     dispatch({
-      type: "CARET_POSITION_UPDATE",
+      type: 'CARET_POSITION_UPDATE',
       payload: record.topSnipPosition,
       meta: {
         editorName
@@ -35,10 +35,9 @@ export default function SingleEnzymeCutsiteInfo({
           id,
           topSnipPosition,
           position: topSnipBeforeBottom
-            ? topSnipPosition + " - " + bottomSnipPosition
-            : bottomSnipPosition + " - " + topSnipPosition,
-          strand:
-            forwardRegex === reverseRegex ? "Palindromic" : forward ? "1" : "-1"
+            ? topSnipPosition + ' - ' + bottomSnipPosition
+            : bottomSnipPosition + ' - ' + topSnipPosition,
+          strand: forwardRegex === reverseRegex ? 'Palindromic' : forward ? '1' : '-1'
         };
       }
     );
@@ -92,8 +91,8 @@ export default function SingleEnzymeCutsiteInfo({
 
 const schema = {
   fields: [
-    { path: "topSnipPosition", displayName: "Top Snip", type: "string" },
-    { path: "position", type: "string" },
-    { path: "strand", type: "string" }
+    { path: 'topSnipPosition', displayName: 'Top Snip', type: 'string' },
+    { path: 'position', type: 'string' },
+    { path: 'strand', type: 'string' }
   ]
 };

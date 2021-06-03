@@ -1,28 +1,28 @@
-import React from "react";
-import { pick } from "lodash";
-import versionHistoryTool from "./versionHistoryTool";
+import React from 'react';
+import { pick } from 'lodash';
+import versionHistoryTool from './versionHistoryTool';
 // import {connectToEditor} from "../withEditorProps";
-import MenuBar from "../MenuBar";
-import "./style.css";
-import { Button, Tooltip } from "@blueprintjs/core";
+import MenuBar from '../MenuBar';
+import './style.css';
+import { Button, Tooltip } from '@blueprintjs/core';
 
-import downloadTool from "./downloadTool";
-import importTool from "./importTool";
-import cutsiteTool from "./cutsiteTool";
-import featureTool from "./featureTool";
-import partTool from "./partTool";
-import oligoTool from "./oligoTool";
-import orfTool from "./orfTool";
-import editTool from "./editTool";
-import findTool from "./findTool";
-import inlineFindTool from "./inlineFindTool";
-import alignmentTool from "./alignmentTool";
-import saveTool from "./saveTool";
-import visibilityTool from "./visibilityTool";
-import undoTool from "./undoTool";
-import redoTool from "./redoTool";
-import { isString } from "util";
-import isMobile from "is-mobile";
+import downloadTool from './downloadTool';
+import importTool from './importTool';
+import cutsiteTool from './cutsiteTool';
+import featureTool from './featureTool';
+import partTool from './partTool';
+import oligoTool from './oligoTool';
+import orfTool from './orfTool';
+import editTool from './editTool';
+import findTool from './findTool';
+import inlineFindTool from './inlineFindTool';
+import alignmentTool from './alignmentTool';
+import saveTool from './saveTool';
+import visibilityTool from './visibilityTool';
+import undoTool from './undoTool';
+import redoTool from './redoTool';
+import { isString } from 'util';
+import isMobile from 'is-mobile';
 
 const allTools = {
   downloadTool,
@@ -58,20 +58,20 @@ export class ToolBar extends React.PureComponent {
       handleFullscreenClose,
       closeFullscreen,
       toolList = [
-        "saveTool",
-        "downloadTool",
-        "importTool",
-        "undoTool",
-        "redoTool",
-        "cutsiteTool",
-        "featureTool",
-        "partTool",
-        "oligoTool",
-        "orfTool",
-        "alignmentTool",
-        "editTool",
-        "findTool",
-        "visibilityTool"
+        'saveTool',
+        'downloadTool',
+        'importTool',
+        'undoTool',
+        'redoTool',
+        'cutsiteTool',
+        'featureTool',
+        'partTool',
+        'oligoTool',
+        'orfTool',
+        'alignmentTool',
+        'editTool',
+        'findTool',
+        'visibilityTool'
       ],
       ...rest
     } = this.props;
@@ -89,26 +89,23 @@ export class ToolBar extends React.PureComponent {
           toolName = toolNameOrOverrides.name;
         }
 
-        const Tool = toolOverride
-          ? allTools[toolOverride.name]
-          : allTools[toolName];
+        const Tool = toolOverride ? allTools[toolOverride.name] : allTools[toolName];
         if (!Tool) {
           console.error(
-            "You're trying to load a tool that doesn't appear to exist: " +
-              toolName
+            "You're trying to load a tool that doesn't appear to exist: " + toolName
           );
           return false;
         }
         if (isProtein) {
           if (
-            toolName === "cutsiteTool" ||
-            toolName === "orfTool" ||
-            toolName === "alignmentTool"
+            toolName === 'cutsiteTool' ||
+            toolName === 'orfTool' ||
+            toolName === 'alignmentTool'
           ) {
             return false;
           }
         }
-        if (toolName === "saveTool" && !onSave) {
+        if (toolName === 'saveTool' && !onSave) {
           return false;
         } //don't show the option to save if no onSave handler is passed
         return (
@@ -127,29 +124,29 @@ export class ToolBar extends React.PureComponent {
           />
         );
       })
-      .filter((tool) => !!tool);
+      .filter(tool => !!tool);
 
     if (modifyTools) {
       items = modifyTools(items);
     }
 
     return (
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         {contentLeft}
         <div
           style={{
             ...(displayMenuBarAboveTools && showMenuBar
               ? {
-                  display: "flex",
-                  width: "100%",
-                  flexDirection: "column",
-                  alignItems: "flex-start"
+                  display: 'flex',
+                  width: '100%',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start'
                 }
               : {
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "center",
-                  flexWrap: "wrap"
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap'
                 })
           }}
           className="veToolbar"
@@ -167,14 +164,14 @@ export class ToolBar extends React.PureComponent {
             <div
               className="veTools-displayMenuBarAboveTools"
               style={{
-                display: "flex",
+                display: 'flex',
                 paddingLeft: 15,
                 paddingRight: 15,
-                flexWrap: "wrap",
+                flexWrap: 'wrap',
                 ...(isMobile() && {
-                  overflow: "auto",
-                  flexWrap: "nowrap",
-                  width: "100%"
+                  overflow: 'auto',
+                  flexWrap: 'nowrap',
+                  width: '100%'
                 })
                 // width: "100%"
               }}
@@ -185,9 +182,7 @@ export class ToolBar extends React.PureComponent {
             items
           )}
         </div>
-        {closeFullscreen && (
-          <CloseFullscreenButton onClick={handleFullscreenClose} />
-        )}
+        {closeFullscreen && <CloseFullscreenButton onClick={handleFullscreenClose} />}
       </div>
     );
   }
@@ -196,7 +191,7 @@ export class ToolBar extends React.PureComponent {
 export default ToolBar;
 // export default connectToEditor()  ToolBar
 
-const CloseFullscreenButton = (props) => {
+const CloseFullscreenButton = props => {
   return (
     <Tooltip content="Close Fullscreen Mode">
       <Button

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 export default function PositionAnnotationOnCircle({
   children,
   height = 0,
@@ -7,8 +7,8 @@ export default function PositionAnnotationOnCircle({
   forward = true,
   ...rest
 }) {
-  const sAngleDegs = sAngle * 360 / Math.PI / 2;
-  const eAngleDegs = eAngle * 360 / Math.PI / 2;
+  const sAngleDegs = (sAngle * 360) / Math.PI / 2;
+  const eAngleDegs = (eAngle * 360) / Math.PI / 2;
   let transform;
   if (forward) {
     transform = `translate(0,${-height}) rotate(${sAngleDegs},0,${height})`;

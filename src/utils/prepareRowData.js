@@ -1,5 +1,5 @@
-import { mapAnnotationsToRows } from "ve-sequence-utils";
-import { annotationTypes } from "ve-sequence-utils";
+import { mapAnnotationsToRows } from 've-sequence-utils';
+import { annotationTypes } from 've-sequence-utils';
 export default function prepareRowData(sequenceData, bpsPerRow) {
   let sequenceLength = sequenceData.noSequence
     ? sequenceData.size
@@ -11,7 +11,7 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
     rowMap.primaryProteinSequence = mapAnnotationsToRows(
       [
         {
-          id: "primaryProteinSequence",
+          id: 'primaryProteinSequence',
           forward: true,
           start: 0,
           end: sequenceLength - 1,
@@ -23,12 +23,8 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
       bpsPerRow
     );
   }
-  annotationTypes.forEach(function(type) {
-    rowMap[type] = mapAnnotationsToRows(
-      sequenceData[type],
-      sequenceLength,
-      bpsPerRow
-    );
+  annotationTypes.forEach(function (type) {
+    rowMap[type] = mapAnnotationsToRows(sequenceData[type], sequenceLength, bpsPerRow);
   });
 
   for (let rowNumber = 0; rowNumber < totalRows; rowNumber++) {
@@ -42,14 +38,13 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
     if (row.end < 0) {
       row.end = 0;
     }
-    annotationTypes.forEach(function(type) {
+    annotationTypes.forEach(function (type) {
       row[type] = rowMap[type][rowNumber] || [];
     });
     if (sequenceData.isProtein) {
       row.isProtein = true;
       row.primaryProteinSequence =
-        rowMap.primaryProteinSequence &&
-        (rowMap.primaryProteinSequence[rowNumber] || []);
+        rowMap.primaryProteinSequence && (rowMap.primaryProteinSequence[rowNumber] || []);
     }
     row.sequence = sequenceData.noSequence
       ? {

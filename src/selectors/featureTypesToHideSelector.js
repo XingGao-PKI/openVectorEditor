@@ -1,3 +1,2 @@
-const featureTypesToHide = state =>
-  state.annotationVisibility.featureTypesToHide;
+const featureTypesToHide = state => state.annotationVisibility.featureTypesToHide;
 export default featureTypesToHide;

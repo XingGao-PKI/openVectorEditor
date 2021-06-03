@@ -1,5 +1,5 @@
-import { createSelector } from "reselect";
-import sequenceDataSelector from "./sequenceDataSelector";
+import { createSelector } from 'reselect';
+import sequenceDataSelector from './sequenceDataSelector';
 
 function featuresRawSelector(sequenceData) {
   return sequenceData.features;

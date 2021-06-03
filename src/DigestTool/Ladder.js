@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useState } from "react";
-import { TgSelect } from "teselagen-react-components";
+import React, { useState } from 'react';
+import { TgSelect } from 'teselagen-react-components';
 
-import "./Ladder.css";
-import { Tooltip } from "@blueprintjs/core";
+import './Ladder.css';
+import { Tooltip } from '@blueprintjs/core';
 
 export default function Ladder({
   // gelDigestEnzymes = [],
@@ -13,8 +13,8 @@ export default function Ladder({
   selectedFragment,
   ladders = [
     {
-      value: "geneRuler1KB",
-      label: "GeneRuler 1kb + DNA 75-20,000 bp",
+      value: 'geneRuler1KB',
+      label: 'GeneRuler 1kb + DNA 75-20,000 bp',
       markings: [
         20000,
         10000,
@@ -34,8 +34,8 @@ export default function Ladder({
       ]
     },
     {
-      value: "geneRuler100BP",
-      label: "GeneRuler 100bp + DNA 100-3000 bp",
+      value: 'geneRuler100BP',
+      label: 'GeneRuler 100bp + DNA 100-3000 bp',
       markings: [
         3000,
         2000,
@@ -54,8 +54,8 @@ export default function Ladder({
       ]
     },
     {
-      value: "invitrogen1KbPlus",
-      label: "Invitrogen 1kb + DNA 100-15,000 bp",
+      value: 'invitrogen1KbPlus',
+      label: 'Invitrogen 1kb + DNA 100-15,000 bp',
       markings: [
         15000,
         10000,
@@ -82,7 +82,7 @@ export default function Ladder({
   const [highlightedFragment, setHighlightedFragment] = useState();
   const [selectedLadder, setSelectedLadder] = useState(ladders[0].value);
   let ladderInfo;
-  ladders.forEach((ladder) => {
+  ladders.forEach(ladder => {
     if (ladder.value === selectedLadder)
       ladderInfo = {
         ...ladder,
@@ -92,7 +92,7 @@ export default function Ladder({
       };
   });
   if (!ladderInfo) {
-    return console.error("Uh oh there needs to be ladder info here!");
+    return console.error('Uh oh there needs to be ladder info here!');
   }
 
   const upperBoundary = ladderInfo.markings[0];
@@ -101,22 +101,16 @@ export default function Ladder({
       Ladder:
       <TgSelect
         value={selectedLadder}
-        onChange={(val) => setSelectedLadder(val.value)}
+        onChange={val => setSelectedLadder(val.value)}
         options={ladders}
       />
       <br />
-      <div
-        style={{ width: "fit-content", color: "white", background: "black" }}
-      >
+      <div style={{ width: 'fit-content', color: 'white', background: 'black' }}>
         <div style={{ padding: 3, paddingLeft: 7, width: 290 }}>
-          Highlighted Fragment:{" "}
-          {highlightedFragment ? highlightedFragment.size : "--"}{" "}
+          Highlighted Fragment: {highlightedFragment ? highlightedFragment.size : '--'}{' '}
         </div>
         <div style={{ height: boxHeight }} className="ve-digest-container">
-          <div
-            style={{ width: 100 }}
-            className="ve-digest-column ve-digest-ladder"
-          >
+          <div style={{ width: 100 }} className="ve-digest-column ve-digest-ladder">
             <div className="ve-digest-header"> </div>
             {ladderInfo.markings.map((val, index) => {
               return (
@@ -124,24 +118,24 @@ export default function Ladder({
                   key={index}
                   style={{
                     fontSize: 12,
-                    position: "absolute",
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    color: "white",
+                    position: 'absolute',
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: 'white',
                     bottom: calculateOffset(boxHeight, val, upperBoundary) - 3 //subtract 3 to get the labels to align better
                   }}
                 >
                   <span
                     style={{
-                      color: "white",
+                      color: 'white',
                       paddingLeft: 6,
                       paddingRight: 4
                     }}
                   >
-                    {val}{" "}
+                    {val}{' '}
                   </span>
-                  <span style={{ color: "white", paddingRight: 4 }}> bp </span>
+                  <span style={{ color: 'white', paddingRight: 4 }}> bp </span>
                 </div>
               );
             })}
@@ -154,13 +148,13 @@ export default function Ladder({
                   key={index}
                   style={{
                     fontSize: 12,
-                    position: "absolute",
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    color: "white",
-                    height: "2px",
-                    background: "white",
+                    position: 'absolute',
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: 'white',
+                    height: '2px',
+                    background: 'white',
                     bottom: calculateOffset(boxHeight, val, upperBoundary)
                   }}
                 />
@@ -172,7 +166,7 @@ export default function Ladder({
               <Lane
                 key={index}
                 {...{
-                  onMouseOver: (fragment) => setHighlightedFragment(fragment),
+                  onMouseOver: fragment => setHighlightedFragment(fragment),
                   onMouseOut: () => setHighlightedFragment(undefined),
                   digestLaneRightClicked,
                   laneNumber: index + 1,
@@ -225,31 +219,28 @@ function Lane({
             onClick={() => {
               fragment.onFragmentSelect();
             }}
-            onContextMenu={(e) => {
+            onContextMenu={e => {
               fragment.onFragmentSelect();
               digestLaneRightClicked(e);
             }}
             data-test={name}
             style={{
               fontSize: 12,
-              position: "absolute",
-              display: "flex",
-              alignItems: "center",
-              color: isHighlighted ? "#fdffdd" : "white",
-              width: "90%",
-              height: isHighlighted ? "3px" : "2px",
-              background: "white",
+              position: 'absolute',
+              display: 'flex',
+              alignItems: 'center',
+              color: isHighlighted ? '#fdffdd' : 'white',
+              width: '90%',
+              height: isHighlighted ? '3px' : '2px',
+              background: 'white',
               bottom: calculateOffset(boxHeight, size, upperBoundary)
             }}
           >
-            <Tooltip
-              className="ve-digest-fragment-tooltip"
-              content={<div>{name}</div>}
-            >
+            <Tooltip className="ve-digest-fragment-tooltip" content={<div>{name}</div>}>
               <div
                 style={{
-                  width: "100%",
-                  height: isHighlighted ? "3px" : "2px"
+                  width: '100%',
+                  height: isHighlighted ? '3px' : '2px'
                 }}
               />
             </Tooltip>

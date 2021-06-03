@@ -1,40 +1,40 @@
-import { merge } from "lodash";
-import * as createYourOwnEnzyme from "./createYourOwnEnzyme";
-import * as showGCContent from "./showGCContent";
-import * as annotationLabelVisibility from "./annotationLabelVisibility";
-import * as annotationsToSupport from "./annotationsToSupport";
-import * as annotationVisibility from "./annotationVisibility";
-import * as caretPosition from "./caretPosition";
-import * as copyOptions from "./copyOptions";
-import * as deletionLayers from "./deletionLayers";
-import * as digestTool from "./digestTool";
-import * as findTool from "./findTool";
-import * as toolBar from "./toolBar";
-import * as frameTranslations from "./frameTranslations";
-import * as hoveredAnnotation from "./hoveredAnnotation";
-import * as minimumOrfSize from "./minimumOrfSize";
-import * as alignments from "./alignments";
-import * as panelsShown from "./panelsShown";
-import * as propertiesTool from "./propertiesTool";
-import * as lastSavedId from "./lastSavedId";
-import * as readOnly from "./readOnly";
-import * as versionHistory from "./versionHistory";
-import * as replacementLayers from "./replacementLayers";
-import * as restrictionEnzymes from "./restrictionEnzymes";
-import * as selectedAnnotations from "./selectedAnnotations";
-import * as selectionLayer from "./selectionLayer";
-import * as sequenceDataHistory from "./sequenceDataHistory";
-import * as sequenceData from "./sequenceData";
-import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
-import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
-import * as externalLabels from "./externalLabels";
-import * as labelLineIntensity from "./labelLineIntensity";
-import * as labelSize from "./labelSize";
-import * as featureLengthsToHide from "./featureLengthsToHide";
-import * as selectedPartTags from "./selectedPartTags";
-import { combineReducers } from "redux";
-import createAction from "./utils/createMetaAction";
-export { default as vectorEditorMiddleware } from "./middleware";
+import { merge } from 'lodash';
+import * as createYourOwnEnzyme from './createYourOwnEnzyme';
+import * as showGCContent from './showGCContent';
+import * as annotationLabelVisibility from './annotationLabelVisibility';
+import * as annotationsToSupport from './annotationsToSupport';
+import * as annotationVisibility from './annotationVisibility';
+import * as caretPosition from './caretPosition';
+import * as copyOptions from './copyOptions';
+import * as deletionLayers from './deletionLayers';
+import * as digestTool from './digestTool';
+import * as findTool from './findTool';
+import * as toolBar from './toolBar';
+import * as frameTranslations from './frameTranslations';
+import * as hoveredAnnotation from './hoveredAnnotation';
+import * as minimumOrfSize from './minimumOrfSize';
+import * as alignments from './alignments';
+import * as panelsShown from './panelsShown';
+import * as propertiesTool from './propertiesTool';
+import * as lastSavedId from './lastSavedId';
+import * as readOnly from './readOnly';
+import * as versionHistory from './versionHistory';
+import * as replacementLayers from './replacementLayers';
+import * as restrictionEnzymes from './restrictionEnzymes';
+import * as selectedAnnotations from './selectedAnnotations';
+import * as selectionLayer from './selectionLayer';
+import * as sequenceDataHistory from './sequenceDataHistory';
+import * as sequenceData from './sequenceData';
+import * as useAdditionalOrfStartCodons from './useAdditionalOrfStartCodons';
+import * as uppercaseSequenceMapFont from './uppercaseSequenceMapFont';
+import * as externalLabels from './externalLabels';
+import * as labelLineIntensity from './labelLineIntensity';
+import * as labelSize from './labelSize';
+import * as featureLengthsToHide from './featureLengthsToHide';
+import * as selectedPartTags from './selectedPartTags';
+import { combineReducers } from 'redux';
+import createAction from './utils/createMetaAction';
+export { default as vectorEditorMiddleware } from './middleware';
 
 const subReducers = {
   createYourOwnEnzyme,
@@ -71,8 +71,8 @@ const subReducers = {
   selectedPartTags
 };
 
-const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");
-const vectorEditorClear = createAction("VECTOR_EDITOR_CLEAR");
+const vectorEditorInitialize = createAction('VECTOR_EDITOR_UPDATE');
+const vectorEditorClear = createAction('VECTOR_EDITOR_CLEAR');
 
 //export the actions for use elsewhere
 export const actions = {
@@ -92,10 +92,7 @@ const mergeDeepKeys = [];
 //define the reducer
 let reducers = {
   ...Object.keys(subReducers).reduce((acc, k) => {
-    if (
-      subReducers[k].default &&
-      subReducers[k].default.__shouldUseMergedState
-    ) {
+    if (subReducers[k].default && subReducers[k].default.__shouldUseMergedState) {
       mergeDeepKeys.push(k);
     }
     return {
@@ -137,12 +134,12 @@ export default function reducerFactory(initialState = {}) {
       //we're dealing with an action specific to a given editor
       editorNames.forEach(function (editorName) {
         let currentState = state[editorName];
-        if (action.type === "VECTOR_EDITOR_UPDATE") {
+        if (action.type === 'VECTOR_EDITOR_UPDATE') {
           //deep merge certain parts of the exisiting state with the new payload of props
           //(if you want to do a clean wipe, use VECTOR_EDITOR_CLEAR)
           currentState = customDeepMerge(state[editorName], action.payload);
         }
-        if (action.type === "VECTOR_EDITOR_CLEAR") {
+        if (action.type === 'VECTOR_EDITOR_CLEAR') {
           currentState = undefined;
         }
         newState[editorName] = editorReducer(currentState, action);
@@ -154,7 +151,7 @@ export default function reducerFactory(initialState = {}) {
     } else {
       //just a normal action
       Object.keys(state).forEach(function (editorName) {
-        if (editorName === "__allEditorsOptions") return; //we deal with __allEditorsOptions below so don't pass it here
+        if (editorName === '__allEditorsOptions') return; //we deal with __allEditorsOptions below so don't pass it here
         newState[editorName] = editorReducer(state[editorName], action);
       });
       stateToReturn = newState;
@@ -163,18 +160,16 @@ export default function reducerFactory(initialState = {}) {
       ...stateToReturn,
       //these are reducers that are not editor specific (aka shared across editor instances)
       __allEditorsOptions: [
-        ["createYourOwnEnzyme", createYourOwnEnzyme],
-        ["uppercaseSequenceMapFont", uppercaseSequenceMapFont],
-        ["showGCContent", showGCContent],
-        ["externalLabels", externalLabels],
-        ["labelLineIntensity", labelLineIntensity],
-        ["labelSize", labelSize],
-        ["alignments", alignments]
+        ['createYourOwnEnzyme', createYourOwnEnzyme],
+        ['uppercaseSequenceMapFont', uppercaseSequenceMapFont],
+        ['showGCContent', showGCContent],
+        ['externalLabels', externalLabels],
+        ['labelLineIntensity', labelLineIntensity],
+        ['labelSize', labelSize],
+        ['alignments', alignments]
       ].reduce((acc, [key, val]) => {
         acc[key] = val.default(
-          !state.__allEditorsOptions
-            ? undefined
-            : state.__allEditorsOptions[key],
+          !state.__allEditorsOptions ? undefined : state.__allEditorsOptions[key],
           action
         );
         return acc;

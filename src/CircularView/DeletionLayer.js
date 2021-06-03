@@ -1,8 +1,8 @@
-import React from "react";
-import drawDirectedPiePiece from "./drawDirectedPiePiece";
+import React from 'react';
+import drawDirectedPiePiece from './drawDirectedPiePiece';
 
 export default function DeletionLayer({
-  color = "orange",
+  color = 'orange',
   radius,
   arrowheadLength = 0.5,
   annotationHeight,
@@ -16,13 +16,5 @@ export default function DeletionLayer({
     arrowheadLength,
     tailThickness: 1 //feature specific
   });
-  return (
-    <path
-      {...rest}
-      strokeWidth=".5"
-      stroke="black"
-      fill={color}
-      d={path.print()}
-    />
-  );
+  return <path {...rest} strokeWidth=".5" stroke="black" fill={color} d={path.print()} />;
 }

@@ -1,2 +1,2 @@
-const featureLengthsToHideSelector = (state) => state.featureLengthsToHide;
+const featureLengthsToHideSelector = state => state.featureLengthsToHide;
 export default featureLengthsToHideSelector;

@@ -1,8 +1,8 @@
-import React from "react";
-import { Icon } from "@blueprintjs/core";
-import FindBar from "../FindBar";
-import ToolbarItem from "./ToolbarItem";
-import { connectToEditor } from "../withEditorProps";
+import React from 'react';
+import { Icon } from '@blueprintjs/core';
+import FindBar from '../FindBar';
+import ToolbarItem from './ToolbarItem';
+import { connectToEditor } from '../withEditorProps';
 
 export default connectToEditor(({ findTool = {} }) => {
   return {

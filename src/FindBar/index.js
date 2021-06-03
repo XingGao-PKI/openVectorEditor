@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Button,
   InputGroup,
@@ -8,21 +8,21 @@ import {
   HTMLSelect,
   TextArea,
   Tooltip
-} from "@blueprintjs/core";
-import withEditorProps from "../withEditorProps";
-import onlyUpdateForKeysDeep from "../utils/onlyUpdateForKeysDeep";
-import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
-import "./style.css";
-import { InfoHelper } from "teselagen-react-components";
-import { searchableTypes } from "../selectors/annotationSearchSelector";
-import { getSingular } from "../utils/annotationTypes";
-import { featureColors } from "ve-sequence-utils";
-import { getReverseComplementSequenceString } from "ve-sequence-utils";
-import isMobile from "is-mobile";
+} from '@blueprintjs/core';
+import withEditorProps from '../withEditorProps';
+import onlyUpdateForKeysDeep from '../utils/onlyUpdateForKeysDeep';
+import { MAX_MATCHES_DISPLAYED } from '../constants/findToolConstants';
+import './style.css';
+import { InfoHelper } from 'teselagen-react-components';
+import { searchableTypes } from '../selectors/annotationSearchSelector';
+import { getSingular } from '../utils/annotationTypes';
+import { featureColors } from 've-sequence-utils';
+import { getReverseComplementSequenceString } from 've-sequence-utils';
+import isMobile from 'is-mobile';
 
 const opts = [
-  { label: "DNA", value: "DNA" },
-  { label: "Amino Acids", value: "AA" }
+  { label: 'DNA', value: 'DNA' },
+  { label: 'Amino Acids', value: 'AA' }
 ];
 export class FindBar extends React.Component {
   componentDidMount() {
@@ -76,30 +76,28 @@ export class FindBar extends React.Component {
         options={opts}
         name="dnaOrAA"
         value={dnaOrAA}
-        onChange={(e) => {
+        onChange={e => {
           updateDnaOrAA(e.target.value);
         }}
       />,
-      <div style={{ display: "flex" }} key="ambiguousorliteral">
+      <div style={{ display: 'flex' }} key="ambiguousorliteral">
         <HTMLSelect
           name="ambiguousOrLiteral"
           options={[
-            { label: "Literal", value: "LITERAL" },
-            { label: "Ambiguous", value: "AMBIGUOUS" }
+            { label: 'Literal', value: 'LITERAL' },
+            { label: 'Ambiguous', value: 'AMBIGUOUS' }
           ]}
           value={ambiguousOrLiteral}
-          onChange={(e) => {
+          onChange={e => {
             updateAmbiguousOrLiteral(e.target.value);
           }}
         />
         <InfoHelper style={{ marginLeft: 10 }}>
           <div>
             Ambiguous substitutions:
-            <div style={{ display: "flex", fontSize: 12 }}>
+            <div style={{ display: 'flex', fontSize: 12 }}>
               <div style={{ marginRight: 20 }}>
-                <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>
-                  DNA:
-                </div>
+                <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>DNA:</div>
                 <div>M: AC</div>
                 <div>R: AG</div>
                 <div>W: AT</div>
@@ -115,9 +113,7 @@ export class FindBar extends React.Component {
                 <div>*: any</div>
               </div>
               <div>
-                <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>
-                  AA:
-                </div>
+                <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>AA:</div>
                 <div>B: ND</div>
                 <div>J: IL</div>
                 <div>X: ACDEFGHIKLMNPQRSTVWY</div>
@@ -136,9 +132,7 @@ export class FindBar extends React.Component {
       >
         <Tooltip
           disabled={matchesTotal <= MAX_MATCHES_DISPLAYED}
-          content={
-            "Disabled because there are >{MAX_MATCHES_DISPLAYED} matches"
-          }
+          content={'Disabled because there are >{MAX_MATCHES_DISPLAYED} matches'}
         >
           Highlight All
         </Tooltip>
@@ -146,11 +140,7 @@ export class FindBar extends React.Component {
       ...(isMobile()
         ? []
         : [
-            <Switch
-              key="isInline"
-              checked={!isInline}
-              onChange={toggleIsInline}
-            >
+            <Switch key="isInline" checked={!isInline} onChange={toggleIsInline}>
               Expanded
             </Switch>
           ])
@@ -162,19 +152,13 @@ export class FindBar extends React.Component {
           <Popover
             autoFocus={false}
             position={Position.BOTTOM}
-            target={
-              <Button
-                data-test="veFindBarOptionsToggle"
-                minimal
-                icon="wrench"
-              />
-            }
+            target={<Button data-test="veFindBarOptionsToggle" minimal icon="wrench" />}
             content={
               <div
                 className="ve-find-options-popover"
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
+                  display: 'flex',
+                  flexDirection: 'column',
                   paddingLeft: 20,
                   paddingBottom: 10,
                   paddingTop: 10,
@@ -186,7 +170,7 @@ export class FindBar extends React.Component {
             }
           />
         )}
-        <span style={{ marginRight: 3, color: "lightgrey" }}>
+        <span style={{ marginRight: 3, color: 'lightgrey' }}>
           {matchesTotal > 0 ? matchNumber + 1 : 0}/{matchesTotal}
         </span>
         <Button
@@ -194,9 +178,7 @@ export class FindBar extends React.Component {
           minimal
           disabled={matchesTotal <= 0}
           onClick={() => {
-            updateMatchNumber(
-              matchesTotal <= 0 ? 0 : mod(matchNumber - 1, matchesTotal)
-            );
+            updateMatchNumber(matchesTotal <= 0 ? 0 : mod(matchNumber - 1, matchesTotal));
           }}
           icon="caret-up"
         />
@@ -205,9 +187,7 @@ export class FindBar extends React.Component {
           minimal
           disabled={matchesTotal <= 0}
           onClick={() => {
-            updateMatchNumber(
-              matchesTotal <= 0 ? 0 : mod(matchNumber + 1, matchesTotal)
-            );
+            updateMatchNumber(matchesTotal <= 0 ? 0 : mod(matchNumber + 1, matchesTotal));
           }}
           icon="caret-down"
         />
@@ -219,24 +199,24 @@ export class FindBar extends React.Component {
         style={
           isInline
             ? {
-                display: "flex",
-                minWidth: 300 
+                display: 'flex',
+                minWidth: 300
               }
             : {
-                position: "fixed",
+                position: 'fixed',
                 top: 0,
                 right: 25,
                 padding: 10,
-                display: "flex",
-                alignItems: "center",
+                display: 'flex',
+                alignItems: 'center',
                 paddingBottom: 5,
-                background: "white",
-                zIndex: "20000",
-                borderBottom: "1px solid lightgrey",
-                borderLeft: "1px solid lightgrey",
-                borderRight: "1px solid lightgrey",
-                borderBottomLeftRadius: "5px",
-                borderBottomRightRadius: "5px"
+                background: 'white',
+                zIndex: '20000',
+                borderBottom: '1px solid lightgrey',
+                borderLeft: '1px solid lightgrey',
+                borderRight: '1px solid lightgrey',
+                borderBottomLeftRadius: '5px',
+                borderBottomRightRadius: '5px'
               }
         }
         className="veFindBar"
@@ -247,13 +227,13 @@ export class FindBar extends React.Component {
             <InputToUse
               autoFocus
               style={{
-                resize: "vertical",
+                resize: 'vertical',
                 ...(!isInline && { width: 350, minHeight: 70 })
               }}
-              inputRef={(n) => {
+              inputRef={n => {
                 if (n) this.inputEl = n;
               }}
-              onKeyDown={(e) => {
+              onKeyDown={e => {
                 e.persist();
                 if (e.metaKey && e.keyCode === 70) {
                   //cmd-f
@@ -273,8 +253,8 @@ export class FindBar extends React.Component {
                 }
               }}
               rightElement={rightEl}
-              onChange={(e) => {
-                return updateSearchText(e.target.value.replace(/\s/g, ""));
+              onChange={e => {
+                return updateSearchText(e.target.value.replace(/\s/g, ''));
               }}
               value={searchText}
               leftIcon="search"
@@ -284,7 +264,7 @@ export class FindBar extends React.Component {
           minimal
           isOpen={
             annotationSearchMatches &&
-            annotationSearchMatches.filter((m) => m.length).length
+            annotationSearchMatches.filter(m => m.length).length
           }
           content={
             <AnnotationSearchMatchComp
@@ -299,12 +279,12 @@ export class FindBar extends React.Component {
         {!isInline && (
           <div
             style={{
-              display: "flex",
-              maxWidth: "400px",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-              alignItems: "stretch",
-              height: "76px"
+              display: 'flex',
+              maxWidth: '400px',
+              flexWrap: 'wrap',
+              justifyContent: 'space-around',
+              alignItems: 'stretch',
+              height: '76px'
             }}
           >
             {rightEl}
@@ -314,7 +294,7 @@ export class FindBar extends React.Component {
         {!isInline && (
           <Button
             minimal
-            style={{ position: "absolute", bottom: 0, right: -10 }}
+            style={{ position: 'absolute', bottom: 0, right: -10 }}
             onClick={toggleFindTool}
             icon="cross"
           />
@@ -324,9 +304,7 @@ export class FindBar extends React.Component {
   }
 }
 
-const wrapped = onlyUpdateForKeysDeep(["findTool", "annotationSearchMatches"])(
-  FindBar
-);
+const wrapped = onlyUpdateForKeysDeep(['findTool', 'annotationSearchMatches'])(FindBar);
 export default withEditorProps(wrapped);
 
 function mod(n, m) {
@@ -348,7 +326,7 @@ function AnnotationSearchMatchComp({
           <div key={i}>
             <div className="veAnnotationFoundType">
               {annotationsFound.length} {getSingular(type)} match
-              {annotationsFound.length > 1 ? "es" : null}
+              {annotationsFound.length > 1 ? 'es' : null}
               {annotationsFound.length <= 10 ? null : ` (only showing 10)`}:
             </div>
             <div>
@@ -363,12 +341,12 @@ function AnnotationSearchMatchComp({
                     className="veAnnotationFoundResult"
                     key={i}
                   >
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <div
                         style={{
                           background:
-                            type === "parts"
-                              ? "purple"
+                            type === 'parts'
+                              ? 'purple'
                               : ann.color || featureColors[ann.type],
                           height: 15,
                           width: 15,

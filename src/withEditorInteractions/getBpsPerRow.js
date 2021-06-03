@@ -2,7 +2,7 @@ import {
   defaultCharWidth,
   defaultContainerWidth,
   defaultMarginWidth
-} from "../constants/rowviewContants";
+} from '../constants/rowviewContants';
 
 export default function getBpsPerRow({
   charWidth = defaultCharWidth,

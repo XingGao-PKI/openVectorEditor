@@ -1,25 +1,23 @@
-import createAction from "./utils/createMetaAction";
-import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import createAction from './utils/createMetaAction';
+import createMergedDefaultStateReducer from './utils/createMergedDefaultStateReducer';
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const openToolbarItemUpdate = createAction("openToolbarItemUpdate");
+export const openToolbarItemUpdate = createAction('openToolbarItemUpdate');
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
-    
     [openToolbarItemUpdate]: (state, payload) => {
       return {
         ...state,
         openItem: payload
       };
-    },
-   
+    }
   },
   {
-    openItem: "",
+    openItem: ''
   }
 );

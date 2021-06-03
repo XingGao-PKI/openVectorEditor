@@ -1,5 +1,5 @@
-import { normalizePositionByRangeLength } from "ve-range-utils";
-import { isNumber } from "lodash";
+import { normalizePositionByRangeLength } from 've-range-utils';
+import { isNumber } from 'lodash';
 
 export default function getXStartAndWidthOfRangeWrtRow({
   range,
@@ -17,10 +17,7 @@ export default function getXStartAndWidthOfRangeWrtRow({
     xStart,
     width:
       (gapsInside +
-        normalizePositionByRangeLength(
-          range.end + 1 - range.start,
-          sequenceLength + 1
-        )) *
+        normalizePositionByRangeLength(range.end + 1 - range.start, sequenceLength + 1)) *
       charWidth
   };
   return obj;

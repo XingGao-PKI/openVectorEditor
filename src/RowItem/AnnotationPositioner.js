@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class AnnotationPositioner extends React.PureComponent {
   render() {
@@ -6,12 +6,10 @@ class AnnotationPositioner extends React.PureComponent {
       <svg
         transform={this.props.transform || null}
         height={Math.max(0, this.props.height)}
-        className={
-          (this.props.className || "") + " veRowViewAnnotationPosition"
-        }
+        className={(this.props.className || '') + ' veRowViewAnnotationPosition'}
         width={Math.max(0, this.props.width + 5)}
         style={{
-          position: "absolute",
+          position: 'absolute',
           top: this.props.top,
           left: this.props.left
         }}

@@ -1,4 +1,4 @@
-import genericAnnotationProperties from "./GenericAnnotationProperties";
+import genericAnnotationProperties from './GenericAnnotationProperties';
 export default genericAnnotationProperties({
-  annotationType: "feature"
+  annotationType: 'feature'
 });

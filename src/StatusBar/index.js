@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Button,
   Classes,
@@ -6,65 +6,57 @@ import {
   Icon,
   Popover,
   RadioGroup
-} from "@blueprintjs/core";
+} from '@blueprintjs/core';
 import {
   connectToEditor,
   updateCircular,
   handleInverse,
   getShowGCContent
-} from "../withEditorProps";
-import "./style.css";
-import { withHandlers, compose } from "recompose";
-import { divideBy3 } from "../utils/proteinUtils";
-import { getSelectionMessage } from "../utils/editorUtils";
+} from '../withEditorProps';
+import './style.css';
+import { withHandlers, compose } from 'recompose';
+import { divideBy3 } from '../utils/proteinUtils';
+import { getSelectionMessage } from '../utils/editorUtils';
 import {
   calculateTm,
   calculateNebTm,
   getSequenceDataBetweenRange
-} from "ve-sequence-utils";
-import useMeltingTemp from "../utils/useMeltingTemp";
-import useLocalStorageState from "use-local-storage-state";
-import { isString } from "lodash";
+} from 've-sequence-utils';
+import useMeltingTemp from '../utils/useMeltingTemp';
+import useLocalStorageState from 'use-local-storage-state';
+import { isString } from 'lodash';
 
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
-}))(
-  ({
-    onSave,
-    readOnly,
-    showReadOnly,
-    disableSetReadOnly,
-    updateReadOnlyMode
-  }) => {
-    return showReadOnly ? (
-      <StatusBarItem dataTest="veStatusBar-readOnly">
-        {onSave ? (
-          <HTMLSelect
-            options={[
-              { label: "Read Only", value: "readOnly" },
-              { label: "Editable", value: "editable" }
-            ]}
-            disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
-            className={Classes.MINIMAL}
-            value={readOnly ? "readOnly" : "editable"}
-            onChange={({ target: { value } }) => {
-              updateReadOnlyMode(value === "readOnly");
-            }}
-          />
-        ) : readOnly ? (
-          "Read Only"
-        ) : (
-          "Editable"
-        )}
-      </StatusBarItem>
-    ) : null;
-  }
-);
+}))(({ onSave, readOnly, showReadOnly, disableSetReadOnly, updateReadOnlyMode }) => {
+  return showReadOnly ? (
+    <StatusBarItem dataTest="veStatusBar-readOnly">
+      {onSave ? (
+        <HTMLSelect
+          options={[
+            { label: 'Read Only', value: 'readOnly' },
+            { label: 'Editable', value: 'editable' }
+          ]}
+          disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
+          className={Classes.MINIMAL}
+          value={readOnly ? 'readOnly' : 'editable'}
+          onChange={({ target: { value } }) => {
+            updateReadOnlyMode(value === 'readOnly');
+          }}
+        />
+      ) : readOnly ? (
+        'Read Only'
+      ) : (
+        'Editable'
+      )}
+    </StatusBarItem>
+  ) : null;
+});
 
 const ShowSelectionItem = compose(
   connectToEditor(
     (
-      { selectionLayer, caretPosition, sequenceData = { sequence: "" } },
+      { selectionLayer, caretPosition, sequenceData = { sequence: '' } },
       ownProps,
       ...rest
     ) => {
@@ -85,15 +77,14 @@ const ShowSelectionItem = compose(
     caretPosition = -1,
     sequenceLength = 0,
     isProtein,
-    sequenceData = { sequence: "" },
+    sequenceData = { sequence: '' },
     showGCContent,
     GCDecimalDigits,
     handleInverse
   }) => {
     const [showMeltingTemp] = useMeltingTemp();
 
-    const sequence = getSequenceDataBetweenRange(sequenceData, selectionLayer)
-      .sequence;
+    const sequence = getSequenceDataBetweenRange(sequenceData, selectionLayer).sequence;
 
     return (
       <React.Fragment>
@@ -113,7 +104,7 @@ const ShowSelectionItem = compose(
             minimal
             disabled={sequenceLength <= 0}
             onClick={handleInverse}
-            style={{ marginLeft: 5, color: "#48AFF0" }}
+            style={{ marginLeft: 5, color: '#48AFF0' }}
             small
           >
             Select Inverse
@@ -125,15 +116,13 @@ const ShowSelectionItem = compose(
   }
 );
 
-const ShowLengthItem = connectToEditor(
-  ({ sequenceData = { sequence: "" } }) => ({
-    sequenceLength: sequenceData.sequence.length
-  })
-)(({ isProtein, sequenceLength = 0 }) => (
+const ShowLengthItem = connectToEditor(({ sequenceData = { sequence: '' } }) => ({
+  sequenceLength: sequenceData.sequence.length
+}))(({ isProtein, sequenceLength = 0 }) => (
   <StatusBarItem dataTest="veStatusBar-length">{`Length: ${divideBy3(
     sequenceLength,
     isProtein
-  )} ${isProtein ? "AAs" : "bps"}`}</StatusBarItem>
+  )} ${isProtein ? 'AAs' : 'bps'}`}</StatusBarItem>
 ));
 
 const EditCircularityItem = compose(
@@ -154,20 +143,20 @@ const EditCircularityItem = compose(
     <StatusBarItem dataTest="veStatusBar-circularity">
       {readOnly ? (
         circular ? (
-          "Circular"
+          'Circular'
         ) : (
-          "Linear"
+          'Linear'
         )
       ) : (
         <HTMLSelect
           onChange={({ target: { value } }) => {
-            updateCircular(value === "circular");
+            updateCircular(value === 'circular');
           }}
           className={Classes.MINIMAL}
-          value={circular ? "circular" : "linear"}
+          value={circular ? 'circular' : 'linear'}
           options={[
-            { label: "Circular", value: "circular" },
-            { label: "Linear", value: "linear" }
+            { label: 'Circular', value: 'circular' },
+            { label: 'Linear', value: 'linear' }
           ]}
         />
       )}
@@ -184,20 +173,20 @@ const EditAvailabilityItem = connectToEditor(
     <StatusBarItem>
       {readOnly ? (
         materiallyAvailable ? (
-          "Available"
+          'Available'
         ) : (
-          "Unavailable"
+          'Unavailable'
         )
       ) : (
         <HTMLSelect
           onChange={({ target: { value } }) => {
-            updateAvailability(value === "available");
+            updateAvailability(value === 'available');
           }}
           className={Classes.MINIMAL}
-          value={materiallyAvailable ? "available" : "unavailable"}
+          value={materiallyAvailable ? 'available' : 'unavailable'}
           options={[
-            { label: "Available", value: "available" },
-            { label: "Unavailable", value: "unavailable" }
+            { label: 'Available', value: 'available' },
+            { label: 'Unavailable', value: 'unavailable' }
           ]}
         />
       )}
@@ -227,14 +216,8 @@ export function StatusBar({
           showReadOnly
         }}
       />
-      <EditCircularityItem
-        editorName={editorName}
-        showCircularity={showCircularity}
-      />
-      <EditAvailabilityItem
-        editorName={editorName}
-        showAvailability={showAvailability}
-      />
+      <EditCircularityItem editorName={editorName} showCircularity={showCircularity} />
+      <EditAvailabilityItem editorName={editorName} showAvailability={showAvailability} />
       <ShowSelectionItem
         editorName={editorName}
         isProtein={isProtein}
@@ -261,7 +244,7 @@ function StatusBarItem({ children, dataTest }) {
 export default StatusBar;
 
 function MeltingTemp({ sequence }) {
-  const [tmType, setTmType] = useLocalStorageState("tmType", "default");
+  const [tmType, setTmType] = useLocalStorageState('tmType', 'default');
   const tm = (
     {
       default: calculateTm,
@@ -274,19 +257,17 @@ function MeltingTemp({ sequence }) {
       <Popover
         content={
           <div style={{ maxWidth: 300, padding: 20 }}>
-            Using Tm calculations based on these{" "}
-            <a href="https://github.com/TeselaGen/ve-sequence-utils">
-              algorithms
-            </a>
+            Using Tm calculations based on these{' '}
+            <a href="https://github.com/TeselaGen/ve-sequence-utils">algorithms</a>
             <br></br>
             <br></br>
             <RadioGroup
               label="Choose Tm Type:"
               options={[
-                { value: "default", label: "Default Tm" },
-                { value: "neb_tm", label: "NEB Tm" }
+                { value: 'default', label: 'Default Tm' },
+                { value: 'neb_tm', label: 'NEB Tm' }
               ]}
-              onChange={(e) => setTmType(e.target.value)}
+              onChange={e => setTmType(e.target.value)}
               selectedValue={tmType}
             ></RadioGroup>
             {hasWarning && (
@@ -306,7 +287,7 @@ function MeltingTemp({ sequence }) {
         }
       >
         <Button minimal small>
-          Melting Temp: {Number(tm) || 0}{" "}
+          Melting Temp: {Number(tm) || 0}{' '}
           {hasWarning && (
             <Icon
               style={{ marginLeft: 5, marginRight: 5 }}

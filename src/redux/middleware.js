@@ -23,17 +23,16 @@ export default store => next => action => {
     return next(action);
   }
   const disregardUndo = true;
-  if (action.type === "VE_UNDO" || action.type === "VE_REDO") {
+  if (action.type === 'VE_UNDO' || action.type === 'VE_REDO') {
     const { VectorEditor } = store.getState();
     const editorName = action.meta.editorName;
     const editorState = VectorEditor[editorName];
     const stack =
-      editorState.sequenceDataHistory[
-        action.type === "VE_UNDO" ? "past" : "future"
-      ] || [];
+      editorState.sequenceDataHistory[action.type === 'VE_UNDO' ? 'past' : 'future'] ||
+      [];
     const stateToUse = stack[stack.length - 1];
     store.dispatch({
-      type: action.type === "VE_UNDO" ? "VE_UNDO_META" : "VE_REDO_META",
+      type: action.type === 'VE_UNDO' ? 'VE_UNDO_META' : 'VE_REDO_META',
       payload: {
         sequenceData: editorState.sequenceData,
         selectionLayer: editorState.selectionLayer,
@@ -42,25 +41,25 @@ export default store => next => action => {
       meta: { editorName, disregardUndo }
     });
     store.dispatch({
-      type: "SEQUENCE_DATA_UPDATE",
+      type: 'SEQUENCE_DATA_UPDATE',
       payload: stateToUse.sequenceData,
       meta: { editorName, disregardUndo }
     });
     if (stateToUse.caretPosition > -1) {
       store.dispatch({
-        type: "CARET_POSITION_UPDATE",
+        type: 'CARET_POSITION_UPDATE',
         payload: stateToUse.caretPosition,
         meta: { editorName, disregardUndo }
       });
     } else {
       store.dispatch({
-        type: "SELECTION_LAYER_UPDATE",
-        payload: {...stateToUse.selectionLayer, forceUpdate: Math.random()},
+        type: 'SELECTION_LAYER_UPDATE',
+        payload: { ...stateToUse.selectionLayer, forceUpdate: Math.random() },
         meta: { editorName, disregardUndo }
       });
     }
     store.dispatch({
-      type: "VE_SEQUENCE_CHANGED", //used for external autosave functionality
+      type: 'VE_SEQUENCE_CHANGED', //used for external autosave functionality
       payload: {
         sequenceData: stateToUse.sequenceData,
         editorName
@@ -70,7 +69,7 @@ export default store => next => action => {
     return next(action);
   } else {
     //pass batchUndoStart, batchUndoMiddle and batchUndoEnd to group actions together
-    const {batchUndoEnd, batchUndoStart, batchUndoMiddle} = action.meta || {}
+    const { batchUndoEnd, batchUndoStart, batchUndoMiddle } = action.meta || {};
     //get editor state(s)
     const OldVectorEditor = store.getState().VectorEditor;
     let result = next(action);
@@ -84,23 +83,27 @@ export default store => next => action => {
         oldEditorState.sequenceData !== newEditorState.sequenceData
       ) {
         const { sequenceData, selectionLayer, caretPosition } = oldEditorState;
-        !batchUndoEnd && !batchUndoMiddle && store.dispatch({
-          type: "ADD_TO_UNDO_STACK",
-          payload: {
-            selectionLayer,
-            sequenceData,
-            caretPosition
-          },
-          meta: { editorName, disregardUndo }
-        });
-        !batchUndoStart && !batchUndoMiddle && store.dispatch({
-          type: "VE_SEQUENCE_CHANGED", //used for external autosave functionality
-          payload: {
-            sequenceData: newEditorState.sequenceData,
-            editorName
-          },
-          meta: { editorName, disregardUndo: true }
-        });
+        !batchUndoEnd &&
+          !batchUndoMiddle &&
+          store.dispatch({
+            type: 'ADD_TO_UNDO_STACK',
+            payload: {
+              selectionLayer,
+              sequenceData,
+              caretPosition
+            },
+            meta: { editorName, disregardUndo }
+          });
+        !batchUndoStart &&
+          !batchUndoMiddle &&
+          store.dispatch({
+            type: 'VE_SEQUENCE_CHANGED', //used for external autosave functionality
+            payload: {
+              sequenceData: newEditorState.sequenceData,
+              editorName
+            },
+            meta: { editorName, disregardUndo: true }
+          });
       }
     });
     return result;

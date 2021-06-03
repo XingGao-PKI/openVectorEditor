@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class Clipboard extends React.Component {
   // static propTypes = {
@@ -6,34 +6,30 @@ class Clipboard extends React.Component {
   // };
 
   static defaultProps = {
-    className: "clipboard"
+    className: 'clipboard'
   };
 
   componentDidMount() {
-    this.node.parentNode.addEventListener("keydown", this.handleKeyDown, false);
-    this.node.parentNode.addEventListener("keyup", this.handleKeyUp, false);
+    this.node.parentNode.addEventListener('keydown', this.handleKeyDown, false);
+    this.node.parentNode.addEventListener('keyup', this.handleKeyUp, false);
   }
 
   componentWillUnmount() {
-    this.node.parentNode.removeEventListener(
-      "keydown",
-      this.handleKeyDown,
-      false
-    );
-    this.node.parentNode.removeEventListener("keyup", this.handleKeyUp, false);
+    this.node.parentNode.removeEventListener('keydown', this.handleKeyDown, false);
+    this.node.parentNode.removeEventListener('keyup', this.handleKeyUp, false);
   }
 
   handleKeyDown = e => {
     if (
       document.activeElement &&
-      ["input", "select", "textarea"].indexOf(
+      ['input', 'select', 'textarea'].indexOf(
         document.activeElement.tagName.toLowerCase()
       ) !== -1
     ) {
       return; //stop early if we're inside an input
     }
     let metaKeyIsDown = e.ctrlKey || e.metaKey;
-    if (!metaKeyIsDown || !["x", "c", "v"].includes(e.key)) {
+    if (!metaKeyIsDown || !['x', 'c', 'v'].includes(e.key)) {
       this.origFocusedElement = null;
       return;
     }
@@ -50,7 +46,7 @@ class Clipboard extends React.Component {
   render() {
     let value = this.props.value;
     let style = {
-      position: "fixed",
+      position: 'fixed',
       width: 1,
       height: 1,
       opacity: 0,

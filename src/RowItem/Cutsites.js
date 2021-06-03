@@ -1,22 +1,22 @@
-import { isPositionWithinRange } from "ve-range-utils";
-import assign from "lodash/assign";
-import React from "react";
-import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
-import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
-import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
-import pureNoFunc from "../utils/pureNoFunc";
+import { isPositionWithinRange } from 've-range-utils';
+import assign from 'lodash/assign';
+import React from 'react';
+import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
+import { getOverlapsOfPotentiallyCircularRanges } from 've-range-utils';
+import getXStartAndWidthOfRangeWrtRow from './getXStartAndWidthOfRangeWrtRow';
+import pureNoFunc from '../utils/pureNoFunc';
 
 let snipStyle = {
-  height: "100%",
+  height: '100%',
   // background: 'black',
-  position: "absolute",
+  position: 'absolute',
   top: 1,
-  width: "2px"
+  width: '2px'
 };
 let snipConnectorStyle = {
-  height: "2px",
+  height: '2px',
   // background: 'black',
-  position: "absolute",
+  position: 'absolute',
   top: 1
 };
 
@@ -128,11 +128,11 @@ function Cutsites(props) {
 
     snipStyle = {
       ...snipStyle,
-      background: annotation.restrictionEnzyme.color || "black"
+      background: annotation.restrictionEnzyme.color || 'black'
     };
     snipConnectorStyle = {
       ...snipConnectorStyle,
-      background: annotation.restrictionEnzyme.color || "black"
+      background: annotation.restrictionEnzyme.color || 'black'
     };
 
     let newSnip;
@@ -149,7 +149,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipStyle,
           charWidth,
-          key + "downstream"
+          key + 'downstream'
         );
         if (newSnip) {
           snips.push(newSnip);
@@ -162,7 +162,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipStyle,
           charWidth,
-          key + "downstream"
+          key + 'downstream'
         );
         if (newSnip) {
           snips.push(newSnip);
@@ -181,7 +181,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipConnectorStyle,
           charWidth,
-          key + "downstreamConnector"
+          key + 'downstreamConnector'
         );
         snipConnectors.push(newConnector);
       }
@@ -195,7 +195,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipStyle,
           charWidth,
-          key + "upstream"
+          key + 'upstream'
         );
         if (newSnip) {
           snips.push(newSnip);
@@ -208,7 +208,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipStyle,
           charWidth,
-          key + "upstream"
+          key + 'upstream'
         );
         if (newSnip) {
           snips.push(newSnip);
@@ -227,7 +227,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipConnectorStyle,
           charWidth,
-          key + "upstreamConnector"
+          key + 'upstreamConnector'
         );
         snipConnectors.push(newConnector);
       }

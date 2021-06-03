@@ -1,13 +1,11 @@
-import createAction from "./utils/createMetaAction";
-import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import createAction from './utils/createMetaAction';
+import createMergedDefaultStateReducer from './utils/createMergedDefaultStateReducer';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const updateSelectedFragment = createAction("updateSelectedFragment");
-export const updateComputePartialDigest = createAction(
-  "updateComputePartialDigest"
-);
+export const updateSelectedFragment = createAction('updateSelectedFragment');
+export const updateComputePartialDigest = createAction('updateComputePartialDigest');
 
 // ------------------------------------
 // Reducer

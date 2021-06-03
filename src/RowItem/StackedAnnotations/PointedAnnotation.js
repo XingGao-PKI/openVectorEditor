@@ -1,12 +1,12 @@
-import Color from "color";
-import classnames from "classnames";
-import withHover from "../../helperComponents/withHover";
-import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
+import Color from 'color';
+import classnames from 'classnames';
+import withHover from '../../helperComponents/withHover';
+import getAnnotationNameAndStartStopString from '../../utils/getAnnotationNameAndStartStopString';
 
-import React from "react";
-import { doesLabelFitInAnnotation } from "../utils";
-import { noop } from "lodash";
-import getAnnotationClassnames from "../../utils/getAnnotationClassnames";
+import React from 'react';
+import { doesLabelFitInAnnotation } from '../utils';
+import { noop } from 'lodash';
+import getAnnotationClassnames from '../../utils/getAnnotationClassnames';
 
 class PointedAnnotation extends React.PureComponent {
   render() {
@@ -17,7 +17,7 @@ class PointedAnnotation extends React.PureComponent {
       height,
       rangeType,
       forward,
-      name = "",
+      name = '',
       type,
       onMouseLeave,
       onMouseOver,
@@ -25,7 +25,7 @@ class PointedAnnotation extends React.PureComponent {
       id,
       hideName,
       pointiness = 8,
-      color = "orange",
+      color = 'orange',
       fill,
       stroke,
       opacity,
@@ -43,7 +43,7 @@ class PointedAnnotation extends React.PureComponent {
     const classNames = getAnnotationClassnames(annotation, {
       isProtein,
       type,
-      viewName: "RowView"
+      viewName: 'RowView'
     });
 
     let width = (widthInBps + gapsInside) * charWidth;
@@ -63,34 +63,30 @@ class PointedAnnotation extends React.PureComponent {
       ? `L 0,${height / 2} 
     L -10,${height / 2} 
     L 0,${height / 2} `
-      : "";
+      : '';
     const arrowLine = annotation.doesOverlapSelf
       ? `L ${width + 10},${height / 2} 
     L ${width},${height / 2} `
-      : "";
+      : '';
     // starting from the top left of the annotation
-    if (rangeType === "middle") {
+    if (rangeType === 'middle') {
       //draw a rectangle
       path = `
           M 0,0 
           L ${width - pointiness / 2},0
-          Q ${width + pointiness / 2},${height / 2} ${
-        width - pointiness / 2
-      },${height}
+          Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${height}
           L ${0},${height}
           Q ${pointiness},${height / 2} ${0},${0}
           z`;
-    } else if (rangeType === "start") {
+    } else if (rangeType === 'start') {
       path = `
           M 0,0 
           L ${width - pointiness / 2},0 
-          Q ${width + pointiness / 2},${height / 2} ${
-        width - pointiness / 2
-      },${height}
+          Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${height}
           L 0,${height} 
           ${endLine}
           z`;
-    } else if (rangeType === "beginningAndEnd") {
+    } else if (rangeType === 'beginningAndEnd') {
       hasAPoint = true;
       path = `
           M 0,0 
@@ -122,10 +118,10 @@ class PointedAnnotation extends React.PureComponent {
       !doesLabelFitInAnnotation(name, { width }, charWidth) ||
       (externalLabels &&
         !onlyShowLabelsThatDoNotFit &&
-        ["parts", "features"].includes(annotation.annotationTypePlural))
+        ['parts', 'features'].includes(annotation.annotationTypePlural))
     ) {
       textOffset = 0;
-      nameToDisplay = "";
+      nameToDisplay = '';
     }
 
     return (
@@ -137,33 +133,30 @@ class PointedAnnotation extends React.PureComponent {
           onClick({ annotation, event, gapsBefore, gapsInside });
         }}
         onDoubleClick={function (event) {
-          onDoubleClick &&
-            onDoubleClick({ annotation, event, gapsBefore, gapsInside });
+          onDoubleClick && onDoubleClick({ annotation, event, gapsBefore, gapsInside });
         }}
         onContextMenu={function (event) {
           onRightClick({ annotation, event, gapsBefore, gapsInside });
         }}
       >
-        <title>
-          {getAnnotationNameAndStartStopString(annotation, { isProtein })}
-        </title>
+        <title>{getAnnotationNameAndStartStopString(annotation, { isProtein })}</title>
         <path
           strokeWidth="1"
-          stroke={stroke || "black"}
+          stroke={stroke || 'black'}
           opacity={opacity}
           fill={fill || color}
-          transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
+          transform={forward ? null : 'translate(' + width + ',0) scale(-1,1) '}
           d={path}
         />
         {!hideName && nameToDisplay && (
           <text
             className={classnames(
-              "veLabelText ve-monospace-font",
+              'veLabelText ve-monospace-font',
               annotation.labelClassName
             )}
             style={{
-              fontSize: ".9em",
-              fill: textColor || (Color(color).isDark() ? "white" : "black")
+              fontSize: '.9em',
+              fill: textColor || (Color(color).isDark() ? 'white' : 'black')
             }}
             transform={`translate(${textOffset},${height - 2})`}
           >

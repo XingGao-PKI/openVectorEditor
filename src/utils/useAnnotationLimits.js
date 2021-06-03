@@ -1,8 +1,8 @@
-import { createLocalStorageStateHook } from "use-local-storage-state";
-import React from "react";
-import { MenuItem } from "@blueprintjs/core";
+import { createLocalStorageStateHook } from 'use-local-storage-state';
+import React from 'react';
+import { MenuItem } from '@blueprintjs/core';
 
-const useAnnotationLimits = createLocalStorageStateHook("annotationLimits", {
+const useAnnotationLimits = createLocalStorageStateHook('annotationLimits', {
   features: 50,
   parts: 50,
   cutsites: 100
@@ -13,7 +13,7 @@ export function LimitAnnotations({ type, ...rest }) {
   const [limits = {}, setLimits] = useAnnotationLimits();
   return (
     <MenuItem icon="blank" shouldDismissPopover={false} {...rest}>
-      {[50, 100, 200, 400].map((n) => (
+      {[50, 100, 200, 400].map(n => (
         <MenuItem
           shouldDismissPopover={false}
           icon={
@@ -22,8 +22,8 @@ export function LimitAnnotations({ type, ...rest }) {
                 ? n === 50 //if this hasn't been set yet, default it here
                 : limits[type] === n
             )
-              ? "small-tick"
-              : "blank"
+              ? 'small-tick'
+              : 'blank'
           }
           key={n}
           text={n}

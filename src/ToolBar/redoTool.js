@@ -1,7 +1,7 @@
-import React from "react";
-import { Icon } from "@blueprintjs/core";
-import ToolbarItem from "./ToolbarItem";
-import { connectToEditor } from "../withEditorProps";
+import React from 'react';
+import { Icon } from '@blueprintjs/core';
+import ToolbarItem from './ToolbarItem';
+import { connectToEditor } from '../withEditorProps';
 
 export default connectToEditor(editorState => {
   return {

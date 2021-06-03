@@ -1,10 +1,10 @@
 //tnr: not actually used yet. I don't think it is necessary
 // for the cutsite label heights to be perfect
 
-import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation";
-import IntervalTree from "node-interval-tree";
-import getYOffset from "../CircularView/getYOffset";
-import forEach from "lodash/forEach";
+import getXStartAndWidthOfRowAnnotation from './getXStartAndWidthOfRowAnnotation';
+import IntervalTree from 'node-interval-tree';
+import getYOffset from '../CircularView/getYOffset';
+import forEach from 'lodash/forEach';
 
 export default function getCutsiteLabelHeights({
   bpsPerRow,
@@ -19,7 +19,7 @@ export default function getCutsiteLabelHeights({
   let maxAnnotationYOffset = 0;
   let rowCenter = rowLength / 2;
   let iTree = new IntervalTree(rowCenter);
-  forEach(annotationRanges, function(annotationRange) {
+  forEach(annotationRanges, function (annotationRange) {
     counter++;
     if (counter > 50) return;
     let annotation = annotationRange.annotation;

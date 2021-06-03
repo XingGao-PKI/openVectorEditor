@@ -1,16 +1,12 @@
-import { Tooltip, AnchorButton } from "@blueprintjs/core";
-import React from "react";
-import {
-  DataTable,
-  withSelectedEntities,
-  CmdCheckbox
-} from "teselagen-react-components";
-import getCommands from "../../commands";
-import { map } from "lodash";
-import { getRangeLength } from "ve-range-utils";
-import { connectToEditor } from "../../withEditorProps";
-import { compose } from "recompose";
-import selectors from "../../selectors";
+import { Tooltip, AnchorButton } from '@blueprintjs/core';
+import React from 'react';
+import { DataTable, withSelectedEntities, CmdCheckbox } from 'teselagen-react-components';
+import getCommands from '../../commands';
+import { map } from 'lodash';
+import { getRangeLength } from 've-range-utils';
+import { connectToEditor } from '../../withEditorProps';
+import { compose } from 'recompose';
+import selectors from '../../selectors';
 
 class TranslationProperties extends React.Component {
   constructor(props) {
@@ -21,7 +17,7 @@ class TranslationProperties extends React.Component {
     if (!record) return;
     const { dispatch, editorName } = this.props;
     dispatch({
-      type: "SELECTION_LAYER_UPDATE",
+      type: 'SELECTION_LAYER_UPDATE',
       payload: record,
       meta: {
         editorName
@@ -38,7 +34,7 @@ class TranslationProperties extends React.Component {
       selectedAnnotationId,
       annotationVisibility
     } = this.props;
-    const translationsToUse = map(translations, (translation) => {
+    const translationsToUse = map(translations, translation => {
       return {
         ...translation,
         sizeBps: getRangeLength(translation, sequenceLength),
@@ -50,7 +46,7 @@ class TranslationProperties extends React.Component {
     });
 
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <DataTable
           noPadding
           onRowSelect={this.onRowSelect}
@@ -60,10 +56,7 @@ class TranslationProperties extends React.Component {
           noRouter
           compact
           topLeftItems={
-            <CmdCheckbox
-              prefix="Show "
-              cmd={this.commands.toggleTranslations}
-            />
+            <CmdCheckbox prefix="Show " cmd={this.commands.toggleTranslations} />
           }
           annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           hideSelectedCount
@@ -73,32 +66,29 @@ class TranslationProperties extends React.Component {
           schema={{
             fields: [
               {
-                path: "translationType",
-                displayName: "Type",
-                type: "string"
+                path: 'translationType',
+                displayName: 'Type',
+                type: 'string'
               },
               {
-                path: "sizeAa",
-                displayName: "Size (aa)",
-                type: "string"
+                path: 'sizeAa',
+                displayName: 'Size (aa)',
+                type: 'string'
               },
-              { path: "strand", type: "number" }
+              { path: 'strand', type: 'number' }
             ]
           }}
           entities={translationsToUse}
         />
         <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfTranslations} />
-        <CmdCheckbox
-          prefix="Show "
-          cmd={this.commands.toggleCdsFeatureTranslations}
-        />
+        <CmdCheckbox prefix="Show " cmd={this.commands.toggleCdsFeatureTranslations} />
         {!readOnly && (
           <div className="vePropertiesFooter">
             <Tooltip
               content={
                 translationPropertiesSelectedEntities.length &&
                 translationPropertiesSelectedEntities[0].translationType !==
-                  "User Created"
+                  'User Created'
                   ? `Only "User Created" translations can be deleted`
                   : undefined
               }
@@ -111,7 +101,7 @@ class TranslationProperties extends React.Component {
                 disabled={
                   !translationPropertiesSelectedEntities.length ||
                   translationPropertiesSelectedEntities[0].translationType !==
-                    "User Created"
+                    'User Created'
                 }
               >
                 Delete
@@ -125,16 +115,16 @@ class TranslationProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor((editorState) => {
+  connectToEditor(editorState => {
     const { readOnly, annotationVisibility = {}, sequenceData } = editorState;
     return {
       readOnly,
       translations: selectors.translationsSelector(editorState),
       orfs: selectors.orfsSelector(editorState),
       annotationVisibility,
-      sequenceLength: (sequenceData.sequence || "").length,
+      sequenceLength: (sequenceData.sequence || '').length,
       sequenceData
     };
   }),
-  withSelectedEntities("translationProperties")
+  withSelectedEntities('translationProperties')
 )(TranslationProperties);

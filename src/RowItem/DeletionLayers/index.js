@@ -1,12 +1,12 @@
-import AnnotationPositioner from "../AnnotationPositioner";
-import AnnotationContainerHolder from "../AnnotationContainerHolder";
-import React from "react";
-import pureNoFunc from "../../utils/pureNoFunc";
+import AnnotationPositioner from '../AnnotationPositioner';
+import AnnotationContainerHolder from '../AnnotationContainerHolder';
+import React from 'react';
+import pureNoFunc from '../../utils/pureNoFunc';
 
-import "./style.css";
+import './style.css';
 
-import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
-import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
+import getXStartAndWidthOfRangeWrtRow from '../getXStartAndWidthOfRangeWrtRow';
+import { getOverlapsOfPotentiallyCircularRanges } from 've-range-utils';
 
 function DeletionLayers(props) {
   let {
@@ -35,8 +35,7 @@ function DeletionLayers(props) {
         .map(function (deletionLayer, index) {
           let rangeSpansSequence =
             deletionLayer.start === deletionLayer.end + 1 ||
-            (deletionLayer.start === 0 &&
-              deletionLayer.end === sequenceLength - 1);
+            (deletionLayer.start === 0 && deletionLayer.end === sequenceLength - 1);
           let { /* className = "", style = {},  */ color } = deletionLayer;
           let overlaps = getOverlapsOfPotentiallyCircularRanges(
             deletionLayer,
@@ -60,9 +59,7 @@ function DeletionLayers(props) {
                 key={index}
                 top={0}
                 // className={classnames() }
-                left={
-                  xStart + (deletionLayer.inBetweenBps ? charWidth / 1.2 : 0)
-                }
+                left={xStart + (deletionLayer.inBetweenBps ? charWidth / 1.2 : 0)}
               >
                 <g
                   className="clickable"
@@ -84,13 +81,7 @@ function DeletionLayers(props) {
                     width={width}
                   />
                   {rangeSpansSequence && deletionStart && (
-                    <rect
-                      fill="blue"
-                      x="0"
-                      y="0"
-                      height={deletionLineHeight}
-                      width={4}
-                    />
+                    <rect fill="blue" x="0" y="0" height={deletionLineHeight} width={4} />
                   )}
                   {rangeSpansSequence && deletionEnd && (
                     <rect

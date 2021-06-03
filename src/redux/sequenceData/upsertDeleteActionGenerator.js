@@ -1,13 +1,10 @@
-import omit from "lodash/omit";
-import uuid from "shortid";
+import omit from 'lodash/omit';
+import uuid from 'shortid';
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export default function upsertDeleteActionGenerator(
-  upsertAction,
-  deleteAction
-) {
+export default function upsertDeleteActionGenerator(upsertAction, deleteAction) {
   return {
     [upsertAction]: (state, payload) => {
       const idToUse = payload.id || uuid();
@@ -19,7 +16,7 @@ export default function upsertDeleteActionGenerator(
     [deleteAction]: (state, payload) => {
       let ids;
       if (Array.isArray(payload)) {
-        ids = payload.map((val) => {
+        ids = payload.map(val => {
           return val.id || val;
         });
       } else {

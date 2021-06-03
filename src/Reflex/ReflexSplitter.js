@@ -4,10 +4,10 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
-import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
-import Browser from "./Browser";
-import React from "react";
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+import Browser from './Browser';
+import React from 'react';
 
 export default class ReflexSplitter extends React.Component {
   /////////////////////////////////////////////////////////
@@ -15,10 +15,7 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   static propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.node),
-      PropTypes.node
-    ]),
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     onStartResize: PropTypes.func,
     onStopResize: PropTypes.func,
     className: PropTypes.string,
@@ -32,12 +29,12 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   static defaultProps = {
-    document: typeof document === "undefined" ? null : document,
+    document: typeof document === 'undefined' ? null : document,
     onStartResize: null,
     onStopResize: null,
     propagate: false,
     onResize: null,
-    className: "",
+    className: '',
     style: {}
   };
 
@@ -68,15 +65,15 @@ export default class ReflexSplitter extends React.Component {
       return;
     }
 
-    this.document.addEventListener("touchend", this.onMouseUp);
+    this.document.addEventListener('touchend', this.onMouseUp);
 
-    this.document.addEventListener("mouseup", this.onMouseUp);
+    this.document.addEventListener('mouseup', this.onMouseUp);
 
-    this.document.addEventListener("mousemove", this.onMouseMove, {
+    this.document.addEventListener('mousemove', this.onMouseMove, {
       passive: false
     });
 
-    this.document.addEventListener("touchmove", this.onMouseMove, {
+    this.document.addEventListener('touchmove', this.onMouseMove, {
       passive: false
     });
   }
@@ -90,13 +87,13 @@ export default class ReflexSplitter extends React.Component {
       return;
     }
 
-    this.document.removeEventListener("mouseup", this.onMouseUp);
+    this.document.removeEventListener('mouseup', this.onMouseUp);
 
-    this.document.removeEventListener("touchend", this.onMouseUp);
+    this.document.removeEventListener('touchend', this.onMouseUp);
 
-    this.document.removeEventListener("mousemove", this.onMouseMove);
+    this.document.removeEventListener('mousemove', this.onMouseMove);
 
-    this.document.removeEventListener("touchmove", this.onMouseMove);
+    this.document.removeEventListener('touchmove', this.onMouseMove);
   }
 
   /////////////////////////////////////////////////////////
@@ -105,7 +102,7 @@ export default class ReflexSplitter extends React.Component {
   /////////////////////////////////////////////////////////
   onMouseMove(event) {
     if (this.state.active) {
-      this.props.events.emit("splitter.resize", {
+      this.props.events.emit('splitter.resize', {
         splitter: this,
         event
       });
@@ -145,7 +142,7 @@ export default class ReflexSplitter extends React.Component {
       }
     }
 
-    this.props.events.emit("splitter.startResize", {
+    this.props.events.emit('splitter.startResize', {
       splitter: this,
       event
     });
@@ -168,7 +165,7 @@ export default class ReflexSplitter extends React.Component {
         });
       }
 
-      this.props.events.emit("splitter.stopResize", {
+      this.props.events.emit('splitter.stopResize', {
         splitter: this,
         event
       });
@@ -180,19 +177,19 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   render() {
-    const classNames = ["reflex-splitter", ...this.props.className.split(" ")];
+    const classNames = ['reflex-splitter', ...this.props.className.split(' ')];
 
     if (Browser.isMobile()) {
-      classNames.push("reflex-thin");
+      classNames.push('reflex-thin');
     }
 
     if (this.state.active) {
-      classNames.push("active");
+      classNames.push('active');
     }
 
     return (
       <div
-        className={classNames.join(" ")}
+        className={classNames.join(' ')}
         onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}
         style={this.props.style}

@@ -1,8 +1,8 @@
-import React from "react";
-import { CircularView } from "./CircularView";
-import { LinearView } from "./LinearView";
-import { HoveredIdContext } from "./helperComponents/withHover";
-import { visibilityDefaultValues } from "./redux/annotationVisibility";
+import React from 'react';
+import { CircularView } from './CircularView';
+import { LinearView } from './LinearView';
+import { HoveredIdContext } from './helperComponents/withHover';
+import { visibilityDefaultValues } from './redux/annotationVisibility';
 
 //this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
 export default props => {
@@ -14,9 +14,8 @@ export default props => {
   const tickSpacing = _sequenceData.circular
     ? undefined
     : Math.floor(
-        (_sequenceData.noSequence
-          ? _sequenceData.size
-          : _sequenceData.sequence.length) / 5
+        (_sequenceData.noSequence ? _sequenceData.size : _sequenceData.sequence.length) /
+          5
       );
   let sequenceData = _sequenceData;
   let annotationVisibility = {
@@ -30,11 +29,7 @@ export default props => {
     annotationVisibility.sequence = false;
     annotationVisibility.reverseSequence = false;
     if (_sequenceData.size === undefined) {
-      return (
-        <div>
-          Error: No sequenceData.size detected when using noSequence flag{" "}
-        </div>
-      );
+      return <div>Error: No sequenceData.size detected when using noSequence flag </div>;
     }
     sequenceData = {
       ..._sequenceData,

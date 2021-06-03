@@ -1,13 +1,13 @@
-import { createReducer } from "redux-act";
+import { createReducer } from 'redux-act';
 
-import createAction from "./utils/createMetaAction";
+import createAction from './utils/createMetaAction';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const toggleExternalLabels = createAction("toggleExternalLabels");
+export const toggleExternalLabels = createAction('toggleExternalLabels');
 
-const newVal = window.localStorage.getItem("externalLabels");
+const newVal = window.localStorage.getItem('externalLabels');
 
 // ------------------------------------
 // Reducer
@@ -15,9 +15,9 @@ const newVal = window.localStorage.getItem("externalLabels");
 export default createReducer(
   {
     [toggleExternalLabels]: (state, payload) => {
-      localStorage.setItem("externalLabels", payload);
+      localStorage.setItem('externalLabels', payload);
       return payload;
     }
   },
-  newVal || "noPreference" //  noPreference || true || false
+  newVal || 'noPreference' //  noPreference || true || false
 );

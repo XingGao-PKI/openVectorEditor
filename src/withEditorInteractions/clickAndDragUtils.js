@@ -4,7 +4,7 @@ import {
   trimNumberToFitWithin0ToAnotherNumber,
   normalizePositionByRangeLength,
   expandOrContractRangeToPosition
-} from "ve-range-utils";
+} from 've-range-utils';
 
 let dragInProgress = false;
 let selectionStartOrEndGrabbed;
@@ -27,7 +27,7 @@ export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
     return;
   }
 
-  if (selectionLayer.start > -1 && selectionStartOrEndGrabbed === "start") {
+  if (selectionLayer.start > -1 && selectionStartOrEndGrabbed === 'start') {
     handleSelectionStartGrabbed({
       caretPosition,
       selectionLayer,
@@ -37,10 +37,7 @@ export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
       sequenceLength,
       doNotWrapOrigin
     });
-  } else if (
-    selectionLayer.start > -1 &&
-    selectionStartOrEndGrabbed === "end"
-  ) {
+  } else if (selectionLayer.start > -1 && selectionStartOrEndGrabbed === 'end') {
     handleSelectionEndGrabbed({
       caretPosition,
       selectionLayer,
@@ -53,9 +50,7 @@ export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
   } else {
     handleNoSelectionLayerYet({
       caretPosition: caretPositionOnDragStart,
-      selectionLayer: caretPositionOnDragStart
-        ? { start: -1, end: -1 }
-        : selectionLayer,
+      selectionLayer: caretPositionOnDragStart ? { start: -1, end: -1 } : selectionLayer,
       selectionLayerUpdate: this.selectionLayerUpdate,
       nearestCaretPos,
       sequenceLength,
@@ -74,18 +69,18 @@ export const editorClicked = function ({ nearestCaretPos, shiftHeld }) {
 };
 
 export const editorDragStarted = function (opts) {
-  document.body.classList.add("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
+  document.body.classList.add('sequenceDragging'); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = true;
 
   caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
   selectionStartOrEndGrabbed = opts.selectionStartGrabbed
-    ? "start"
+    ? 'start'
     : opts.selectionEndGrabbed
-    ? "end"
+    ? 'end'
     : null;
 };
 export const editorDragStopped = function () {
-  document.body.classList.remove("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
+  document.body.classList.remove('sequenceDragging'); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = false;
   caretPositionOnDragStart = null;
   setTimeout(function () {
@@ -109,9 +104,8 @@ export function handleCaretMoved({
     if (shiftHeld) {
       newCaretPosition = normalizeNewCaretPos(
         Number(
-          (selectionLayer.cursorAtEnd
-            ? selectionLayer.end + 1
-            : selectionLayer.start) + moveBy
+          (selectionLayer.cursorAtEnd ? selectionLayer.end + 1 : selectionLayer.start) +
+            moveBy
         ),
         sequenceLength,
         circular
@@ -143,10 +137,7 @@ export function handleCaretMoved({
           } else {
             selectionLayerUpdate({
               start: anchorPos,
-              end: normalizePositionByRangeLength(
-                newCaretPosition - 1,
-                sequenceLength
-              ),
+              end: normalizePositionByRangeLength(newCaretPosition - 1, sequenceLength),
               cursorAtEnd: true
             });
           }
@@ -155,19 +146,13 @@ export function handleCaretMoved({
             //we've gone around the origin in this case
             selectionLayerUpdate({
               start: anchorPos,
-              end: normalizePositionByRangeLength(
-                newCaretPosition - 1,
-                sequenceLength
-              ),
+              end: normalizePositionByRangeLength(newCaretPosition - 1, sequenceLength),
               cursorAtEnd: true
             });
           } else {
             selectionLayerUpdate({
               start: newCaretPosition,
-              end: normalizePositionByRangeLength(
-                anchorPos - 1,
-                sequenceLength
-              ),
+              end: normalizePositionByRangeLength(anchorPos - 1, sequenceLength),
               cursorAtEnd: false
             });
           }
@@ -187,18 +172,12 @@ export function handleCaretMoved({
         ) {
           selectionLayerUpdate({
             start: anchorPos,
-            end: normalizePositionByRangeLength(
-              newCaretPosition - 1,
-              sequenceLength
-            ),
+            end: normalizePositionByRangeLength(newCaretPosition - 1, sequenceLength),
             cursorAtEnd: true
           });
         } else {
           selectionLayerUpdate({
-            start: normalizePositionByRangeLength(
-              newCaretPosition,
-              sequenceLength
-            ),
+            start: normalizePositionByRangeLength(newCaretPosition, sequenceLength),
             end: normalizePositionByRangeLength(anchorPos - 1, sequenceLength),
             cursorAtEnd: false
           });
@@ -208,12 +187,12 @@ export function handleCaretMoved({
       //no shiftHeld
       //handle special cases
       if (moveBy === 0) {
-        if (type === "moveCaretRightOne") {
+        if (type === 'moveCaretRightOne') {
           return caretPositionUpdate(selectionLayer.end + 1);
-        } else if (type === "moveCaretLeftOne") {
+        } else if (type === 'moveCaretLeftOne') {
           return caretPositionUpdate(selectionLayer.start);
         } else {
-          throw new Error("this case should not be hit...");
+          throw new Error('this case should not be hit...');
         }
       } else if (moveBy > 0) {
         newCaretPosition = normalizeNewCaretPos(
@@ -245,10 +224,7 @@ export function handleCaretMoved({
         } else {
           selectionLayerUpdate({
             start: caretPosition,
-            end: normalizePositionByRangeLength(
-              newCaretPosition - 1,
-              sequenceLength
-            ),
+            end: normalizePositionByRangeLength(newCaretPosition - 1, sequenceLength),
             cursorAtEnd: true
           });
         }
@@ -259,10 +235,7 @@ export function handleCaretMoved({
         } else {
           selectionLayerUpdate({
             start: newCaretPosition,
-            end: normalizePositionByRangeLength(
-              caretPosition - 1,
-              sequenceLength
-            ),
+            end: normalizePositionByRangeLength(caretPosition - 1, sequenceLength),
             cursorAtEnd: false
           });
         }
@@ -314,9 +287,9 @@ export function handleSelectionStartGrabbed({
         start: selectionLayer.end + 1,
         end: nearestCaretPos
       });
-      selectionStartOrEndGrabbed = "end";
+      selectionStartOrEndGrabbed = 'end';
     } else {
-      selectionStartOrEndGrabbed = "start";
+      selectionStartOrEndGrabbed = 'start';
       //there must be a selection layer
       //we need to move the selection layer
       selectionLayerUpdate({
@@ -358,15 +331,12 @@ function handleSelectionEndGrabbed({
         end: selectionLayer.start - 1
       });
       caretPositionOnDragStart = selectionLayer.start;
-      selectionStartOrEndGrabbed = "start";
+      selectionStartOrEndGrabbed = 'start';
     } else {
-      selectionStartOrEndGrabbed = "end";
+      selectionStartOrEndGrabbed = 'end';
       //there must be a selection layer
       //we need to move the selection layer
-      let newEnd = normalizePositionByRangeLength(
-        nearestCaretPos - 1,
-        sequenceLength
-      );
+      let newEnd = normalizePositionByRangeLength(nearestCaretPos - 1, sequenceLength);
       selectionLayerUpdate({
         start: selectionLayer.start,
         end: newEnd,
@@ -390,11 +360,7 @@ export function handleNoSelectionLayerYet({
 
   let dragEnd = {
     start: caretPosition,
-    end: normalizePositionByRangeLength(
-      nearestCaretPos - 1,
-      sequenceLength,
-      true
-    )
+    end: normalizePositionByRangeLength(nearestCaretPos - 1, sequenceLength, true)
   };
   let dragStart = {
     start: nearestCaretPos,
@@ -405,14 +371,13 @@ export function handleNoSelectionLayerYet({
   } else if (
     (doNotWrapOrigin && caretPosition < nearestCaretPos) ||
     (!doNotWrapOrigin &&
-      getRangeLength(dragEnd, sequenceLength) <
-        getRangeLength(dragStart, sequenceLength))
+      getRangeLength(dragEnd, sequenceLength) < getRangeLength(dragStart, sequenceLength))
   ) {
-    selectionStartOrEndGrabbed = "end";
+    selectionStartOrEndGrabbed = 'end';
     selectionLayerUpdate(dragEnd);
     caretPositionOnDragStart = null;
   } else {
-    selectionStartOrEndGrabbed = "start";
+    selectionStartOrEndGrabbed = 'start';
     selectionLayerUpdate(dragStart);
     caretPositionOnDragStart = null;
   }
@@ -430,7 +395,7 @@ export function updateSelectionOrCaret({
 }) {
   let newCaret;
   let newRange;
-  if (typeof newRangeOrCaret !== "object") {
+  if (typeof newRangeOrCaret !== 'object') {
     newCaret = newRangeOrCaret;
   } else {
     newRange = {
@@ -479,28 +444,18 @@ export function updateSelectionOrCaret({
         } else {
           selectionLayerUpdate({
             start: selectionLayer.start,
-            end: normalizePositionByRangeLength(
-              newCaret - 1,
-              sequenceLength,
-              true
-            )
+            end: normalizePositionByRangeLength(newCaret - 1, sequenceLength, true)
           });
         }
       } else {
         //new range passed
         // return selectionLayerUpdate(newRange);
-        let selectionFullyContained = !trimRangeByAnotherRange(
-          selectionLayer,
-          newRange
-        );
+        let selectionFullyContained = !trimRangeByAnotherRange(selectionLayer, newRange);
         if (selectionFullyContained) {
           return selectionLayerUpdate(newRange);
         }
 
-        let newRangeFullyContained = !trimRangeByAnotherRange(
-          newRange,
-          selectionLayer
-        );
+        let newRangeFullyContained = !trimRangeByAnotherRange(newRange, selectionLayer);
 
         let { newRange: range1 } = expandOrContractRangeToPosition(
           selectionLayer,
@@ -513,13 +468,10 @@ export function updateSelectionOrCaret({
           sequenceLength
         ); //+1 to go from range end to position
         let range1Shorter =
-          getRangeLength(range1, sequenceLength) <
-          getRangeLength(range2, sequenceLength);
+          getRangeLength(range1, sequenceLength) < getRangeLength(range2, sequenceLength);
 
         if (newRangeFullyContained) {
-          range1Shorter
-            ? selectionLayerUpdate(range1)
-            : selectionLayerUpdate(range2);
+          range1Shorter ? selectionLayerUpdate(range1) : selectionLayerUpdate(range2);
         } else {
           selectionLayerUpdate({
             start: selectionLayer.start,

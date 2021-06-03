@@ -1,5 +1,5 @@
-import sequenceSelector from "./sequenceSelector";
+import sequenceSelector from './sequenceSelector';
 
-export default function(state) {
+export default function (state) {
   return sequenceSelector(state).length;
 }

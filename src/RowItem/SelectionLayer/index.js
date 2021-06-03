@@ -1,19 +1,19 @@
 // import { onlyUpdateForKeys } from "recompose";
-import draggableClassnames from "../../constants/draggableClassnames";
-import React from "react";
-import Caret from "../Caret";
-import pureNoFunc from "../../utils/pureNoFunc";
+import draggableClassnames from '../../constants/draggableClassnames';
+import React from 'react';
+import Caret from '../Caret';
+import pureNoFunc from '../../utils/pureNoFunc';
 
-import "./style.css";
+import './style.css';
 
-import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
-import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
+import getXStartAndWidthOfRangeWrtRow from '../getXStartAndWidthOfRangeWrtRow';
+import { getOverlapsOfPotentiallyCircularRanges } from 've-range-utils';
 import {
   getSelectionMessage,
   preventDefaultStopPropagation
-} from "../../utils/editorUtils";
+} from '../../utils/editorUtils';
 
-const SelectionLayer = (props) => {
+const SelectionLayer = props => {
   const {
     charWidth,
     isDraggable,
@@ -28,7 +28,7 @@ const SelectionLayer = (props) => {
     color: topLevelColor,
     hideCarets: topLevelHideCarets = false,
     selectionLayerRightClicked,
-    className: globalClassName = "",
+    className: globalClassName = '',
     onClick
   } = props;
   let hasSelection = false;
@@ -37,7 +37,7 @@ const SelectionLayer = (props) => {
     <React.Fragment>
       {regions.map((selectionLayer, topIndex) => {
         const _onClick = onClick
-          ? (event) => {
+          ? event => {
               onClick({
                 event,
                 annotation: selectionLayer
@@ -45,7 +45,7 @@ const SelectionLayer = (props) => {
             }
           : undefined;
         const {
-          className = "",
+          className = '',
           style = {},
           start,
           end,
@@ -58,7 +58,7 @@ const SelectionLayer = (props) => {
         } = selectionLayer;
         const selectionMessage =
           hideTitle || topLevelHideTitle
-            ? ""
+            ? ''
             : getSelectionMessage({
                 selectionLayer,
                 customTitle: customTitle || topLevelCustomTitle,
@@ -83,7 +83,7 @@ const SelectionLayer = (props) => {
           //DRAW SELECTION LAYER
           if (overlaps.length) hasSelection = true;
           return overlaps.map((overlap, index) => {
-            const key = topIndex + "-" + index;
+            const key = topIndex + '-' + index;
             let isTrueStart = false;
             let isTrueEnd = false;
             if (overlap.start === selectionLayer.start) {
@@ -114,12 +114,12 @@ const SelectionLayer = (props) => {
                       getGaps,
                       isDraggable,
                       ignoreGaps,
-                      key: key + "caret1",
+                      key: key + 'caret1',
                       sequenceLength,
                       className:
                         classNameToPass +
-                        " selectionLayerCaret " +
-                        (isDraggable ? draggableClassnames.selectionStart : ""),
+                        ' selectionLayerCaret ' +
+                        (isDraggable ? draggableClassnames.selectionStart : ''),
                       caretPosition: overlap.start
                     }}
                   />
@@ -135,12 +135,12 @@ const SelectionLayer = (props) => {
                       row,
                       getGaps,
                       ignoreGaps,
-                      key: key + "caret2",
+                      key: key + 'caret2',
                       sequenceLength,
                       className:
                         classNameToPass +
-                        " selectionLayerCaret " +
-                        (isDraggable ? draggableClassnames.selectionEnd : ""),
+                        ' selectionLayerCaret ' +
+                        (isDraggable ? draggableClassnames.selectionEnd : ''),
                       caretPosition: overlap.end + 1
                     }}
                   />
@@ -155,9 +155,9 @@ const SelectionLayer = (props) => {
                 key={key}
                 className={
                   classNameToPass +
-                  " veSelectionLayer veRowViewSelectionLayer notCaret " +
-                  (isTrueStart ? " isTrueStart " : "") +
-                  (isTrueEnd ? " isTrueEnd " : "")
+                  ' veSelectionLayer veRowViewSelectionLayer notCaret ' +
+                  (isTrueStart ? ' isTrueStart ' : '') +
+                  (isTrueEnd ? ' isTrueEnd ' : '')
                 }
                 style={{
                   width,

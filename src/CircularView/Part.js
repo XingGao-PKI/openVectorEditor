@@ -1,6 +1,6 @@
-import React from "react";
-import * as R from "ramda";
-import drawDirectedPiePiece from "./drawDirectedPiePiece";
+import React from 'react';
+import * as R from 'ramda';
+import drawDirectedPiePiece from './drawDirectedPiePiece';
 
 const Part = ({
   radius,
@@ -19,9 +19,9 @@ const Part = ({
     arrowheadLength,
     tailThickness: 1 //feature specific
   });
-  const colorToUse = R.startsWith(color, "override_")
-    ? color.replace("override_", "")
-    : "purple";
+  const colorToUse = R.startsWith(color, 'override_')
+    ? color.replace('override_', '')
+    : 'purple';
   return (
     <path
       className={className}

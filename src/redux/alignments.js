@@ -1,10 +1,10 @@
 import {
   tidyUpSequenceData /* generateSequenceData */,
   condensePairwiseAlignmentDifferences
-} from "ve-sequence-utils";
-import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
+} from 've-sequence-utils';
+import addDashesForMatchStartAndEndForTracks from './utils/addDashesForMatchStartAndEndForTracks';
 
-import { /* createReducer, */ createAction } from "redux-act";
+import { /* createReducer, */ createAction } from 'redux-act';
 
 const alignmentAnnotationSettings = {
   axis: true,
@@ -40,7 +40,7 @@ let defaultVisibilities = {
 const defaultVisibilityTypes = Object.keys(defaultVisibilities);
 
 try {
-  defaultVisibilityTypes.forEach((type) => {
+  defaultVisibilityTypes.forEach(type => {
     const newVal = JSON.parse(window.localStorage.getItem(type));
     if (newVal)
       defaultVisibilities[type] = {
@@ -49,25 +49,25 @@ try {
       };
   });
 } catch (e) {
-  console.error("error setting localstorage visibility config", e);
+  console.error('error setting localstorage visibility config', e);
 }
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const upsertAlignmentRun = createAction("UPSERT_ALIGNMENT_RUN");
+export const upsertAlignmentRun = createAction('UPSERT_ALIGNMENT_RUN');
 export const updateAlignmentViewVisibility = createAction(
-  "UPDATE_ALIGNMENT_VIEW_VISIBILITY"
+  'UPDATE_ALIGNMENT_VIEW_VISIBILITY'
 );
-export const alignmentRunUpdate = createAction("ALIGNMENT_RUN_UPDATE");
+export const alignmentRunUpdate = createAction('ALIGNMENT_RUN_UPDATE');
 
 const highlightRangeProps = {
-  color: "red",
+  color: 'red',
   hideCarets: true,
   ignoreGaps: true
 };
 function addHighlightedDifferences(alignmentTracks) {
-  return alignmentTracks.map((track) => {
+  return alignmentTracks.map(track => {
     if (track.isUnmapped) {
       return track;
     }
@@ -84,7 +84,7 @@ function addHighlightedDifferences(alignmentTracks) {
       matchHighlightRanges,
       additionalSelectionLayers: matchHighlightRanges
         .filter(({ isMatch }) => !isMatch)
-        .map((range) => {
+        .map(range => {
           return { ...range, ...highlightRangeProps };
         }),
       mismatches
@@ -99,7 +99,7 @@ function addHighlightedDifferences(alignmentTracks) {
 // ------------------------------------
 
 export default (state = {}, { payload = {}, type }) => {
-  if (type === "ALIGNMENT_RUN_UPDATE") {
+  if (type === 'ALIGNMENT_RUN_UPDATE') {
     const { alignmentId } = payload;
     const newState = {
       ...state,
@@ -111,22 +111,22 @@ export default (state = {}, { payload = {}, type }) => {
     return newState;
   }
 
-  if (type === "UPDATE_ALIGNMENT_VIEW_VISIBILITY") {
-    defaultVisibilityTypes.forEach((type) => {
+  if (type === 'UPDATE_ALIGNMENT_VIEW_VISIBILITY') {
+    defaultVisibilityTypes.forEach(type => {
       if (
-        (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
-        (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
+        (type.startsWith('pairwise_') && payload.pairwiseAlignments) ||
+        (!type.startsWith('pairwise_') && !payload.pairwiseAlignments)
       ) {
         defaultVisibilities[type] = {
           ...defaultVisibilities[type],
-          ...payload[type.replace("pairwise_", "")]
+          ...payload[type.replace('pairwise_', '')]
         };
 
         localStorage.setItem(
           type,
           JSON.stringify({
             ...defaultVisibilities[type],
-            ...payload[type.replace("pairwise_", "")]
+            ...payload[type.replace('pairwise_', '')]
           })
         );
       }
@@ -137,25 +137,22 @@ export default (state = {}, { payload = {}, type }) => {
     };
   }
 
-  if (type === "UPSERT_ALIGNMENT_RUN") {
+  if (type === 'UPSERT_ALIGNMENT_RUN') {
     let payloadToUse = {
       //assign default visibilities
       ...defaultVisibilityTypes.reduce((acc, type) => {
         if (
-          (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
-          (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
+          (type.startsWith('pairwise_') && payload.pairwiseAlignments) ||
+          (!type.startsWith('pairwise_') && !payload.pairwiseAlignments)
         ) {
-          acc[type.replace("pairwise_", "")] = defaultVisibilities[type];
+          acc[type.replace('pairwise_', '')] = defaultVisibilities[type];
         }
         return acc;
       }, {}),
       ...payload
     };
     if (payloadToUse.pairwiseAlignments) {
-      if (
-        payloadToUse.pairwiseAlignments[0][0].alignmentData.matchStart !==
-        undefined
-      ) {
+      if (payloadToUse.pairwiseAlignments[0][0].alignmentData.matchStart !== undefined) {
         payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
           addDashesForMatchStartAndEndForTracks
         );
@@ -193,7 +190,7 @@ export default (state = {}, { payload = {}, type }) => {
             start: match.index,
             end: match.index + match[0].length - 1,
             ...highlightRangeProps,
-            color: "grey"
+            color: 'grey'
           });
         }
 
@@ -221,11 +218,8 @@ export default (state = {}, { payload = {}, type }) => {
       );
     }
     //check for issues
-    let hasError = checkForIssues(
-      payloadToUse.alignmentTracks,
-      payload.alignmentType
-    );
-    (payloadToUse.pairwiseAlignments || []).forEach((alignment) => {
+    let hasError = checkForIssues(payloadToUse.alignmentTracks, payload.alignmentType);
+    (payloadToUse.pairwiseAlignments || []).forEach(alignment => {
       const error = alignment;
       if (error) {
         hasError = error;
@@ -247,15 +241,13 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
   const seqLength = nonTempSeq.length;
   const ranges = [];
   // const startIndex = "".match/[-]/ Math.max(0, .indexOf("-"));
-  const nonTempSeqWithoutLeadingDashes = nonTempSeq.replace(/^-+/g, "");
-  const nonTempSeqWithoutTrailingDashes = nonTempSeq.replace(/-+$/g, "");
+  const nonTempSeqWithoutLeadingDashes = nonTempSeq.replace(/^-+/g, '');
+  const nonTempSeqWithoutTrailingDashes = nonTempSeq.replace(/-+$/g, '');
 
   const startIndex = seqLength - nonTempSeqWithoutLeadingDashes.length;
-  const endIndex =
-    seqLength - (seqLength - nonTempSeqWithoutTrailingDashes.length);
+  const endIndex = seqLength - (seqLength - nonTempSeqWithoutTrailingDashes.length);
   for (let index = startIndex; index < endIndex; index++) {
-    const isMatch =
-      tempSeq[index].toLowerCase() === nonTempSeq[index].toLowerCase();
+    const isMatch = tempSeq[index].toLowerCase() === nonTempSeq[index].toLowerCase();
     const previousRange = ranges[ranges.length - 1];
     if (previousRange) {
       if (previousRange.isMatch === isMatch) {
@@ -279,60 +271,47 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
 }
 
 function checkForIssues(alignmentTracks, alignmentType) {
-  if (
-    !alignmentTracks ||
-    !alignmentTracks[0] ||
-    !alignmentTracks[0].alignmentData
-  ) {
+  if (!alignmentTracks || !alignmentTracks[0] || !alignmentTracks[0].alignmentData) {
     return;
   }
 
   let alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
   let hasError;
-  alignmentTracks.some((track) => {
+  alignmentTracks.some(track => {
     if (track.alignmentData.sequence.length !== alignmentTrackLength) {
-      console.error("incorrect length", alignmentTracks);
+      console.error('incorrect length', alignmentTracks);
 
-      return "incorrect length";
+      return 'incorrect length';
     }
     if (
       track.chromatogramData &&
-      track.sequenceData.sequence.length !==
-        track.chromatogramData.baseCalls.length
+      track.sequenceData.sequence.length !== track.chromatogramData.baseCalls.length
     ) {
-      console.error("incorrect chromatogram length", alignmentTracks);
+      console.error('incorrect chromatogram length', alignmentTracks);
 
-      return "incorrect chromatogram length";
+      return 'incorrect chromatogram length';
     }
     if (
-      alignmentType !== "Parallel Part Creation" &&
+      alignmentType !== 'Parallel Part Creation' &&
       track.sequenceData.sequence.length !==
-        track.alignmentData.sequence.replace(/-/g, "").length
+        track.alignmentData.sequence.replace(/-/g, '').length
     ) {
+      console.error('sequence data length does not match alignment data w/o gaps');
+      console.error('track.sequenceData.sequence:', track.sequenceData.sequence);
       console.error(
-        "sequence data length does not match alignment data w/o gaps"
-      );
-      console.error(
-        "track.sequenceData.sequence:",
-        track.sequenceData.sequence
-      );
-      console.error(
-        "track.sequenceData.sequence.length:",
+        'track.sequenceData.sequence.length:',
         track.sequenceData.sequence.length
       );
-      console.error(
-        "track.alignmentData.sequence:",
-        track.alignmentData.sequence
-      );
+      console.error('track.alignmentData.sequence:', track.alignmentData.sequence);
       console.error(
         'track.alignmentData.sequence.replace(/-/g,""):',
-        track.alignmentData.sequence.replace(/-/g, "")
+        track.alignmentData.sequence.replace(/-/g, '')
       );
       console.error(
         'track.alignmentData.sequence.replace(/-/g,"").length:',
-        track.alignmentData.sequence.replace(/-/g, "").length
+        track.alignmentData.sequence.replace(/-/g, '').length
       );
-      hasError = "sequence data length does not match alignment data w/o gaps";
+      hasError = 'sequence data length does not match alignment data w/o gaps';
       return true;
     }
     return false;

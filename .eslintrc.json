@@ -1,0 +1,106 @@
+{
+  "env": {
+    "es6": true,
+    "browser": true,
+    "commonjs": true,
+    "node": true,
+    "jest": true
+  },
+  "parser": "babel-eslint",
+  "settings": {
+    "ecmascript": 6,
+    "import/resolver": {
+      "node": {},
+      "webpack": {
+        "config": "webpack.config.js"
+      }
+    },
+    "import/parser": "babel-eslint"
+  },
+  "plugins": [
+    "react",
+    "import",
+    "formatjs",
+    "unicorn"
+  ],
+  "extends": [
+    "airbnb",
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "rules": {
+    "import/extensions": ["error", "ignorePackages", {
+      "js": "never",
+      "jsx": "never"
+    }],
+    "no-console": ["warn", {
+      "allow": ["error"]
+    }],
+
+    "no-underscore-dangle": "off",
+    "no-continue": "off",
+    "no-restricted-syntax": "off",
+    "max-classes-per-file": "off",
+
+    "import/no-cycle": "off",
+    "import/no-named-as-default": "off",
+
+    "react/prop-types": "off",
+    "react/prefer-es6-class": "off",
+    "react/require-default-props": "off",
+    "react/destructuring-assignment": "off",
+    "react/no-did-update-set-state": "off",
+    "react/no-unescaped-entities": "warn",
+
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-fragments": ["warn", "element"],
+
+    "jsx-a11y/label-has-for": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/mouse-events-have-key-events": "off",
+    "jsx-a11y/control-has-associated-label": "off",
+    "jsx-a11y/anchor-is-valid": ["warn", {
+      "components": []
+    }],
+
+    "no-unused-expressions": ["warn", {
+      "allowShortCircuit": true
+    }],
+
+    "no-plusplus": "warn",
+    "require-yield": "warn",
+    "no-else-return": "warn",
+    "no-control-regex": "warn",
+    "no-empty-pattern": "warn",
+    "no-useless-escape": "warn",
+    "no-nested-ternary": "warn",
+    "prefer-destructuring": "warn",
+    "class-methods-use-this": "warn",
+
+    "import/order": "warn",
+    "import/prefer-default-export": "warn",
+
+    "react/sort-comp": "warn",
+    "react/no-deprecated": "warn",
+    "react/no-string-refs": "warn",
+    "react/button-has-type": "warn",
+    "react/no-unused-state": "warn",
+    "react/no-children-prop": "warn",
+    "react/no-find-dom-node": "warn",
+    "react/forbid-prop-types": "warn",
+    "react/no-array-index-key": "warn",
+    "react/no-unused-prop-types": "warn",
+    "react/jsx-filename-extension": "warn",
+    "react/no-access-state-in-setstate": "warn",
+
+    "jsx-a11y/no-autofocus": "warn",
+    "jsx-a11y/interactive-supports-focus": "warn",
+    "jsx-a11y/label-has-associated-control": "warn",
+    "jsx-a11y/no-static-element-interactions": "warn",
+    "jsx-a11y/no-noninteractive-element-interactions": "warn",
+
+    "formatjs/enforce-description": "error",
+
+    "unicorn/numeric-separators-style": "error"
+  }
+}

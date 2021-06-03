@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import drawDirectedPiePiece from "./drawDirectedPiePiece";
+import drawDirectedPiePiece from './drawDirectedPiePiece';
 
 export default function Feature({
-  color = "orange",
+  color = 'orange',
   radius,
   containsLocations,
   arrowheadLength = 0.5,

@@ -1,40 +1,34 @@
-import { render, unmountComponentAtNode, findDOMNode } from "react-dom";
+import { render, unmountComponentAtNode, findDOMNode } from 'react-dom';
 
-import { getRangeLength } from "ve-range-utils";
+import { getRangeLength } from 've-range-utils';
 // import Tether from "tether";
-import Popper from "popper.js";
+import Popper from 'popper.js';
 
 import {
   getInsertBetweenVals,
   convertDnaCaretPositionOrRangeToAA
-} from "ve-sequence-utils";
-import React from "react";
-import { divideBy3 } from "../utils/proteinUtils";
-import "./createSequenceInputPopupStyle.css";
-import { Classes } from "@blueprintjs/core";
-import { getNodeToRefocus } from "../utils/editorUtils";
+} from 've-sequence-utils';
+import React from 'react';
+import { divideBy3 } from '../utils/proteinUtils';
+import './createSequenceInputPopupStyle.css';
+import { Classes } from '@blueprintjs/core';
+import { getNodeToRefocus } from '../utils/editorUtils';
 
 let div;
 
 class SequenceInputNoHotkeys extends React.Component {
   state = {
-    charsToInsert: "",
+    charsToInsert: '',
     hasTempError: false
   };
   componentDidMount() {
-    document.addEventListener(
-      "mousedown",
-      this.handleUnmountIfClickOustidePopup
-    );
+    document.addEventListener('mousedown', this.handleUnmountIfClickOustidePopup);
   }
 
   componentWillUnmount() {
-    document.removeEventListener(
-      "mousedown",
-      this.handleUnmountIfClickOustidePopup
-    );
+    document.removeEventListener('mousedown', this.handleUnmountIfClickOustidePopup);
   }
-  handleUnmountIfClickOustidePopup = (e) => {
+  handleUnmountIfClickOustidePopup = e => {
     const n = findDOMNode(this);
     if (!n) return;
     const node = n.parentNode;
@@ -52,7 +46,7 @@ class SequenceInputNoHotkeys extends React.Component {
       if (!node) return;
       unmountComponentAtNode(node);
       this.props.nodeToReFocus && this.props.nodeToReFocus.focus();
-      document.getElementById("sequenceInputBubble").outerHTML = "";
+      document.getElementById('sequenceInputBubble').outerHTML = '';
     });
   };
   handleInsert() {
@@ -85,21 +79,17 @@ class SequenceInputNoHotkeys extends React.Component {
 
     let message;
     if (isReplace) {
-      let betweenVals = getInsertBetweenVals(
-        -1,
-        selectionLayer,
-        sequenceLength
-      );
+      let betweenVals = getInsertBetweenVals(-1, selectionLayer, sequenceLength);
 
       message = (
         <span>
-          Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to replace{" "}
-          {divideBy3(getRangeLength(selectionLayer, sequenceLength), isProtein)}{" "}
-          {isProtein ? "AAs" : "base pairs"} between{" "}
+          Press <span style={{ fontWeight: 'bolder' }}>ENTER</span> to replace{' '}
+          {divideBy3(getRangeLength(selectionLayer, sequenceLength), isProtein)}{' '}
+          {isProtein ? 'AAs' : 'base pairs'} between{' '}
           {isProtein
             ? convertDnaCaretPositionOrRangeToAA(betweenVals[0])
-            : betweenVals[0]}{" "}
-          and{" "}
+            : betweenVals[0]}{' '}
+          and{' '}
           {isProtein
             ? convertDnaCaretPositionOrRangeToAA(betweenVals[1] + 2)
             : betweenVals[1]}
@@ -108,12 +98,10 @@ class SequenceInputNoHotkeys extends React.Component {
     } else {
       message = (
         <span>
-          Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to insert{" "}
-          {charsToInsert.length} {isProtein ? "AAs" : "base pairs"} after{" "}
-          {isProtein ? "AA" : "base"}{" "}
-          {isProtein
-            ? convertDnaCaretPositionOrRangeToAA(caretPosition)
-            : caretPosition}
+          Press <span style={{ fontWeight: 'bolder' }}>ENTER</span> to insert{' '}
+          {charsToInsert.length} {isProtein ? 'AAs' : 'base pairs'} after{' '}
+          {isProtein ? 'AA' : 'base'}{' '}
+          {isProtein ? convertDnaCaretPositionOrRangeToAA(caretPosition) : caretPosition}
         </span>
       );
     }
@@ -121,7 +109,7 @@ class SequenceInputNoHotkeys extends React.Component {
       <div className="sequenceInputBubble">
         <input
           autoCorrect="off"
-          onKeyDown={(e) => {
+          onKeyDown={e => {
             if (e.keyCode === 27) {
               this.handleUnmount();
             }
@@ -133,10 +121,10 @@ class SequenceInputNoHotkeys extends React.Component {
           className={Classes.INPUT}
           value={charsToInsert}
           autoFocus
-          style={hasTempError ? { borderColor: "red" } : {}}
-          onChange={(e) => {
-            let sanitizedVal = "";
-            e.target.value.split("").forEach((letter) => {
+          style={hasTempError ? { borderColor: 'red' } : {}}
+          onChange={e => {
+            let sanitizedVal = '';
+            e.target.value.split('').forEach(letter => {
               if (acceptedChars.includes(letter.toLowerCase())) {
                 sanitizedVal += letter;
               }
@@ -153,7 +141,7 @@ class SequenceInputNoHotkeys extends React.Component {
             }
             if (maxInsertSize && sanitizedVal.lenth > maxInsertSize) {
               return window.toastr.error(
-                "Sorry, your insert is greater than ",
+                'Sorry, your insert is greater than ',
                 maxInsertSize
               );
             }
@@ -164,7 +152,7 @@ class SequenceInputNoHotkeys extends React.Component {
         />
         <div style={{ marginTop: 10 }}>{message}</div>
         <div style={{ marginTop: 10 }}>
-          Press <span style={{ fontWeight: "bolder" }}>ESC</span> to{" "}
+          Press <span style={{ fontWeight: 'bolder' }}>ESC</span> to{' '}
           <button className="link-button" onClick={this.handleUnmount}>
             cancel
           </button>
@@ -202,16 +190,16 @@ export default function createSequenceInputPopup(props) {
   if (!caretEl || !caretEl === 0 || !isElementInViewport(caretEl)) {
     const activeEl = getActiveElement();
     if (activeEl) {
-      caretEl = activeEl.querySelector(".veCaret");
+      caretEl = activeEl.querySelector('.veCaret');
     }
   }
   if (!caretEl || !caretEl === 0 || !isElementInViewport(caretEl)) {
     caretEl = getActiveElement();
   }
   if (!caretEl || !caretEl === 0 || !isElementInViewport(caretEl)) {
-    caretEl = document.querySelector(".veCaret");
+    caretEl = document.querySelector('.veCaret');
   }
-  if (document.body.classList.contains("sequenceDragging")) {
+  if (document.body.classList.contains('sequenceDragging')) {
     window.toastr.warning("Can't insert new sequence while dragging");
     //don't allow this
     return;
@@ -220,9 +208,9 @@ export default function createSequenceInputPopup(props) {
   // function closeInput() {
   //   sequenceInputBubble.remove();
   // }
-  div = document.createElement("div");
-  div.style.zIndex = "400000";
-  div.id = "sequenceInputBubble";
+  div = document.createElement('div');
+  div.style.zIndex = '400000';
+  div.id = 'sequenceInputBubble';
   document.body.appendChild(div);
 
   const innerEl = (
@@ -236,14 +224,14 @@ export default function createSequenceInputPopup(props) {
 
   if (!caretEl) {
     return console.error(
-      "there must be a caret element present in order to display the insertSequence popup"
+      'there must be a caret element present in order to display the insertSequence popup'
     );
   }
 
   new Popper(caretEl, div, {
-    placement: "bottom",
+    placement: 'bottom',
     modifiers: {
-      offset: { offset: "94" }
+      offset: { offset: '94' }
     }
   });
 }
@@ -256,11 +244,11 @@ const getActiveElement = function (document) {
     document.body === document.activeElement ||
     /* eslint-disable eqeqeq*/
 
-    document.activeElement.tagName == "IFRAME"
+    document.activeElement.tagName == 'IFRAME'
     /* eslint-enable eqeqeq*/
   ) {
     // Get iframes
-    let iframes = document.getElementsByTagName("iframe");
+    let iframes = document.getElementsByTagName('iframe');
     for (let i = 0; i < iframes.length; i++) {
       // Recall
       let focused = getActiveElement(iframes[i].contentWindow.document);

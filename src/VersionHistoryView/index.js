@@ -1,11 +1,11 @@
-import React from "react";
-import { Button, Intent } from "@blueprintjs/core";
-import { tidyUpSequenceData } from "ve-sequence-utils";
-import { DataTable } from "teselagen-react-components";
+import React from 'react';
+import { Button, Intent } from '@blueprintjs/core';
+import { tidyUpSequenceData } from 've-sequence-utils';
+import { DataTable } from 'teselagen-react-components';
 
-import Editor from "../Editor";
-import FillWindow from "../Editor/FillWindow";
-import withEditorProps from "../withEditorProps";
+import Editor from '../Editor';
+import FillWindow from '../Editor/FillWindow';
+import withEditorProps from '../withEditorProps';
 
 const SIDE_PANEL_WIDTH = 350;
 
@@ -17,8 +17,8 @@ const SIDE_PANEL_WIDTH = 350;
 // (not necessary unless using VersionHistoryView directly) getCurrentSequenceData: () => teselagenSequenceData  //called upon initialization
 
 const currentVersion = {
-  dateChanged: "Current",
-  id: "__current__"
+  dateChanged: 'Current',
+  id: '__current__'
 };
 export class VersionHistoryView extends React.Component {
   state = {
@@ -44,11 +44,11 @@ export class VersionHistoryView extends React.Component {
         sequenceData:
           (sequenceData && tidyUpSequenceData(sequenceData)) ||
           tidyUpSequenceData({
-            sequence: "gTAGAGACAAGA"
+            sequence: 'gTAGAGACAAGA'
           })
       },
       {
-        editorName: "veVersionHistoryView"
+        editorName: 'veVersionHistoryView'
       }
     );
   };
@@ -66,7 +66,7 @@ export class VersionHistoryView extends React.Component {
   onRowSelect = async ([row]) => {
     // const close = showLoadingMask();
     if (!row) return;
-    if (row.id === "__current__") {
+    if (row.id === '__current__') {
       this.updateSeqData(await this.getCurrentSeqData());
       this.setState({ selectedVersion: null });
     } else {
@@ -88,13 +88,12 @@ export class VersionHistoryView extends React.Component {
   };
   revertToSelectedVersion = () => {
     if (!this.props.onSave) {
-      return console.error("props.onSave must be passed to VersionHistoryView");
+      return console.error('props.onSave must be passed to VersionHistoryView');
     }
     const tidiedActiveData = tidyUpSequenceData(this.activeSeqData, {
       annotationsAsObjects: true
     });
-    this.props.updateSequenceData &&
-      this.props.updateSequenceData(tidiedActiveData);
+    this.props.updateSequenceData && this.props.updateSequenceData(tidiedActiveData);
     this.props.caretPositionUpdate && this.props.caretPositionUpdate(0);
     this.props.onSave(
       {},
@@ -117,26 +116,26 @@ export class VersionHistoryView extends React.Component {
         {({ width, height }) => {
           return (
             <div
-              style={{ width, height, display: "flex" }}
+              style={{ width, height, display: 'flex' }}
               className="veVersionHistoryView"
             >
               <Editor
                 style={{
-                  flexBasis: "content",
+                  flexBasis: 'content',
                   // flex: "0 0 200px",
-                  flex: "1 1 350px",
+                  flex: '1 1 350px',
                   width: width - SIDE_PANEL_WIDTH
                 }}
                 noVersionHistory
                 // fitHeight={true}
                 ToolBarProps={{
                   toolList: [
-                    "cutsiteTool",
-                    "featureTool",
-                    "orfTool",
-                    "alignmentTool",
-                    "findTool",
-                    "visibilityTool"
+                    'cutsiteTool',
+                    'featureTool',
+                    'orfTool',
+                    'alignmentTool',
+                    'findTool',
+                    'visibilityTool'
                   ],
                   contentLeft: (
                     <Button
@@ -152,7 +151,7 @@ export class VersionHistoryView extends React.Component {
               />
               <div
                 style={{
-                  borderLeft: "1px solid grey",
+                  borderLeft: '1px solid grey',
                   padding: 3,
                   width: SIDE_PANEL_WIDTH,
                   minWidth: SIDE_PANEL_WIDTH,
@@ -161,15 +160,12 @@ export class VersionHistoryView extends React.Component {
                   // flexGrow: 1,
                   // flex: "2 1 350px",
                   // flexBasis: "content",
-                  display: "flex",
-                  flexDirection: "column"
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
                 className="veVersionHistoryViewSidePanel"
               >
-                <h2 style={{ width: "100%", textAlign: "center" }}>
-                  {" "}
-                  Past Versions:{" "}
-                </h2>
+                <h2 style={{ width: '100%', textAlign: 'center' }}> Past Versions: </h2>
                 <DataTable
                   noPadding
                   isSingleSelect
@@ -180,7 +176,7 @@ export class VersionHistoryView extends React.Component {
                   formName="featureProperties"
                   noRouter
                   compact
-                  selectedIds={["__current__"]}
+                  selectedIds={['__current__']}
                   withDisplayOptions
                   hideDisplayOptionsIcon
                   withSearch={false}
@@ -189,11 +185,11 @@ export class VersionHistoryView extends React.Component {
                   schema={{
                     fields: [
                       {
-                        path: "dateChanged",
-                        type: "string"
+                        path: 'dateChanged',
+                        type: 'string'
                       },
-                      { path: "editedBy", type: "string" },
-                      { path: "revisionType", type: "string" }
+                      { path: 'editedBy', type: 'string' },
+                      { path: 'revisionType', type: 'string' }
                     ]
                   }}
                   entities={this.state.versionList}

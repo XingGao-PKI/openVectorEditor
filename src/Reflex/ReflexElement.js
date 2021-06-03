@@ -4,11 +4,11 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
-import throttle from "lodash.throttle";
-import Measure from "react-measure";
-import PropTypes from "prop-types";
-import Browser from "./Browser";
-import React from "react";
+import throttle from 'lodash.throttle';
+import Measure from 'react-measure';
+import PropTypes from 'prop-types';
+import Browser from './Browser';
+import React from 'react';
 
 export default class ReflexElement extends React.Component {
   /////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ export default class ReflexElement extends React.Component {
     renderOnResizeRate: 60,
     resizeHeight: true,
     resizeWidth: true,
-    className: ""
+    className: ''
   };
 
   /////////////////////////////////////////////////////////
@@ -46,13 +46,13 @@ export default class ReflexElement extends React.Component {
 
     this.onResize = this.onResize.bind(this);
 
-    this.setStateThrottled = throttle((state) => {
+    this.setStateThrottled = throttle(state => {
       this.setState(state);
     }, this.props.renderOnResizeRate);
 
     this.state = {
       dimensions: {
-        height: "100%",
+        height: '100%',
         width: 300
       }
     };
@@ -67,7 +67,7 @@ export default class ReflexElement extends React.Component {
       const directions = this.toArray(props.direction);
 
       for (let dir of directions) {
-        await this.props.events.emit("element.size", {
+        await this.props.events.emit('element.size', {
           size: props.size,
           direction: dir,
           element: this
@@ -107,7 +107,7 @@ export default class ReflexElement extends React.Component {
   /////////////////////////////////////////////////////////
   renderChildren() {
     if (this.props.propagateDimensions) {
-      return React.Children.map(this.props.children, (child) => {
+      return React.Children.map(this.props.children, child => {
         const newProps = Object.assign({}, child.props, {
           dimensions: this.state.dimensions
         });
@@ -124,9 +124,9 @@ export default class ReflexElement extends React.Component {
   //
   /////////////////////////////////////////////////////////
   render() {
-    const classNames = ["reflex-element", ...this.props.className.split(" ")];
+    const classNames = ['reflex-element', ...this.props.className.split(' ')];
 
-    const className = classNames.join(" ");
+    const className = classNames.join(' ');
 
     const outerStyle = Object.assign(
       {},

@@ -1,20 +1,20 @@
-import React from "react";
-import { reduxForm, formValues } from "redux-form";
+import React from 'react';
+import { reduxForm, formValues } from 'redux-form';
 
 import {
   wrapDialog,
   DataTable,
   withSelectedEntities,
   SwitchField
-} from "teselagen-react-components";
-import { compose } from "redux";
-import { Button, Classes, Popover } from "@blueprintjs/core";
-import classNames from "classnames";
+} from 'teselagen-react-components';
+import { compose } from 'redux';
+import { Button, Classes, Popover } from '@blueprintjs/core';
+import classNames from 'classnames';
 
-import withEditorProps from "../../withEditorProps";
-import { forEach, camelCase, startCase } from "lodash";
-import { sizeSchema } from "../PropertiesDialog/utils";
-import { getRangeLength } from "ve-range-utils";
+import withEditorProps from '../../withEditorProps';
+import { forEach, camelCase, startCase } from 'lodash';
+import { sizeSchema } from '../PropertiesDialog/utils';
+import { getRangeLength } from 've-range-utils';
 
 const schema = {
   fields: [
@@ -33,10 +33,10 @@ const schema = {
     //         }
     //       }
     //     ]),
-    { path: "name", type: "string" },
+    { path: 'name', type: 'string' },
     // ...(noType ? [] : [{ path: "type", type: "string" }]),
     sizeSchema,
-    { path: "strand", type: "string" }
+    { path: 'strand', type: 'string' }
   ]
 };
 
@@ -59,7 +59,7 @@ class RemoveDuplicatesDialog extends React.Component {
     const {
       // hideModal,
       type,
-      sequenceData = { sequence: "" },
+      sequenceData = { sequence: '' },
       // handleSubmit,
       sequenceLength,
       ignoreName,
@@ -72,10 +72,10 @@ class RemoveDuplicatesDialog extends React.Component {
     const annotations = sequenceData[type];
     const dups = [];
     const seqsHashByStartEndStrandName = {};
-    forEach(annotations, (a) => {
-      const hash = `${ignoreStartAndEnd ? "" : a.start}&${
-        ignoreStartAndEnd ? "" : a.end
-      }&${ignoreStrand ? "" : a.strand}&${ignoreName ? "" : a.name}`;
+    forEach(annotations, a => {
+      const hash = `${ignoreStartAndEnd ? '' : a.start}&${
+        ignoreStartAndEnd ? '' : a.end
+      }&${ignoreStrand ? '' : a.strand}&${ignoreName ? '' : a.name}`;
       if (seqsHashByStartEndStrandName[hash]) {
         dups.push({ ...a, size: getRangeLength(a, sequenceLength) });
       } else {
@@ -87,11 +87,11 @@ class RemoveDuplicatesDialog extends React.Component {
   render() {
     const { duplicatesToRemoveSelectedEntities, hideModal, type } = this.props;
 
-    const selectedIds = this.state.dups.map((d) => d.id);
+    const selectedIds = this.state.dups.map(d => d.id);
     // const sequenceLength = sequenceData.sequence.length;
     // const isCirc = (this.state || {}).circular;
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog")}>
+      <div className={classNames(Classes.DIALOG_BODY, 'tg-min-width-dialog')}>
         {/* {dups.map((d) => {
           return <div>
 
@@ -119,8 +119,8 @@ class RemoveDuplicatesDialog extends React.Component {
         <div
           style={{
             marginTop: 10,
-            display: "flex",
-            justifyContent: "space-between"
+            display: 'flex',
+            justifyContent: 'space-between'
           }}
         >
           <Popover
@@ -161,7 +161,7 @@ class RemoveDuplicatesDialog extends React.Component {
             intent="primary"
             onClick={() => {
               this.props[camelCase(`delete_${type}`).slice(0, -1)](
-                duplicatesToRemoveSelectedEntities.map((d) => d.id)
+                duplicatesToRemoveSelectedEntities.map(d => d.id)
               );
               window.toastr.success(
                 `Successfully Deleted ${
@@ -184,10 +184,10 @@ export default compose(
   wrapDialog(),
   withEditorProps,
 
-  withSelectedEntities("duplicatesToRemove"),
+  withSelectedEntities('duplicatesToRemove'),
 
   reduxForm({
-    form: "RemoveDuplicatesDialog"
+    form: 'RemoveDuplicatesDialog'
   }),
-  formValues("ignoreName", "ignoreStrand", "ignoreStartAndEnd")
+  formValues('ignoreName', 'ignoreStrand', 'ignoreStartAndEnd')
 )(RemoveDuplicatesDialog);

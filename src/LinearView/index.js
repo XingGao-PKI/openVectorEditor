@@ -1,19 +1,19 @@
-import { isEqual, startCase } from "lodash";
-import draggableClassnames from "../constants/draggableClassnames";
-import prepareRowData from "../utils/prepareRowData";
-import React from "react";
-import Draggable from "react-draggable";
-import RowItem from "../RowItem";
-import withEditorInteractions from "../withEditorInteractions";
-import { withEditorPropsNoRedux } from "../withEditorProps";
-import "./style.css";
+import { isEqual, startCase } from 'lodash';
+import draggableClassnames from '../constants/draggableClassnames';
+import prepareRowData from '../utils/prepareRowData';
+import React from 'react';
+import Draggable from 'react-draggable';
+import RowItem from '../RowItem';
+import withEditorInteractions from '../withEditorInteractions';
+import { withEditorPropsNoRedux } from '../withEditorProps';
+import './style.css';
 import {
   getClientX,
   getEmptyText,
   getParedDownWarning,
   pareDownAnnotations
-} from "../utils/editorUtils";
-import useAnnotationLimits from "../utils/useAnnotationLimits";
+} from '../utils/editorUtils';
+import useAnnotationLimits from '../utils/useAnnotationLimits';
 
 let defaultMarginWidth = 10;
 
@@ -29,11 +29,9 @@ class _LinearView extends React.Component {
     if (getClientX(event) - boundingRowRect.left < 0) {
       nearestCaretPos = 0;
     } else {
-      let clickXPositionRelativeToRowContainer =
-        getClientX(event) - boundingRowRect.left;
+      let clickXPositionRelativeToRowContainer = getClientX(event) - boundingRowRect.left;
       let numberOfBPsInFromRowStart = Math.floor(
-        (clickXPositionRelativeToRowContainer + this.charWidth / 2) /
-          this.charWidth
+        (clickXPositionRelativeToRowContainer + this.charWidth / 2) / this.charWidth
       );
       nearestCaretPos = numberOfBPsInFromRowStart + 0;
       if (nearestCaretPos > maxEnd + 1) {
@@ -45,13 +43,11 @@ class _LinearView extends React.Component {
     }
     if (this.props.sequenceLength === 0) nearestCaretPos = 0;
     const callbackVals = {
-      doNotWrapOrigin: !(
-        this.props.sequenceData && this.props.sequenceData.circular
-      ),
+      doNotWrapOrigin: !(this.props.sequenceData && this.props.sequenceData.circular),
       event,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
-      caretGrabbed: event.target.className === "cursor",
+      caretGrabbed: event.target.className === 'cursor',
       selectionStartGrabbed: event.target.classList.contains(
         draggableClassnames.selectionStart
       ),
@@ -62,7 +58,7 @@ class _LinearView extends React.Component {
     callback(callbackVals);
   }
   getMaxLength = () => {
-    const { sequenceData = { sequence: "" }, alignmentData } = this.props;
+    const { sequenceData = { sequence: '' }, alignmentData } = this.props;
     const data = alignmentData || sequenceData;
     return data.noSequence ? data.size : data.sequence.length;
   };
@@ -70,37 +66,32 @@ class _LinearView extends React.Component {
   getRowData = () => {
     const {
       limits,
-      sequenceData = { sequence: "" },
+      sequenceData = { sequence: '' },
       maxAnnotationsToDisplay
     } = this.props;
     if (!isEqual(sequenceData, this.oldSeqData)) {
       this.paredDownMessages = [];
-      const paredDownSeqData = ["parts", "features", "cutsites"].reduce(
-        (acc, type) => {
-          const nameUpper = startCase(type);
-          const maxToShow =
-            (maxAnnotationsToDisplay
-              ? maxAnnotationsToDisplay[type]
-              : limits[type]) || 50;
-          let [annotations, paredDown] = pareDownAnnotations(
-            sequenceData["filtered" + nameUpper] || sequenceData[type] || {},
-            maxToShow
-          );
+      const paredDownSeqData = ['parts', 'features', 'cutsites'].reduce((acc, type) => {
+        const nameUpper = startCase(type);
+        const maxToShow =
+          (maxAnnotationsToDisplay ? maxAnnotationsToDisplay[type] : limits[type]) || 50;
+        let [annotations, paredDown] = pareDownAnnotations(
+          sequenceData['filtered' + nameUpper] || sequenceData[type] || {},
+          maxToShow
+        );
 
-          if (paredDown) {
-            this.paredDownMessages.push(
-              getParedDownWarning({
-                nameUpper,
-                isAdjustable: !maxAnnotationsToDisplay,
-                maxToShow
-              })
-            );
-          }
-          acc[type] = annotations;
-          return acc;
-        },
-        {}
-      );
+        if (paredDown) {
+          this.paredDownMessages.push(
+            getParedDownWarning({
+              nameUpper,
+              isAdjustable: !maxAnnotationsToDisplay,
+              maxToShow
+            })
+          );
+        }
+        acc[type] = annotations;
+        return acc;
+      }, {});
       this.rowData = prepareRowData(
         {
           ...sequenceData,
@@ -116,7 +107,7 @@ class _LinearView extends React.Component {
   render() {
     let {
       //currently found in props
-      sequenceData = { sequence: "" },
+      sequenceData = { sequence: '' },
       alignmentData,
       hideName = false,
       editorDragged = noop,
@@ -140,31 +131,23 @@ class _LinearView extends React.Component {
     let innerWidth = Math.max(width - marginWidth, 0);
     this.charWidth = charWidth || innerWidth / this.getMaxLength();
     const bpsPerRow = this.getMaxLength();
-    let sequenceName = hideName ? "" : sequenceData.name || "";
+    let sequenceName = hideName ? '' : sequenceData.name || '';
     let rowData = this.getRowData();
 
     return (
       <Draggable
         // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-        onDrag={(event) => {
-          this.getNearestCursorPositionToMouseEvent(
-            rowData,
-            event,
-            editorDragged
-          );
+        onDrag={event => {
+          this.getNearestCursorPositionToMouseEvent(rowData, event, editorDragged);
         }}
-        onStart={(event) => {
-          this.getNearestCursorPositionToMouseEvent(
-            rowData,
-            event,
-            editorDragStarted
-          );
+        onStart={event => {
+          this.getNearestCursorPositionToMouseEvent(rowData, event, editorDragStarted);
         }}
         onStop={editorDragStopped}
       >
         <div
-          ref={(ref) => (this.linearView = ref)}
+          ref={ref => (this.linearView = ref)}
           className="veLinearView"
           style={{
             width,
@@ -172,19 +155,15 @@ class _LinearView extends React.Component {
             paddingLeft: marginWidth / 2,
             ...(paddingBottom && { paddingBottom })
           }}
-          onContextMenu={(event) => {
+          onContextMenu={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
               backgroundRightClicked
             );
           }}
-          onClick={(event) => {
-            this.getNearestCursorPositionToMouseEvent(
-              rowData,
-              event,
-              editorClicked
-            );
+          onClick={event => {
+            this.getNearestCursorPositionToMouseEvent(rowData, event, editorClicked);
           }}
         >
           {!hideName && (
@@ -192,9 +171,7 @@ class _LinearView extends React.Component {
               {...{
                 isProtein,
                 sequenceName,
-                sequenceLength: sequenceData.sequence
-                  ? sequenceData.sequence.length
-                  : 0
+                sequenceLength: sequenceData.sequence ? sequenceData.sequence.length : 0
               }}
             />
           )}
@@ -214,9 +191,7 @@ class _LinearView extends React.Component {
               emptyText: getEmptyText({ sequenceData, caretPosition }),
               tickSpacing:
                 tickSpacing ||
-                Math.floor(
-                  this.getMaxLength() / (sequenceData.isProtein ? 9 : 10)
-                ),
+                Math.floor(this.getMaxLength() / (sequenceData.isProtein ? 9 : 10)),
               annotationVisibility: {
                 ...rest.annotationVisibility,
                 // yellowAxis: true,
@@ -239,19 +214,17 @@ class _LinearView extends React.Component {
 
 function SequenceName({ sequenceName, sequenceLength, isProtein }) {
   return (
-    <div key="circViewSvgCenterText" style={{ textAlign: "center" }}>
+    <div key="circViewSvgCenterText" style={{ textAlign: 'center' }}>
       <span>{sequenceName} </span>
       <br />
       <span>
-        {isProtein
-          ? `${Math.floor(sequenceLength / 3)} AAs`
-          : `${sequenceLength} bps`}
+        {isProtein ? `${Math.floor(sequenceLength / 3)} AAs` : `${sequenceLength} bps`}
       </span>
     </div>
   );
 }
 
-const WithAnnotationLimitsHoc = (Component) => (props) => {
+const WithAnnotationLimitsHoc = Component => props => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [limits = {}] = useAnnotationLimits();
   return <Component limits={limits} {...props}></Component>;

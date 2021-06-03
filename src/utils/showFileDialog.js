@@ -18,7 +18,6 @@ function getInput(multiple) {
   return hiddenInput;
 }
 
-
 export default function showFileDialog({ multiple = false, onSelect }) {
   const input = getInput(multiple);
   callback = onSelect;

@@ -1,17 +1,13 @@
 //./caretPosition.js
-import { createReducer } from "redux-act";
-import createAction from "./utils/createMetaAction";
+import { createReducer } from 'redux-act';
+import createAction from './utils/createMetaAction';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const frameTranslationToggle = createAction("FRAME_TRANSLATION_TOGGLE");
-export const frameTranslationToggleOn = createAction(
-  "FRAME_TRANSLATION_TOGGLE_ON"
-);
-export const frameTranslationToggleOff = createAction(
-  "FRAME_TRANSLATION_TOGGLE_OFF"
-);
+export const frameTranslationToggle = createAction('FRAME_TRANSLATION_TOGGLE');
+export const frameTranslationToggleOn = createAction('FRAME_TRANSLATION_TOGGLE_ON');
+export const frameTranslationToggleOff = createAction('FRAME_TRANSLATION_TOGGLE_OFF');
 
 // ------------------------------------
 // Reducer
@@ -38,12 +34,12 @@ export default createReducer(
     }
   },
   {
-    "1": false,
-    "2": false,
-    "3": false,
-    "-1": false,
-    "-2": false,
-    "-3": false
+    1: false,
+    2: false,
+    3: false,
+    '-1': false,
+    '-2': false,
+    '-3': false
   }
 );
 

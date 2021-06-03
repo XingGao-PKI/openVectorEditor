@@ -1,18 +1,16 @@
-import createAction from "./utils/createMetaAction";
-import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import createAction from './utils/createMetaAction';
+import createMergedDefaultStateReducer from './utils/createMergedDefaultStateReducer';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const toggleFindTool = createAction("TOGGLE_FIND_TOOL", () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
-export const toggleHighlightAll = createAction("toggleHighlightAll", () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
-export const toggleIsInline = createAction("toggleIsInline", () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
-export const updateSearchText = createAction("updateSearchText");
-export const updateAmbiguousOrLiteral = createAction(
-  "updateAmbiguousOrLiteral"
-);
-export const updateDnaOrAA = createAction("updateDnaOrAA");
-export const updateMatchNumber = createAction("updateMatchNumber");
+export const toggleFindTool = createAction('TOGGLE_FIND_TOOL', () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
+export const toggleHighlightAll = createAction('toggleHighlightAll', () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
+export const toggleIsInline = createAction('toggleIsInline', () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
+export const updateSearchText = createAction('updateSearchText');
+export const updateAmbiguousOrLiteral = createAction('updateAmbiguousOrLiteral');
+export const updateDnaOrAA = createAction('updateDnaOrAA');
+export const updateMatchNumber = createAction('updateMatchNumber');
 
 // ------------------------------------
 // Reducer
@@ -32,7 +30,7 @@ export default createMergedDefaultStateReducer(
       };
     },
     [toggleIsInline]: state => {
-      localStorage.setItem("veFindBarIsExpanded", state.isInline);
+      localStorage.setItem('veFindBarIsExpanded', state.isInline);
       return {
         ...state,
         isInline: !state.isInline
@@ -68,10 +66,10 @@ export default createMergedDefaultStateReducer(
   },
   {
     isOpen: false,
-    isInline: !localStorage.getItem("veFindBarIsExpanded"),
-    searchText: "",
-    dnaOrAA: "DNA",
-    ambiguousOrLiteral: "LITERAL",
+    isInline: !localStorage.getItem('veFindBarIsExpanded'),
+    searchText: '',
+    dnaOrAA: 'DNA',
+    ambiguousOrLiteral: 'LITERAL',
     highlightAll: false,
     matchNumber: 0
   }

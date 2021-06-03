@@ -1,26 +1,26 @@
-import { convertRangeTo0Based } from "ve-range-utils";
-import classNames from "classnames";
-import React from "react";
+import { convertRangeTo0Based } from 've-range-utils';
+import classNames from 'classnames';
+import React from 'react';
 
-import { reduxForm, formValues } from "redux-form";
-import { wrapDialog } from "teselagen-react-components";
-import { compose } from "redux";
-import { Button, Intent, Classes } from "@blueprintjs/core";
+import { reduxForm, formValues } from 'redux-form';
+import { wrapDialog } from 'teselagen-react-components';
+import { compose } from 'redux';
+import { Button, Intent, Classes } from '@blueprintjs/core';
 
-import { NumericInputField } from "teselagen-react-components";
-import { get } from "lodash";
-import { getRangeLength } from "ve-range-utils";
-import { tryToRefocusEditor } from "../utils/editorUtils";
+import { NumericInputField } from 'teselagen-react-components';
+import { get } from 'lodash';
+import { getRangeLength } from 've-range-utils';
+import { tryToRefocusEditor } from '../utils/editorUtils';
 
 // Single validation function - from & to have the same range
 const validate = (val, vals, props) => {
-  const { min, max } = get(props, "extraProps.from", {});
-  const circular = get(props, "extraProps.circular");
+  const { min, max } = get(props, 'extraProps.from', {});
+  const circular = get(props, 'extraProps.circular');
   if ((min && val < min) || (max && val > max)) {
-    return "Invalid position";
+    return 'Invalid position';
   }
   if (!circular && Number(vals.from) > Number(vals.to)) {
-    return "Wrong from/to order";
+    return 'Wrong from/to order';
   }
 };
 
@@ -28,17 +28,17 @@ export default compose(
   wrapDialog({
     isDraggable: true,
     width: 400,
-    title: "Select Range",
+    title: 'Select Range',
     height: 270,
     onCloseHook: tryToRefocusEditor
   }),
   reduxForm({
-    form: "selectDialog"
+    form: 'selectDialog'
   }),
-  formValues("from", "to")
+  formValues('from', 'to')
 )(
   class SelectDialog extends React.Component {
-    updateTempHighlight = ({ isStart, isEnd } = {}) => (val) => {
+    updateTempHighlight = ({ isStart, isEnd } = {}) => val => {
       const { selectionLayerUpdate, from, to, invalid } = this.props;
       if (invalid) return;
       selectionLayerUpdate(
@@ -78,15 +78,12 @@ export default compose(
 
       return (
         <form
-          onSubmit={handleSubmit((data) => {
+          onSubmit={handleSubmit(data => {
             if (onSubmit) onSubmit(data);
             hideModal();
             tryToRefocusEditor();
           })}
-          className={classNames(
-            Classes.DIALOG_BODY,
-            "tg-min-width-dialog simple-dialog"
-          )}
+          className={classNames(Classes.DIALOG_BODY, 'tg-min-width-dialog simple-dialog')}
         >
           <NumericInputField
             autoFocus
@@ -129,9 +126,9 @@ export default compose(
             <Button
               type="submit"
               intent={Intent.PRIMARY}
-              text={`Select ${invalid ? 0 : selectionLength} ${
-                isProtein ? "AA" : "BP"
-              }${selectionLength === 1 ? "" : "s"}`}
+              text={`Select ${invalid ? 0 : selectionLength} ${isProtein ? 'AA' : 'BP'}${
+                selectionLength === 1 ? '' : 's'
+              }`}
               disabled={invalid}
             />
           </div>
@@ -141,7 +138,7 @@ export default compose(
   }
 );
 
-const normalizeToInt = (val) => {
+const normalizeToInt = val => {
   const int = Math.round(val);
   const normalizedVal = `${int >= 0 ? int : 1}`;
   return normalizedVal;

@@ -1,9 +1,9 @@
-import { omit } from "lodash";
+import { omit } from 'lodash';
 
 //./caretPosition.js
 
-import createAction from "./utils/createMetaAction";
-import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import createAction from './utils/createMetaAction';
+import createMergedDefaultStateReducer from './utils/createMergedDefaultStateReducer';
 
 export const visibilityDefaultValues = {
   featureTypesToHide: {},
@@ -29,19 +29,13 @@ export const visibilityDefaultValues = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const annotationVisibilityToggle = createAction(
-  "annotationVisibilityToggle"
-);
+export const annotationVisibilityToggle = createAction('annotationVisibilityToggle');
 //eg: annotationVisibilityToggle('features')
-export const annotationVisibilityHide = createAction(
-  "annotationVisibilityHide"
-);
-export const annotationVisibilityShow = createAction(
-  "annotationVisibilityShow"
-);
-export const hideFeatureTypes = createAction("hideFeatureTypes");
-export const showFeatureTypes = createAction("showFeatureTypes");
-export const resetFeatureTypesToHide = createAction("resetFeatureTypesToHide");
+export const annotationVisibilityHide = createAction('annotationVisibilityHide');
+export const annotationVisibilityShow = createAction('annotationVisibilityShow');
+export const hideFeatureTypes = createAction('hideFeatureTypes');
+export const showFeatureTypes = createAction('showFeatureTypes');
+export const resetFeatureTypesToHide = createAction('resetFeatureTypesToHide');
 
 // ------------------------------------
 // Reducer

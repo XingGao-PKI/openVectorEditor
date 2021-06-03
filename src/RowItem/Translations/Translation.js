@@ -1,10 +1,7 @@
-import React from "react";
-import {
-  getSequenceWithinRange,
-  zeroSubrangeByContainerRange
-} from "ve-range-utils";
-import AASliver from "./AASliver";
-import pureNoFunc from "../../utils/pureNoFunc";
+import React from 'react';
+import { getSequenceWithinRange, zeroSubrangeByContainerRange } from 've-range-utils';
+import AASliver from './AASliver';
+import pureNoFunc from '../../utils/pureNoFunc';
 
 class Translation extends React.Component {
   state = {
@@ -55,13 +52,9 @@ class Translation extends React.Component {
     );
 
     //we then loop over all the amino acids in the sub range and draw them onto the row
-    let translationSVG = aminoAcidsForSubrange.map(function(
-      aminoAcidSliver,
-      index
-    ) {
+    let translationSVG = aminoAcidsForSubrange.map(function (aminoAcidSliver, index) {
       const isEndFiller =
-        index === 0 &&
-        aminoAcidSliver.positionInCodon === (annotation.forward ? 2 : 0);
+        index === 0 && aminoAcidSliver.positionInCodon === (annotation.forward ? 2 : 0);
       // const isStartFiller = false
       let isTruncatedEnd = index === 0 && aminoAcidSliver.positionInCodon === 1;
       let isTruncatedStart =
@@ -76,11 +69,7 @@ class Translation extends React.Component {
         index === aminoAcidsForSubrange.length - 1 &&
         aminoAcidSliver.positionInCodon === (annotation.forward ? 0 : 2);
 
-      if (
-        aminoAcidSliver.positionInCodon !== 1 &&
-        !isStartFiller &&
-        !isEndFiller
-      ) {
+      if (aminoAcidSliver.positionInCodon !== 1 && !isStartFiller && !isEndFiller) {
         return null;
       }
       const { gapsInside, gapsBefore } = getGaps(aminoAcidSliver.codonRange);
@@ -97,7 +86,7 @@ class Translation extends React.Component {
           isFiller={isEndFiller || isStartFiller}
           isTruncatedEnd={isTruncatedEnd}
           isTruncatedStart={isTruncatedStart}
-          onClick={function(event) {
+          onClick={function (event) {
             onClick({
               annotation: aminoAcidSliver.codonRange,
               codonRange: aminoAcidSliver.codonRange,
@@ -106,7 +95,7 @@ class Translation extends React.Component {
               gapsBefore
             });
           }}
-          onContextMenu={function(event) {
+          onContextMenu={function (event) {
             onRightClick &&
               onRightClick({
                 annotation,
@@ -116,20 +105,19 @@ class Translation extends React.Component {
                 gapsBefore
               });
           }}
-          title={`${aminoAcid.name} -- Index: ${aminoAcidSliver.aminoAcidIndex +
-            1} -- Hydrophobicity ${aminoAcid.hydrophobicity}`}
+          title={`${aminoAcid.name} -- Index: ${
+            aminoAcidSliver.aminoAcidIndex + 1
+          } -- Hydrophobicity ${aminoAcid.hydrophobicity}`}
           showAminoAcidNumbers={showAminoAcidNumbers}
           aminoAcidIndex={aminoAcidSliver.aminoAcidIndex}
-          onDoubleClick={function(event) {
+          onDoubleClick={function (event) {
             onDoubleClick({ annotation, event });
           }}
           getGaps={getGaps}
           key={annotation.id + aminoAcidSliver.sequenceIndex}
           forward={annotation.forward}
           width={charWidth}
-          height={
-            showAminoAcidNumbers ? height - aminoAcidNumbersHeight : height
-          }
+          height={showAminoAcidNumbers ? height - aminoAcidNumbersHeight : height}
           relativeAAPositionInTranslation={
             relativeAAPositionInTranslation + gapsInsideFeatureStartToBp
           }

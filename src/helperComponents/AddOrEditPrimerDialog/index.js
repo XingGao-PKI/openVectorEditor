@@ -1,9 +1,9 @@
-import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
+import AddOrEditAnnotationDialog from '../AddOrEditAnnotationDialog';
 
 export default AddOrEditAnnotationDialog({
-  formName: "AddOrEditPrimerDialog",
+  formName: 'AddOrEditPrimerDialog',
   getProps: props => ({
     upsertAnnotation: props.upsertPrimer,
-    annotationTypePlural: "primers"
+    annotationTypePlural: 'primers'
   })
 });

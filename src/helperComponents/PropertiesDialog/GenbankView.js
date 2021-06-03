@@ -1,31 +1,23 @@
-import React from "react";
+import React from 'react';
 // import { Button } from "@blueprintjs/core";
-import {
-  jsonToGenbank,
-  jsonToFasta,
-  cleanUpTeselagenJsonForExport
-} from "bio-parsers";
-import { HTMLSelect } from "@blueprintjs/core";
-import { connectToEditor } from "../../withEditorProps";
-import { compose } from "recompose";
+import { jsonToGenbank, jsonToFasta, cleanUpTeselagenJsonForExport } from 'bio-parsers';
+import { HTMLSelect } from '@blueprintjs/core';
+import { connectToEditor } from '../../withEditorProps';
+import { compose } from 'recompose';
 
 class GenbankView extends React.Component {
   state = {
-    fileTypeToView: "genbank"
+    fileTypeToView: 'genbank'
   };
   render() {
     const { sequenceData = {} } = this.props;
     let filestring;
     switch (this.state.fileTypeToView) {
-      case "fasta":
+      case 'fasta':
         filestring = jsonToFasta(sequenceData);
         break;
-      case "teselagen":
-        filestring = JSON.stringify(
-          cleanUpTeselagenJsonForExport(sequenceData),
-          null,
-          4
-        );
+      case 'teselagen':
+        filestring = JSON.stringify(cleanUpTeselagenJsonForExport(sequenceData), null, 4);
         break;
       default:
         filestring = jsonToGenbank(sequenceData);
@@ -36,9 +28,9 @@ class GenbankView extends React.Component {
         <HTMLSelect
           fill={false}
           options={[
-            { label: "Genbank", value: "genbank" },
-            { label: "Fasta", value: "fasta" },
-            { label: "Teselagen JSON", value: "teselagen" }
+            { label: 'Genbank', value: 'genbank' },
+            { label: 'Fasta', value: 'fasta' },
+            { label: 'Teselagen JSON', value: 'teselagen' }
           ]}
           onChange={e => {
             this.setState({ fileTypeToView: e.target.value });
@@ -49,11 +41,11 @@ class GenbankView extends React.Component {
           readOnly
           // wrap="soft"
           style={{
-            whiteSpace: "pre",
-            overflowWrap: "normal",
-            overflowX: "scroll",
+            whiteSpace: 'pre',
+            overflowWrap: 'normal',
+            overflowX: 'scroll',
             fontSize: 11,
-            fontFamily: "monospace",
+            fontFamily: 'monospace',
             width: 540,
             height: 350
           }}

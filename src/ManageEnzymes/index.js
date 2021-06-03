@@ -1,48 +1,44 @@
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 // import {reduxForm, Field, formValueSelector} from 'redux-form'
-import React from "react";
-import { DialogFooter, InfoHelper } from "teselagen-react-components";
+import React from 'react';
+import { DialogFooter, InfoHelper } from 'teselagen-react-components';
 
 // import './style.css';
-import { cutSequenceByRestrictionEnzyme } from "ve-sequence-utils";
+import { cutSequenceByRestrictionEnzyme } from 've-sequence-utils';
 // import QuestionTooltip from '../../components/QuestionTooltip';
 import {
   defaultEnzymesByName,
   getReverseComplementSequenceString
-} from "ve-sequence-utils";
-import EnzymeViewer from "../EnzymeViewer";
-import "./style.css";
-import { connectToEditor } from "../withEditorProps";
-import { compose } from "recompose";
-import { Callout } from "@blueprintjs/core";
-import { addCustomEnzyme } from "../utils/editorUtils";
+} from 've-sequence-utils';
+import EnzymeViewer from '../EnzymeViewer';
+import './style.css';
+import { connectToEditor } from '../withEditorProps';
+import { compose } from 'recompose';
+import { Callout } from '@blueprintjs/core';
+import { addCustomEnzyme } from '../utils/editorUtils';
 
 let CreateCustomEnzyme = function (props) {
-  const paddingStart = "-------";
-  const paddingEnd = "-------";
+  const paddingStart = '-------';
+  const paddingEnd = '-------';
   const {
     // filteredRestrictionEnzymesAdd,
     // addRestrictionEnzyme,
-    inputSequenceToTestAgainst = "", //pass this prop in!
-    seqName = "Destination Vector",
+    inputSequenceToTestAgainst = '', //pass this prop in!
+    seqName = 'Destination Vector',
     createYourOwnEnzyme,
     dispatch,
     hideModal,
     editorName
   } = props;
 
-  createYourOwnEnzyme.chop_top_index = Number(
-    createYourOwnEnzyme.chop_top_index
-  );
-  createYourOwnEnzyme.chop_bottom_index = Number(
-    createYourOwnEnzyme.chop_bottom_index
-  );
+  createYourOwnEnzyme.chop_top_index = Number(createYourOwnEnzyme.chop_top_index);
+  createYourOwnEnzyme.chop_bottom_index = Number(createYourOwnEnzyme.chop_bottom_index);
 
   const {
-    sequence = "",
+    sequence = '',
     chop_top_index = 0,
     chop_bottom_index = 0,
-    name = ""
+    name = ''
   } = createYourOwnEnzyme;
   const regexString = bpsToRegexString(sequence);
   const enzyme = {
@@ -54,7 +50,7 @@ let CreateCustomEnzyme = function (props) {
     bottomSnipOffset: chop_bottom_index,
     usForward: 0,
     usReverse: 0,
-    color: "black"
+    color: 'black'
   };
   let invalid;
   if (
@@ -72,11 +68,7 @@ let CreateCustomEnzyme = function (props) {
   if (regexString.length === 0) {
     matches = [];
   } else {
-    matches = cutSequenceByRestrictionEnzyme(
-      inputSequenceToTestAgainst,
-      true,
-      enzyme
-    );
+    matches = cutSequenceByRestrictionEnzyme(inputSequenceToTestAgainst, true, enzyme);
   }
 
   const errors = validate(createYourOwnEnzyme);
@@ -85,7 +77,7 @@ let CreateCustomEnzyme = function (props) {
   }
   function onChange(updatedVal) {
     dispatch({
-      type: "CREATE_YOUR_OWN_ENZYME_UPDATE",
+      type: 'CREATE_YOUR_OWN_ENZYME_UPDATE',
       payload: {
         ...createYourOwnEnzyme,
         ...updatedVal
@@ -99,14 +91,14 @@ let CreateCustomEnzyme = function (props) {
         This enzyme will be added to the "My Enzymes" group
       </Callout>
       <CustomInput
-        error={errors["name"]}
+        error={errors['name']}
         value={name}
         onChange={onChange}
         name="name"
         label="Name:"
       />
       <CustomInput
-        error={errors["sequence"]}
+        error={errors['sequence']}
         value={sequence}
         onChange={onChange}
         name="sequence"
@@ -133,13 +125,13 @@ let CreateCustomEnzyme = function (props) {
         }
         onInput={function (input) {
           const inputValue = input.target.value;
-          const cleanInput = inputValue.replace(/[^rykmswbdhvnagct]/gi, "");
+          const cleanInput = inputValue.replace(/[^rykmswbdhvnagct]/gi, '');
           input.target.value = cleanInput;
         }}
       />
 
       <CustomInput
-        error={errors["chop_top_index"]}
+        error={errors['chop_top_index']}
         value={chop_top_index}
         onChange={onChange}
         name="chop_top_index"
@@ -147,7 +139,7 @@ let CreateCustomEnzyme = function (props) {
         type="number"
       />
       <CustomInput
-        error={errors["chop_bottom_index"]}
+        error={errors['chop_bottom_index']}
         value={chop_bottom_index}
         onChange={onChange}
         name="chop_bottom_index"
@@ -166,12 +158,10 @@ let CreateCustomEnzyme = function (props) {
       />
       <br />
 
-      <h3 className={"cutnumber " + (matches.length === 0 && "invalid")}>
+      <h3 className={'cutnumber ' + (matches.length === 0 && 'invalid')}>
         {matches.length > 10
           ? `Cuts more than 10 times in ${seqName}`
-          : `Cuts ${matches.length} time${
-              matches.length === 1 ? "" : "s"
-            } in ${seqName}`}
+          : `Cuts ${matches.length} time${matches.length === 1 ? '' : 's'} in ${seqName}`}
       </h3>
       <DialogFooter
         hideModal={hideModal}
@@ -179,7 +169,7 @@ let CreateCustomEnzyme = function (props) {
         onClick={() => {
           addCustomEnzyme(enzyme);
           dispatch({
-            type: "FILTERED_RESTRICTION_ENZYMES_ADD",
+            type: 'FILTERED_RESTRICTION_ENZYMES_ADD',
             payload: {
               value: name
             },
@@ -219,13 +209,12 @@ CreateCustomEnzyme = compose(
   connectToEditor(({ sequenceData = {} }) => {
     return {
       seqName: sequenceData.name,
-      inputSequenceToTestAgainst: sequenceData.sequence || ""
+      inputSequenceToTestAgainst: sequenceData.sequence || ''
     };
   }),
   connect(function (state) {
     return {
-      createYourOwnEnzyme:
-        state.VectorEditor.__allEditorsOptions.createYourOwnEnzyme
+      createYourOwnEnzyme: state.VectorEditor.__allEditorsOptions.createYourOwnEnzyme
     };
   })
 )(CreateCustomEnzyme);
@@ -235,63 +224,62 @@ export default CreateCustomEnzyme;
 function validate(values) {
   const errors = {};
 
-  if (!values.name || values.name.trim() === "") {
-    errors.name = "Input cannot be blank";
+  if (!values.name || values.name.trim() === '') {
+    errors.name = 'Input cannot be blank';
   } else if (defaultEnzymesByName[values.name.toLowerCase()]) {
     errors.name = `The name ${values.name} is already taken.`;
   }
 
   if (
     !values.sequence ||
-    values.sequence.trim() === "" ||
+    values.sequence.trim() === '' ||
     values.sequence.trim().length < 4
   ) {
-    errors.sequence = "Enzyme recognition sequence must be at least 4bps long";
+    errors.sequence = 'Enzyme recognition sequence must be at least 4bps long';
   }
 
   if (
     values.sequence &&
-    values.sequence.replace(/[^atgcrykmswbdhvn]/gi, "").length !==
-      values.sequence.length
+    values.sequence.replace(/[^atgcrykmswbdhvn]/gi, '').length !== values.sequence.length
   ) {
-    errors.sequence = "Sequence must only contain valid bases";
+    errors.sequence = 'Sequence must only contain valid bases';
   }
 
   if (!values.chop_top_index && values.chop_top_index !== 0) {
-    errors.chop_top_index = "Input cannot be blank";
+    errors.chop_top_index = 'Input cannot be blank';
   }
   if (!values.chop_bottom_index && values.chop_bottom_index !== 0) {
-    errors.chop_bottom_index = "Input cannot be blank";
+    errors.chop_bottom_index = 'Input cannot be blank';
   }
   return errors;
 }
 
 function bpsToRegexString(bps) {
-  let regexString = "";
-  if (typeof bps === "string") {
-    bps.split("").forEach(function (bp) {
-      if (bp === "r") {
-        regexString += "[ga]";
-      } else if (bp === "y") {
-        regexString += "[tc]";
-      } else if (bp === "k") {
-        regexString += "[gt]";
-      } else if (bp === "m") {
-        regexString += "[ac]";
-      } else if (bp === "s") {
-        regexString += "[gc]";
-      } else if (bp === "w") {
-        regexString += "[at]";
-      } else if (bp === "b") {
-        regexString += "[gtc]";
-      } else if (bp === "d") {
-        regexString += "[gat]";
-      } else if (bp === "h") {
-        regexString += "[act]";
-      } else if (bp === "v") {
-        regexString += "[gca]";
-      } else if (bp === "n") {
-        regexString += "[agct]";
+  let regexString = '';
+  if (typeof bps === 'string') {
+    bps.split('').forEach(function (bp) {
+      if (bp === 'r') {
+        regexString += '[ga]';
+      } else if (bp === 'y') {
+        regexString += '[tc]';
+      } else if (bp === 'k') {
+        regexString += '[gt]';
+      } else if (bp === 'm') {
+        regexString += '[ac]';
+      } else if (bp === 's') {
+        regexString += '[gc]';
+      } else if (bp === 'w') {
+        regexString += '[at]';
+      } else if (bp === 'b') {
+        regexString += '[gtc]';
+      } else if (bp === 'd') {
+        regexString += '[gat]';
+      } else if (bp === 'h') {
+        regexString += '[act]';
+      } else if (bp === 'v') {
+        regexString += '[gca]';
+      } else if (bp === 'n') {
+        regexString += '[agct]';
       } else {
         regexString += bp;
       }
@@ -307,7 +295,7 @@ function bpsToRegexString(bps) {
 
 function CustomInput({ name, value, onChange, onInput, label, error, type }) {
   return (
-    <div className={"inputHolder " + (error && "error")}>
+    <div className={'inputHolder ' + (error && 'error')}>
       <div>
         <span>{label}</span>
         <input

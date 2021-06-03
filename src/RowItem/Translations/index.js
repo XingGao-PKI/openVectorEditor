@@ -1,6 +1,6 @@
-import React from "react";
-import StackedAnnotations from "../StackedAnnotations";
-import Translation from "./Translation";
+import React from 'react';
+import StackedAnnotations from '../StackedAnnotations';
+import Translation from './Translation';
 
 function getExtraInnerCompProps(
   annotationRange,
@@ -32,9 +32,7 @@ function Translations(props) {
     <StackedAnnotations
       {...{
         ...props,
-        annotationRanges: props.annotationRanges.filter(
-          t => !t.isJoinedLocation
-        ),
+        annotationRanges: props.annotationRanges.filter(t => !t.isJoinedLocation),
         annotationHeight:
           props.annotationHeight +
           (props.showAminoAcidNumbers ? props.aminoAcidNumbersHeight : 0),

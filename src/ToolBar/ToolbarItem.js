@@ -1,4 +1,4 @@
-import { connectToEditor } from "../withEditorProps";
+import { connectToEditor } from '../withEditorProps';
 // import download from 'in-browser-download'
 import {
   Popover,
@@ -7,15 +7,15 @@ import {
   Icon as BpIcon,
   AnchorButton,
   Intent
-} from "@blueprintjs/core";
-import React from "react";
-import "./style.css";
+} from '@blueprintjs/core';
+import React from 'react';
+import './style.css';
 
 class ToolbarItem extends React.Component {
   toggleDropdown = ({ forceClose } = {}) => {
     const { toolName, isOpen } = this.props;
 
-    this.props.openToolbarItemUpdate(isOpen || forceClose ? "" : toolName);
+    this.props.openToolbarItemUpdate(isOpen || forceClose ? '' : toolName);
   };
 
   render() {
@@ -26,9 +26,9 @@ class ToolbarItem extends React.Component {
       Icon,
       // dynamicIcon,
       onIconClick = noop,
-      tooltip = "",
+      tooltip = '',
       tooltipToggled,
-      dropdowntooltip = "",
+      dropdowntooltip = '',
       Dropdown,
       disabled,
       isHidden,
@@ -44,7 +44,7 @@ class ToolbarItem extends React.Component {
       toggled = false,
       ...rest
     } = { ...this.props, ...overrides };
-    if (!toolName) console.warn("toolName is required!");
+    if (!toolName) console.warn('toolName is required!');
     if (isHidden) return null;
     let tooltipToDisplay = tooltip;
     if (toggled && tooltipToggled) {
@@ -56,7 +56,7 @@ class ToolbarItem extends React.Component {
       <div
         className={
           `veToolbarItemOuter ve-tool-container-${toolName}` +
-          (disabled ? " disabled " : "")
+          (disabled ? ' disabled ' : '')
         }
       >
         {renderIconAbove && (
@@ -74,9 +74,7 @@ class ToolbarItem extends React.Component {
             <AnchorButton
               intent={Intent.PRIMARY}
               onClick={
-                onIconClick === "toggleDropdown"
-                  ? this.toggleDropdown
-                  : onIconClick
+                onIconClick === 'toggleDropdown' ? this.toggleDropdown : onIconClick
               }
               active={toggled}
               disabled={disabled}
@@ -95,8 +93,7 @@ class ToolbarItem extends React.Component {
           <Tooltip disabled={tooltipDisabled} content={dropdowntooltip}>
             <div
               className={
-                (isOpen ? " isOpen " : "") +
-                (dropdownicon ? "" : " veToolbarDropdown")
+                (isOpen ? ' isOpen ' : '') + (dropdownicon ? '' : ' veToolbarDropdown')
               }
               onClick={this.toggleDropdown}
             >
@@ -105,14 +102,10 @@ class ToolbarItem extends React.Component {
                   <div>{dropdownicon}</div>
                 </div>
               ) : isOpen ? (
-                <BpIcon
-                  data-test={toolName + "Dropdown"}
-                  iconSize={13}
-                  icon="caret-up"
-                />
+                <BpIcon data-test={toolName + 'Dropdown'} iconSize={13} icon="caret-up" />
               ) : (
                 <BpIcon
-                  data-test={toolName + "Dropdown"}
+                  data-test={toolName + 'Dropdown'}
                   iconSize={13}
                   icon="caret-down"
                 />
@@ -146,7 +139,7 @@ class ToolbarItem extends React.Component {
     );
 
     return (
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         {index !== 0 && <div className="veToolbarSpacer" />}
 
         <Popover

@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 
-import { reduxForm } from "redux-form";
-import { startCase } from "lodash";
-import { withProps } from "recompose";
-import { InputField, wrapDialog } from "teselagen-react-components";
-import { compose } from "redux";
-import { Button, Intent, Classes } from "@blueprintjs/core";
-import classNames from "classnames";
-import "./simpleDialog.css";
-import { tryToRefocusEditor } from "../utils/editorUtils";
+import { reduxForm } from 'redux-form';
+import { startCase } from 'lodash';
+import { withProps } from 'recompose';
+import { InputField, wrapDialog } from 'teselagen-react-components';
+import { compose } from 'redux';
+import { Button, Intent, Classes } from '@blueprintjs/core';
+import classNames from 'classnames';
+import './simpleDialog.css';
+import { tryToRefocusEditor } from '../utils/editorUtils';
 
 // TODO: move to TRC
 class SimpleGenericDialogForm extends React.Component {
@@ -17,7 +17,7 @@ class SimpleGenericDialogForm extends React.Component {
       hideModal,
       handleSubmit,
       fields,
-      buttonText = "OK",
+      buttonText = 'OK',
       showCancel = true,
       onSubmit,
       invalid,
@@ -25,15 +25,12 @@ class SimpleGenericDialogForm extends React.Component {
     } = this.props;
     return (
       <form
-        onSubmit={handleSubmit((data) => {
+        onSubmit={handleSubmit(data => {
           if (onSubmit) onSubmit(data);
           hideModal();
           tryToRefocusEditor();
         })}
-        className={classNames(
-          Classes.DIALOG_BODY,
-          "tg-min-width-dialog simple-dialog"
-        )}
+        className={classNames(Classes.DIALOG_BODY, 'tg-min-width-dialog simple-dialog')}
       >
         {fields.map((field, i) => {
           const { component, isRequired, ...props } = field;
@@ -43,8 +40,7 @@ class SimpleGenericDialogForm extends React.Component {
             ...props,
             ...extraProps[props.name]
           };
-          fieldProps.label =
-            fieldProps.label || startCase(fieldProps.name) + ":";
+          fieldProps.label = fieldProps.label || startCase(fieldProps.name) + ':';
           if (isRequired) fieldProps.validate = required;
           return <FieldComp key={field.name} {...fieldProps} />;
         })}
@@ -71,7 +67,7 @@ class SimpleGenericDialogForm extends React.Component {
 }
 
 function required(val) {
-  if (!val) return "Required";
+  if (!val) return 'Required';
 }
 
 export default function createSimpleDialog(props) {

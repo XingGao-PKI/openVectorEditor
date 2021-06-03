@@ -1,12 +1,12 @@
 //./selectionLayer.js
-import { createReducer } from "redux-act";
-import createAction from "./utils/createMetaAction";
+import { createReducer } from 'redux-act';
+import createAction from './utils/createMetaAction';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const selectionLayerClear = createAction("SELECTION_LAYER_CLEAR");
-export const selectionLayerUpdate = createAction("SELECTION_LAYER_UPDATE");
+export const selectionLayerClear = createAction('SELECTION_LAYER_CLEAR');
+export const selectionLayerUpdate = createAction('SELECTION_LAYER_UPDATE');
 
 // ------------------------------------
 // Reducer
@@ -32,9 +32,9 @@ export default createReducer(
         !(newSelectionLayer.start >= 0 && newSelectionLayer.end >= 0)
       ) {
         console.error(
-          "we should never be here! selectionLayerUpdate must always be called with a valid selection layer"
+          'we should never be here! selectionLayerUpdate must always be called with a valid selection layer'
         );
-        return state
+        return state;
       }
       return newSelectionLayer;
     }

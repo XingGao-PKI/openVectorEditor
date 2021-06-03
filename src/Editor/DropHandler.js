@@ -1,9 +1,9 @@
-import React from "react";
-import Dropzone from "react-dropzone";
-import "./DropHandler.css";
+import React from 'react';
+import Dropzone from 'react-dropzone';
+import './DropHandler.css';
 
 export default class DropHandler extends React.Component {
-  handleDrop = (files) => {
+  handleDrop = files => {
     this.props.importSequenceFromFile(files[0]);
   };
   render() {
@@ -13,11 +13,11 @@ export default class DropHandler extends React.Component {
         disabled={disabled}
         disableClick
         multiple={false}
-        accept={[".gb", ".gbk", ".fasta", ".fa", ".gp", ".txt", ".dna"]}
+        accept={['.gb', '.gbk', '.fasta', '.fa', '.gp', '.txt', '.dna']}
         activeClassName="isActive"
         rejectClassName="isRejected"
         onDropRejected={() => {
-          window.toastr.error("Error: Incorrect File Type");
+          window.toastr.error('Error: Incorrect File Type');
         }}
         onDrop={this.handleDrop}
         {...{ style, className }}
@@ -31,8 +31,8 @@ export default class DropHandler extends React.Component {
 function DraggingMessage() {
   return (
     <div className="dropzone-dragging-message">
-      Drop Fasta or Genbank files to view them in the editor. The following
-      extensions are accepted: .gb .gbk .fasta .fa .gp .txt
+      Drop Fasta or Genbank files to view them in the editor. The following extensions are
+      accepted: .gb .gbk .fasta .fa .gp .txt
     </div>
   );
 }

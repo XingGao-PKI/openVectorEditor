@@ -1,13 +1,13 @@
-import React from "react";
-import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
+import React from 'react';
+import AddOrEditAnnotationDialog from '../AddOrEditAnnotationDialog';
 import {
   ReactSelectField,
   getTagsAndTagOptions,
   CheckboxField,
   InfoHelper
-} from "teselagen-react-components";
-import { FeatureTypes as featureTypes } from "ve-sequence-utils";
-import { get } from "lodash";
+} from 'teselagen-react-components';
+import { FeatureTypes as featureTypes } from 've-sequence-utils';
+import { get } from 'lodash';
 
 const renderTypes = ({ readOnly }) => (
   <ReactSelectField
@@ -15,7 +15,7 @@ const renderTypes = ({ readOnly }) => (
     tooltipError
     disabled={readOnly}
     defaultValue="misc_feature"
-    options={featureTypes.map((type) => {
+    options={featureTypes.map(type => {
       return {
         label: type,
         // label: (
@@ -51,7 +51,7 @@ const renderAdvancedOptions = ({ readOnly }) => (
     disabled={readOnly}
     name="doesOverlapSelf"
     label={
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         Part Overlaps Self
         <InfoHelper
           style={{ paddingLeft: 10, paddingTop: 9 }}
@@ -78,14 +78,14 @@ const getRenderTags = ({ readOnly, editTagsLink, tags }) => {
   );
 };
 export default AddOrEditAnnotationDialog({
-  formName: "AddOrEditPartDialog",
+  formName: 'AddOrEditPartDialog',
   dialogProps: {
     // height: 550,
     width: 450
   },
-  getProps: (props) => ({
+  getProps: props => ({
     upsertAnnotation: props.upsertPart,
-    advancedDefaultOpen: get(props, "initialValues.doesOverlapSelf"),
+    advancedDefaultOpen: get(props, 'initialValues.doesOverlapSelf'),
     advancedOptions: props.allowPartsToOverlapSelf
       ? renderAdvancedOptions({ readOnly: props.readOnly })
       : undefined,
@@ -97,6 +97,6 @@ export default AddOrEditAnnotationDialog({
         editTagsLink: props.editTagsLink,
         tags: getTagsAndTagOptions(props.allPartTags)
       }),
-    annotationTypePlural: "parts"
+    annotationTypePlural: 'parts'
   })
 });

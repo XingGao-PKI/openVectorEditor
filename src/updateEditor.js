@@ -1,4 +1,4 @@
-import { tidyUpSequenceData } from "ve-sequence-utils";
+import { tidyUpSequenceData } from 've-sequence-utils';
 // import cleanSequenceData from "./utils/cleanSequenceData";
 
 export default function updateEditor(
@@ -33,7 +33,7 @@ export default function updateEditor(
         //we're editing a protein but haven't initialized the protein editor yet
         toSpread = {
           findTool: {
-            dnaOrAA: "AA",
+            dnaOrAA: 'AA',
             ...findTool //we spread this here to allow the user to override this .. if they must!
           },
 
@@ -61,7 +61,7 @@ export default function updateEditor(
         //we're editing a protein but haven't initialized the protein editor yet
         toSpread = {
           findTool: {
-            dnaOrAA: "DNA",
+            dnaOrAA: 'DNA',
             ...findTool //we spread this here to allow the user to override this .. if they must!
           },
           annotationVisibility: {
@@ -89,7 +89,7 @@ export default function updateEditor(
         sequenceData.isProtein = false;
         toSpread = {
           findTool: {
-            dnaOrAA: "DNA",
+            dnaOrAA: 'DNA',
             ...findTool //we spread this here to allow the user to override this .. if they must!
           },
           annotationVisibility: {
@@ -128,7 +128,7 @@ export default function updateEditor(
   }
 
   store.dispatch({
-    type: "VECTOR_EDITOR_UPDATE",
+    type: 'VECTOR_EDITOR_UPDATE',
     payload,
     meta: {
       editorName,

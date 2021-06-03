@@ -1,4 +1,4 @@
-import { getReverseComplementSequenceAndAnnotations } from "ve-sequence-utils";
+import { getReverseComplementSequenceAndAnnotations } from 've-sequence-utils';
 
 export default function addDashesForMatchStartAndEndForTracks(alignmentTracks) {
   return alignmentTracks.map((track, i) => {
@@ -56,9 +56,9 @@ function addDashesForMatchStartAndEnd(
     newAlignmentData = {
       ...alignmentData,
       sequence:
-        "-".repeat(Math.max(matchStartTemplate - matchStart, 0)) +
+        '-'.repeat(Math.max(matchStartTemplate - matchStart, 0)) +
         newAlignmentData.sequence +
-        "-".repeat(
+        '-'.repeat(
           Math.max(
             sequenceDataTemplate.sequence.slice(matchEndTemplate + 1).length -
               (sequenceData.sequence.length - matchEnd) +

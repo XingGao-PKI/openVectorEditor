@@ -1,6 +1,6 @@
 //./caretPosition.js
-import createAction from "./utils/createMetaAction";
-import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import createAction from './utils/createMetaAction';
+import createMergedDefaultStateReducer from './utils/createMergedDefaultStateReducer';
 
 const visibilityInitialValues = {
   features: true,
@@ -13,7 +13,7 @@ const visibilityInitialValues = {
 // Actions
 // ------------------------------------
 export const annotationLabelVisibilityToggle = createAction(
-  "annotationLabelVisibilityToggle"
+  'annotationLabelVisibilityToggle'
 );
 
 // ------------------------------------

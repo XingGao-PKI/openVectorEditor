@@ -1,15 +1,12 @@
-import { noop } from "teselagen-react-components";
-import Caret from "./Caret";
-import sector from "paths-js/sector";
-import getRangeAngles from "./getRangeAnglesSpecial";
-import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
-import React from "react";
-import draggableClassnames from "../constants/draggableClassnames";
-import pureNoFunc from "../utils/pureNoFunc";
-import {
-  getSelectionMessage,
-  preventDefaultStopPropagation
-} from "../utils/editorUtils";
+import { noop } from 'teselagen-react-components';
+import Caret from './Caret';
+import sector from 'paths-js/sector';
+import getRangeAngles from './getRangeAnglesSpecial';
+import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
+import React from 'react';
+import draggableClassnames from '../constants/draggableClassnames';
+import pureNoFunc from '../utils/pureNoFunc';
+import { getSelectionMessage, preventDefaultStopPropagation } from '../utils/editorUtils';
 
 function SelectionLayer({
   isDraggable,
@@ -23,14 +20,7 @@ function SelectionLayer({
   index,
   isProtein
 }) {
-  let {
-    color,
-    start,
-    end,
-    hideCarets = false,
-    style,
-    className
-  } = selectionLayer;
+  let { color, start, end, hideCarets = false, style, className } = selectionLayer;
   let { startAngle, endAngle, totalAngle } = getRangeAngles(
     selectionLayer,
     sequenceLength
@@ -75,8 +65,8 @@ function SelectionLayer({
             }
           : undefined
       }
-      key={"veSelectionLayer" + index}
-      className={"veSelectionLayer " + className}
+      key={'veSelectionLayer' + index}
+      className={'veSelectionLayer ' + className}
     >
       {!hideTitle && <title>{selectionMessage}</title>}
       <path
@@ -95,8 +85,8 @@ function SelectionLayer({
           key="caret1"
           className={
             className +
-            " selectionLayerCaret " +
-            (isDraggable ? draggableClassnames.selectionStart : "")
+            ' selectionLayerCaret ' +
+            (isDraggable ? draggableClassnames.selectionStart : '')
           }
           isSelection
           onClick={onClick ? noop : preventDefaultStopPropagation}
@@ -112,8 +102,8 @@ function SelectionLayer({
           key="caret2"
           className={
             className +
-            " selectionLayerCaret " +
-            (isDraggable ? draggableClassnames.selectionEnd : "")
+            ' selectionLayerCaret ' +
+            (isDraggable ? draggableClassnames.selectionEnd : '')
           }
           isSelection
           onClick={onClick ? noop : preventDefaultStopPropagation}

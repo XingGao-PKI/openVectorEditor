@@ -1,12 +1,10 @@
-import { createReducer } from "redux-act";
-import createAction from "../utils/createMetaAction";
+import { createReducer } from 'redux-act';
+import createAction from '../utils/createMetaAction';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const sequenceDescriptionUpdate = createAction(
-  "sequenceDescriptionUpdate"
-);
+export const sequenceDescriptionUpdate = createAction('sequenceDescriptionUpdate');
 
 // ------------------------------------
 // Reducer
@@ -17,5 +15,5 @@ export default createReducer(
       return payload;
     }
   },
-  ""
+  ''
 );

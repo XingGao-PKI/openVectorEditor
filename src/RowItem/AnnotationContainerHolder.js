@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 
-let AnnotationContainerHolder = function(props) {
+let AnnotationContainerHolder = function (props) {
   return (
     <div
-      className={props.className || "annotationContainer"}
+      className={props.className || 'annotationContainer'}
       width="100%"
       style={{
         height: props.containerHeight,
-        position: "relative",
-        display: "block",
+        position: 'relative',
+        display: 'block',
         marginTop: props.marginTop,
         marginBottom: props.marginBottom
       }}

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function Cutsite({
   annotationHeight,
@@ -8,7 +8,7 @@ export default function Cutsite({
 }) {
   return (
     <rect
-      className={"veCutsite"}
+      className={'veCutsite'}
       width={1}
       y={-radius - 4}
       height={annotationHeight}

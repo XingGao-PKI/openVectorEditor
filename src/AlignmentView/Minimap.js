@@ -1,34 +1,31 @@
-import React from "react";
-import Draggable from "react-draggable";
-import ReactList from "@teselagen/react-list";
-import Axis from "../RowItem/Axis";
-import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
-import { view } from "@risingstack/react-easy-state";
-import { some } from "lodash";
-import { isPositionWithinRange } from "ve-range-utils";
-import { massageTickSpacing } from "../utils/massageTickSpacing";
-import { getClientX, getClientY } from "../utils/editorUtils";
+import React from 'react';
+import Draggable from 'react-draggable';
+import ReactList from '@teselagen/react-list';
+import Axis from '../RowItem/Axis';
+import getXStartAndWidthFromNonCircularRange from '../RowItem/getXStartAndWidthFromNonCircularRange';
+import { view } from '@risingstack/react-easy-state';
+import { some } from 'lodash';
+import { isPositionWithinRange } from 've-range-utils';
+import { massageTickSpacing } from '../utils/massageTickSpacing';
+import { getClientX, getClientY } from '../utils/editorUtils';
 
 export default class Minimap extends React.Component {
   shouldComponentUpdate(newProps) {
     const { props } = this;
     if (
       [
-        "alignmentTracks",
-        "numBpsShownInLinearView",
-        "scrollAlignmentView",
-        "laneHeight",
-        "laneSpacing"
-      ].some((key) => props[key] !== newProps[key])
+        'alignmentTracks',
+        'numBpsShownInLinearView',
+        'scrollAlignmentView',
+        'laneHeight',
+        'laneSpacing'
+      ].some(key => props[key] !== newProps[key])
     )
       return true;
     return false;
   }
-  handleMinimapClick = (e) => {
-    if (
-      this.isDragging ||
-      (e.target && e.target.classList.contains("minimapCaret"))
-    ) {
+  handleMinimapClick = e => {
+    if (this.isDragging || (e.target && e.target.classList.contains('minimapCaret'))) {
       e.stopPropagation();
       return;
     }
@@ -63,17 +60,17 @@ export default class Minimap extends React.Component {
     );
     return Math.min(width, dimensions.width);
   };
-  getXPositionOfClickInMinimap = (e) => {
+  getXPositionOfClickInMinimap = e => {
     const leftStart = this.minimap.getBoundingClientRect().left;
     return Math.max(getClientX(e) - leftStart, 0);
   };
-  getYPositionOfClickInMinimap = (e) => {
+  getYPositionOfClickInMinimap = e => {
     const topStart = this.minimap.getBoundingClientRect().top;
     return Math.max(getClientY(e) + this.minimapTracks.scrollTop - topStart, 0);
   };
 
   scrollMinimapVertical = ({ e, force }) => {
-    const clientY = getClientY(e)
+    const clientY = getClientY(e);
     try {
       if (
         !force &&
@@ -85,12 +82,12 @@ export default class Minimap extends React.Component {
         // this.lastYPosition = clientY
         return;
       }
-      const lanes = document.querySelectorAll(".minimapLane");
+      const lanes = document.querySelectorAll('.minimapLane');
 
-      some(lanes, (lane) => {
+      some(lanes, lane => {
         const rect = lane.getBoundingClientRect();
         if (rect.top > clientY && rect.top - rect.height < clientY) {
-          this.props.scrollYToTrack(lane.getAttribute("data-lane-index"));
+          this.props.scrollYToTrack(lane.getAttribute('data-lane-index'));
           return true;
         }
         return false;
@@ -106,7 +103,7 @@ export default class Minimap extends React.Component {
       this.isDragging = false;
     }, 150);
   };
-  handleDrag = (e) => {
+  handleDrag = e => {
     const {
       onMinimapScrollX,
       dimensions: { width = 200 }
@@ -123,7 +120,7 @@ export default class Minimap extends React.Component {
   itemSizeGetter = () => {
     return this.props.laneHeight;
   };
-  renderItem = (i) => {
+  renderItem = i => {
     const {
       alignmentTracks = [],
       dimensions: { width = 200 },
@@ -134,8 +131,8 @@ export default class Minimap extends React.Component {
 
     const { matchHighlightRanges } = alignmentTracks[i];
     //need to get the chunks that can be rendered
-    let redPath = ""; //draw these as just 1 path instead of a bunch of rectangles to improve browser performance
-    let bluePath = "";
+    let redPath = ''; //draw these as just 1 path instead of a bunch of rectangles to improve browser performance
+    let bluePath = '';
     // draw one grey rectangle then draw red/mismatching regions on top of it
     const height = laneHeight - laneSpacing;
     const y = 0;
@@ -149,33 +146,26 @@ export default class Minimap extends React.Component {
     );
     bluePath += `M${firstRange.xStart},${y} L${
       lastRange.xStart + lastRange.width
-    },${y} L${lastRange.xStart + lastRange.width},${y + height} L${
-      firstRange.xStart
-    },${y + height}`;
-    matchHighlightRanges.forEach((range) => {
-      const { xStart, width } = getXStartAndWidthFromNonCircularRange(
-        range,
-        charWidth
-      );
-      const toAdd = `M${xStart},${y} L${xStart + width},${y} L${
-        xStart + width
-      },${y + height} L${xStart},${y + height}`;
+    },${y} L${lastRange.xStart + lastRange.width},${y + height} L${firstRange.xStart},${
+      y + height
+    }`;
+    matchHighlightRanges.forEach(range => {
+      const { xStart, width } = getXStartAndWidthFromNonCircularRange(range, charWidth);
+      const toAdd = `M${xStart},${y} L${xStart + width},${y} L${xStart + width},${
+        y + height
+      } L${xStart},${y + height}`;
       if (!range.isMatch) {
         redPath += toAdd;
       }
     });
     return (
       <div
-        key={i + "-lane"}
+        key={i + '-lane'}
         className="minimapLane"
         data-lane-index={i}
         style={{ height: laneHeight, maxHeight: laneHeight }}
       >
-        <svg
-          height={laneHeight}
-          width={width}
-          shapeRendering="geometricPrecision"
-        >
+        <svg height={laneHeight} width={width} shapeRendering="geometricPrecision">
           <path d={bluePath} fill="#9abeff" />
           <path d={redPath} fill="red" />
         </svg>
@@ -202,13 +192,13 @@ export default class Minimap extends React.Component {
     const minimapTracksPartialHeight = laneHeight * alignmentTracks.length;
     return (
       <div
-        ref={(ref) => (this.minimap = ref)}
+        ref={ref => (this.minimap = ref)}
         className="alignmentMinimap"
         style={{
-          position: "relative",
+          position: 'relative',
           width,
-          display: "flex",
-          flexDirection: "column"
+          display: 'flex',
+          flexDirection: 'column'
           // overflowX: "visible",
           // overflowY: "hidden"
         }}
@@ -216,17 +206,17 @@ export default class Minimap extends React.Component {
       >
         {selectionLayerComp}
         <div
-          ref={(ref) => {
+          ref={ref => {
             if (ref) {
               this.minimapTracks = ref;
             }
           }}
           style={{
             // maxHeight: 350,
-            overflowY: minimapTracksPartialHeight > 190 ? "auto" : "hidden",
+            overflowY: minimapTracksPartialHeight > 190 ? 'auto' : 'hidden',
             // overflowY: "auto",
-            overflowX: "hidden",
-            position: "relative"
+            overflowX: 'hidden',
+            position: 'relative'
           }}
           className="alignmentMinimapTracks"
         >
@@ -309,10 +299,10 @@ const YellowScrollHandle = view(
             style={{
               height: minimapTracksPartialHeight || 0,
               // height: "100%",
-              border: "none",
-              top: "0px",
-              position: "absolute",
-              zIndex: "10"
+              border: 'none',
+              top: '0px',
+              position: 'absolute',
+              zIndex: '10'
             }}
           >
             {/* left hand side drag handle */}
@@ -344,14 +334,14 @@ const YellowScrollHandle = view(
                 style={{
                   height: minimapTracksPartialHeight || 0,
                   // height: "100%",
-                  border: "none",
-                  cursor: "ew-resize",
-                  opacity: "1",
-                  top: "0px",
-                  position: "absolute",
-                  zIndex: "10",
+                  border: 'none',
+                  cursor: 'ew-resize',
+                  opacity: '1',
+                  top: '0px',
+                  position: 'absolute',
+                  zIndex: '10',
                   width: 2,
-                  background: "black"
+                  background: 'black'
                 }}
                 className="minimapCaret"
               />
@@ -362,12 +352,12 @@ const YellowScrollHandle = view(
               dataname="scrollGroup"
               style={{
                 height: minimapTracksPartialHeight || 0,
-                border: "none",
-                cursor: "move",
-                opacity: ".4",
-                zIndex: "10",
+                border: 'none',
+                cursor: 'move',
+                opacity: '.4',
+                zIndex: '10',
                 width: scrollHandleWidth,
-                background: "transparent"
+                background: 'transparent'
               }}
             >
               {/* this is the vertical scroll position display element */}
@@ -375,14 +365,12 @@ const YellowScrollHandle = view(
                 className="verticalScrollDisplay"
                 style={{
                   height:
-                    (verticalVisibleRange.end -
-                      verticalVisibleRange.start +
-                      1) *
+                    (verticalVisibleRange.end - verticalVisibleRange.start + 1) *
                     laneHeight,
 
-                  zIndex: "-10",
-                  background: "yellow",
-                  position: "relative",
+                  zIndex: '-10',
+                  background: 'yellow',
+                  position: 'relative',
                   top: verticalVisibleRange.start * laneHeight
                 }}
               />
@@ -413,15 +401,15 @@ const YellowScrollHandle = view(
                 style={{
                   height: minimapTracksPartialHeight || 0,
                   // height: "100%",
-                  border: "none",
-                  cursor: "ew-resize",
-                  opacity: "1",
-                  top: "0px",
+                  border: 'none',
+                  cursor: 'ew-resize',
+                  opacity: '1',
+                  top: '0px',
                   // right: 0,
-                  position: "absolute",
-                  zIndex: "10",
+                  position: 'absolute',
+                  zIndex: '10',
                   width: 2,
-                  background: "black"
+                  background: 'black'
                 }}
                 className="minimapCaret"
               />

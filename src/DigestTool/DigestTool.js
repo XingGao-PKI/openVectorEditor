@@ -1,30 +1,23 @@
 // import uniqid from "shortid";
 // import Ladder from "./Ladder";
-import { compose, withProps } from "recompose";
-import { normalizePositionByRangeLength, getRangeLength } from "ve-range-utils";
+import { compose, withProps } from 'recompose';
+import { normalizePositionByRangeLength, getRangeLength } from 've-range-utils';
 // import selectionLayer from "../redux/selectionLayer";
-import React from "react";
-import { DataTable } from "teselagen-react-components";
-import { getCutsiteType } from "ve-sequence-utils";
-import CutsiteFilter from "../CutsiteFilter";
-import Ladder from "./Ladder";
+import React from 'react';
+import { DataTable } from 'teselagen-react-components';
+import { getCutsiteType } from 've-sequence-utils';
+import CutsiteFilter from '../CutsiteFilter';
+import Ladder from './Ladder';
 // import getCutsiteType from "./getCutsiteType";
-import {
-  Tabs,
-  Tab,
-  Button,
-  InputGroup,
-  Intent,
-  Checkbox
-} from "@blueprintjs/core";
-import withEditorInteractions from "../withEditorInteractions";
-import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
-import { pick } from "lodash";
+import { Tabs, Tab, Button, InputGroup, Intent, Checkbox } from '@blueprintjs/core';
+import withEditorInteractions from '../withEditorInteractions';
+import { userDefinedHandlersAndOpts } from '../Editor/userDefinedHandlersAndOpts';
+import { pick } from 'lodash';
 
 const MAX_DIGEST_CUTSITES = 50;
 const MAX_PARTIAL_DIGEST_CUTSITES = 10;
 export class DigestTool extends React.Component {
-  state = { selectedTab: "virtualDigest" };
+  state = { selectedTab: 'virtualDigest' };
   render() {
     const {
       editorName,
@@ -41,14 +34,13 @@ export class DigestTool extends React.Component {
     return (
       <div
         style={{
-          height:
-            typeof dimensions.height === "string" ? 100 : dimensions.height,
-          overflowY: "auto",
+          height: typeof dimensions.height === 'string' ? 100 : dimensions.height,
+          overflowY: 'auto',
           padding: 10
         }}
       >
         {onDigestSave && (
-          <div style={{ display: "flex", marginBottom: 10 }}>
+          <div style={{ display: 'flex', marginBottom: 10 }}>
             <InputGroup placeholder="My Digest" />
             <Button
               intent={Intent.PRIMARY}
@@ -57,7 +49,7 @@ export class DigestTool extends React.Component {
               }}
               style={{ marginLeft: 5 }}
             >
-              {" "}
+              {' '}
               Save
             </Button>
           </div>
@@ -69,12 +61,12 @@ export class DigestTool extends React.Component {
           checked={computePartialDigest}
           label={
             <span>
-              Show Partial Digests{" "}
+              Show Partial Digests{' '}
               {computePartialDigestDisabled ? (
                 <span style={{ fontSize: 10 }}>
-                  {" "}
-                  -- Disabled (only supports {MAX_PARTIAL_DIGEST_CUTSITES} or
-                  fewer cutsites){" "}
+                  {' '}
+                  -- Disabled (only supports {MAX_PARTIAL_DIGEST_CUTSITES} or fewer
+                  cutsites){' '}
                 </span>
               ) : null}
             </span>
@@ -90,18 +82,18 @@ export class DigestTool extends React.Component {
         {computeDigestDisabled && (
           <div
             style={{
-              color: "red",
-              marginBottom: "6px",
-              fontSize: "15px"
+              color: 'red',
+              marginBottom: '6px',
+              fontSize: '15px'
             }}
           >
-            >{MAX_DIGEST_CUTSITES} cutsites detected. Filter out additional
-            restriction enzymes to visualize digest results
+            >{MAX_DIGEST_CUTSITES} cutsites detected. Filter out additional restriction
+            enzymes to visualize digest results
           </div>
         )}
         <Tabs
           selectedTabId={selectedTab}
-          onChange={(id) => {
+          onChange={id => {
             this.setState({ selectedTab: id });
           }}
         >
@@ -159,19 +151,19 @@ export class DigestTool extends React.Component {
 }
 const schema = {
   fields: [
-    { width: 60, path: "start", displayName: "Start", type: "string" },
-    { width: 60, path: "end", displayName: "End", type: "string" },
-    { width: 70, path: "length", displayName: "Length", type: "string" },
-    { path: "leftCutter", displayName: "Left Cutter", type: "string" },
-    { path: "leftOverhang", displayName: "Left Overhang", type: "string" },
-    { path: "rightCutter", displayName: "Right Cutter", type: "string" },
-    { path: "rightOverhang", displayName: "Right Overhang", type: "string" }
+    { width: 60, path: 'start', displayName: 'Start', type: 'string' },
+    { width: 60, path: 'end', displayName: 'End', type: 'string' },
+    { width: 70, path: 'length', displayName: 'Length', type: 'string' },
+    { path: 'leftCutter', displayName: 'Left Cutter', type: 'string' },
+    { path: 'leftOverhang', displayName: 'Left Overhang', type: 'string' },
+    { path: 'rightCutter', displayName: 'Right Cutter', type: 'string' },
+    { path: 'rightOverhang', displayName: 'Right Overhang', type: 'string' }
   ]
 };
 
 export default compose(
   withEditorInteractions,
-  withProps((props) => {
+  withProps(props => {
     const {
       sequenceData,
       sequenceLength,
@@ -184,8 +176,7 @@ export default compose(
     const pairs = [];
     const computePartialDigestDisabled =
       sequenceData.cutsites.length > MAX_PARTIAL_DIGEST_CUTSITES;
-    const computeDigestDisabled =
-      sequenceData.cutsites.length > MAX_DIGEST_CUTSITES;
+    const computeDigestDisabled = sequenceData.cutsites.length > MAX_DIGEST_CUTSITES;
     const sortedCutsites = sequenceData.cutsites.sort((a, b) => {
       return a.topSnipPosition - b.topSnipPosition;
     });
@@ -202,18 +193,13 @@ export default compose(
       if (!computeDigestDisabled) {
         pairs.push([
           cutsite1,
-          sortedCutsites[index + 1]
-            ? sortedCutsites[index + 1]
-            : sortedCutsites[0]
+          sortedCutsites[index + 1] ? sortedCutsites[index + 1] : sortedCutsites[0]
         ]);
       }
     });
 
     pairs.forEach(([cut1, cut2]) => {
-      const start = normalizePositionByRangeLength(
-        cut1.topSnipPosition,
-        sequenceLength
-      );
+      const start = normalizePositionByRangeLength(cut1.topSnipPosition, sequenceLength);
       const end = normalizePositionByRangeLength(
         cut2.topSnipPosition - 1,
         sequenceLength
@@ -221,7 +207,7 @@ export default compose(
       const size = getRangeLength({ start, end }, sequenceLength);
 
       // const id = uniqid()
-      const id = start + "-" + end + "-" + size + "-";
+      const id = start + '-' + end + '-' + size + '-';
       const name = `${cut1.restrictionEnzyme.name} -- ${cut2.restrictionEnzyme.name} ${size} bps`;
       getRangeLength({ start, end }, sequenceLength);
       fragments.push({
@@ -243,7 +229,7 @@ export default compose(
       });
     });
 
-    fragments.filter((fragment) => {
+    fragments.filter(fragment => {
       if (!fragment.size) {
         overlappingEnzymes.push(fragment);
         return false;

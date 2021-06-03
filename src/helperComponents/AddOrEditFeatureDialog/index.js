@@ -1,8 +1,8 @@
-import React from "react";
-import { featureColors, FeatureTypes as featureTypes } from "ve-sequence-utils";
+import React from 'react';
+import { featureColors, FeatureTypes as featureTypes } from 've-sequence-utils';
 
-import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
-import { ReactSelectField } from "teselagen-react-components";
+import AddOrEditAnnotationDialog from '../AddOrEditAnnotationDialog';
+import { ReactSelectField } from 'teselagen-react-components';
 
 const renderTypes = ({ readOnly }) => (
   <ReactSelectField
@@ -10,13 +10,13 @@ const renderTypes = ({ readOnly }) => (
     tooltipError
     disabled={readOnly}
     defaultValue="misc_feature"
-    options={featureTypes.map((type) => {
+    options={featureTypes.map(type => {
       return {
         label: (
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
               marginRight: 10
             }}
           >
@@ -40,15 +40,15 @@ const renderTypes = ({ readOnly }) => (
 );
 
 export default AddOrEditAnnotationDialog({
-  formName: "AddOrEditFeatureDialog",
+  formName: 'AddOrEditFeatureDialog',
   dialogProps: {
     // height: 500,
     width: 400
   },
-  getProps: (props) => ({
+  getProps: props => ({
     upsertAnnotation: props.upsertFeature,
     renderLocations: !props.sequenceData.isProtein,
     renderTypes: renderTypes({ readOnly: props.readOnly }),
-    annotationTypePlural: "features"
+    annotationTypePlural: 'features'
   })
 });

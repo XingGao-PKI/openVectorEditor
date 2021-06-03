@@ -1,5 +1,5 @@
-import createAction from "./utils/createMetaAction";
-import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import createAction from './utils/createMetaAction';
+import createMergedDefaultStateReducer from './utils/createMergedDefaultStateReducer';
 
 //this determines whether or not to
 const initialSupportedTypes = {
@@ -14,10 +14,10 @@ const initialSupportedTypes = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const annotationSupportToggle = createAction("annotationSupportToggle");
+export const annotationSupportToggle = createAction('annotationSupportToggle');
 //eg: annotationSupportToggle('features')
-export const annotationSupportOn = createAction("annotationSupportOn");
-export const annotationSupportOff = createAction("annotationSupportOff");
+export const annotationSupportOn = createAction('annotationSupportOn');
+export const annotationSupportOff = createAction('annotationSupportOff');
 
 // ------------------------------------
 // Reducer

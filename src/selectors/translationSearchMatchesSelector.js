@@ -1,5 +1,5 @@
-import { createSelector } from "reselect";
-import searchLayersSelector from "./searchLayersSelector";
+import { createSelector } from 'reselect';
+import searchLayersSelector from './searchLayersSelector';
 
 export default createSelector(
   searchLayersSelector,
@@ -7,7 +7,7 @@ export default createSelector(
   state => state.findTool && state.findTool.highlightAll,
   state => state.findTool && state.findTool.matchNumber,
   (searchLayers, dnaOrAA, highlightAll, matchNumber) => {
-    if (dnaOrAA === "DNA") return [];
+    if (dnaOrAA === 'DNA') return [];
     if (!highlightAll) return [searchLayers[matchNumber]];
     return searchLayers;
   }

@@ -1,9 +1,9 @@
-import React from "react";
-import drawDirectedPiePiece from "./drawDirectedPiePiece";
-import { cleanRest } from "./utils/cleanRest";
+import React from 'react';
+import drawDirectedPiePiece from './drawDirectedPiePiece';
+import { cleanRest } from './utils/cleanRest';
 
 export default function CircularPrimer({
-  color = "orange",
+  color = 'orange',
   radius,
   arrowheadLength = 0.5,
   annotationHeight,

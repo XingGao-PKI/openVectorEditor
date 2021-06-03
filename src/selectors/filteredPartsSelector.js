@@ -1,23 +1,23 @@
-import { createSelector } from "reselect";
-import partsSelector from "./partsSelector";
-import tagsToBoldSelector from "./tagsToBoldSelector";
-import { some, keyBy } from "lodash";
-import { map } from "lodash";
+import { createSelector } from 'reselect';
+import partsSelector from './partsSelector';
+import tagsToBoldSelector from './tagsToBoldSelector';
+import { some, keyBy } from 'lodash';
+import { map } from 'lodash';
 function filteredPartsSelector(parts, tagsToBold) {
   if (tagsToBold) {
-    const keyedTagsToBold = keyBy(tagsToBold, "value");
+    const keyedTagsToBold = keyBy(tagsToBold, 'value');
 
-    return map(parts || {}, (p) => {
+    return map(parts || {}, p => {
       if (p.tags) {
         if (
-          some(p.tags, (tagId) => {
+          some(p.tags, tagId => {
             return keyedTagsToBold[tagId];
           })
         ) {
           return {
             ...p,
-            className: "partWithSelectedTag",
-            labelClassName: "partWithSelectedTag",
+            className: 'partWithSelectedTag',
+            labelClassName: 'partWithSelectedTag',
             highPriorityLabel: true
           };
         } else {
@@ -28,8 +28,4 @@ function filteredPartsSelector(parts, tagsToBold) {
   }
   return parts;
 }
-export default createSelector(
-  partsSelector,
-  tagsToBoldSelector,
-  filteredPartsSelector
-);
+export default createSelector(partsSelector, tagsToBoldSelector, filteredPartsSelector);

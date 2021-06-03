@@ -1,10 +1,10 @@
-import { createReducer } from "redux-act";
-import createAction from "../utils/createMetaAction";
+import { createReducer } from 'redux-act';
+import createAction from '../utils/createMetaAction';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const _updateCircular = createAction("UPDATE_CIRCULAR");
+export const _updateCircular = createAction('UPDATE_CIRCULAR');
 
 // ------------------------------------
 // Reducer

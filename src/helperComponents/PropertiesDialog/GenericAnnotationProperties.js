@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   DataTable,
   withSelectedEntities,
@@ -6,24 +6,19 @@ import {
   CmdButton,
   getTagProps,
   getKeyedTagsAndTagOptions
-} from "teselagen-react-components";
-import { map, upperFirst, pick } from "lodash";
-import { Button, Tag } from "@blueprintjs/core";
-import { getRangeLength } from "ve-range-utils";
+} from 'teselagen-react-components';
+import { map, upperFirst, pick } from 'lodash';
+import { Button, Tag } from '@blueprintjs/core';
+import { getRangeLength } from 've-range-utils';
 // import { Popover } from "@blueprintjs/core";
 // import ColorPicker from "./ColorPicker";
-import { connectToEditor } from "../../withEditorProps";
-import { compose } from "recompose";
-import commands from "../../commands";
-import { sizeSchema } from "./utils";
-import { showAddOrEditAnnotationDialog } from "../../GlobalDialogUtils";
+import { connectToEditor } from '../../withEditorProps';
+import { compose } from 'recompose';
+import commands from '../../commands';
+import { sizeSchema } from './utils';
+import { showAddOrEditAnnotationDialog } from '../../GlobalDialogUtils';
 
-const genericAnnotationProperties = ({
-  annotationType,
-  noColor,
-  noType,
-  withTags
-}) => {
+const genericAnnotationProperties = ({ annotationType, noColor, noType, withTags }) => {
   const annotationTypeUpper = upperFirst(annotationType);
   class AnnotationProperties extends React.Component {
     constructor(props) {
@@ -35,13 +30,11 @@ const genericAnnotationProperties = ({
             ? []
             : [
                 {
-                  path: "color",
-                  type: "string",
-                  render: (color) => {
+                  path: 'color',
+                  type: 'string',
+                  render: color => {
                     return (
-                      <div
-                        style={{ height: 20, width: 20, background: color }}
-                      />
+                      <div style={{ height: 20, width: 20, background: color }} />
                       // <ColorPickerPopover>
                       //   <div style={{ height: 20, width: 20, background: color }} />
                       // </ColorPickerPopover>
@@ -49,27 +42,27 @@ const genericAnnotationProperties = ({
                   }
                 }
               ]),
-          { path: "name", type: "string" },
-          ...(noType ? [] : [{ path: "type", type: "string" }]),
+          { path: 'name', type: 'string' },
+          ...(noType ? [] : [{ path: 'type', type: 'string' }]),
           sizeSchema,
           ...(withTags && this.props.allPartTags
             ? [
                 {
-                  path: "tags",
-                  type: "string",
+                  path: 'tags',
+                  type: 'string',
                   getValueToFilterOn: (o, { keyedPartTags }) => {
                     const toRet = (o.tags || [])
-                      .map((tagId) => {
+                      .map(tagId => {
                         const tag = keyedPartTags[tagId];
-                        if (!tag) return "";
+                        if (!tag) return '';
                         return tag.label;
                       })
-                      .join(" ");
+                      .join(' ');
                     return toRet;
                   },
                   render: (tags, b, c, { keyedPartTags = {} }) => {
                     return (
-                      <div style={{ display: "flex" }}>
+                      <div style={{ display: 'flex' }}>
                         {(tags || []).map((tagId, i) => {
                           const tag = keyedPartTags[tagId];
                           if (!tag) return null;
@@ -81,7 +74,7 @@ const genericAnnotationProperties = ({
                 }
               ]
             : []),
-          { path: "strand", type: "string" }
+          { path: 'strand', type: 'string' }
         ]
       };
     }
@@ -89,7 +82,7 @@ const genericAnnotationProperties = ({
       if (!record) return;
       const { dispatch, editorName } = this.props;
       dispatch({
-        type: "SELECTION_LAYER_UPDATE",
+        type: 'SELECTION_LAYER_UPDATE',
         payload: record,
         meta: {
           editorName
@@ -109,12 +102,12 @@ const genericAnnotationProperties = ({
         selectedAnnotationId
       } = this.props;
       const annotationPropertiesSelectedEntities = _annotationPropertiesSelectedEntities.filter(
-        (a) => annotations[a.id]
+        a => annotations[a.id]
       );
 
       const deleteAnnotation = this.props[`delete${annotationTypeUpper}`];
 
-      const annotationsToUse = map(annotations, (annotation) => {
+      const annotationsToUse = map(annotations, annotation => {
         return {
           ...annotation,
           ...(annotation.strand === undefined && {
@@ -130,7 +123,7 @@ const genericAnnotationProperties = ({
             topLeftItems={
               <CmdCheckbox
                 prefix="Show "
-                cmd={this.commands[`toggle${annotationTypeUpper + "s"}`]}
+                cmd={this.commands[`toggle${annotationTypeUpper + 's'}`]}
               />
             }
             annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
@@ -156,7 +149,7 @@ const genericAnnotationProperties = ({
                 onClick={() => {
                   showAddOrEditAnnotationDialog({
                     type: annotationType,
-                    annotation: pick(selectionLayer, "start", "end", "forward")
+                    annotation: pick(selectionLayer, 'start', 'end', 'forward')
                   });
                 }}
               >
@@ -183,11 +176,11 @@ const genericAnnotationProperties = ({
               >
                 Delete
               </Button>
-              {["part", "primer", "feature"].includes(annotationType) && (
+              {['part', 'primer', 'feature'].includes(annotationType) && (
                 <CmdButton
                   cmd={
                     this.commands[
-                      `showRemoveDuplicatesDialog${annotationTypeUpper + "s"}`
+                      `showRemoveDuplicatesDialog${annotationTypeUpper + 's'}`
                     ]
                   }
                   style={{ marginRight: 15 }}
@@ -202,23 +195,18 @@ const genericAnnotationProperties = ({
 
   return compose(
     connectToEditor(
-      ({
-        readOnly,
-        annotationVisibility = {},
-        sequenceData,
-        selectionLayer
-      }) => {
+      ({ readOnly, annotationVisibility = {}, sequenceData, selectionLayer }) => {
         return {
           annotationVisibility,
           selectionLayer,
           readOnly,
-          annotations: sequenceData[annotationType + "s"],
-          [annotationType + "s"]: sequenceData[annotationType + "s"],
+          annotations: sequenceData[annotationType + 's'],
+          [annotationType + 's']: sequenceData[annotationType + 's'],
           sequenceLength: sequenceData.sequence.length
         };
       }
     ),
-    withSelectedEntities("annotationProperties")
+    withSelectedEntities('annotationProperties')
   )(AnnotationProperties);
 };
 

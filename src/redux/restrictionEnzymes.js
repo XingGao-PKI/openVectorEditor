@@ -1,18 +1,18 @@
-import { combineReducers } from "redux";
-import { createReducer } from "redux-act";
-import createAction from "./utils/createMetaAction";
-import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
+import { combineReducers } from 'redux';
+import { createReducer } from 'redux-act';
+import createAction from './utils/createMetaAction';
+import specialCutsiteFilterOptions from '../constants/specialCutsiteFilterOptions';
 // ------------------------------------
 // Actions
 // ------------------------------------
 export const filteredRestrictionEnzymesUpdate = createAction(
-  "FILTERED_RESTRICTION_ENZYMES_UPDATE"
+  'FILTERED_RESTRICTION_ENZYMES_UPDATE'
 );
 export const filteredRestrictionEnzymesReset = createAction(
-  "FILTERED_RESTRICTION_ENZYMES_RESET"
+  'FILTERED_RESTRICTION_ENZYMES_RESET'
 );
 export const filteredRestrictionEnzymesAdd = createAction(
-  "FILTERED_RESTRICTION_ENZYMES_ADD"
+  'FILTERED_RESTRICTION_ENZYMES_ADD'
 );
 // ------------------------------------
 // Reducer

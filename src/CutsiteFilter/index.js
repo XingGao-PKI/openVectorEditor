@@ -1,43 +1,40 @@
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { Icon } from "@blueprintjs/core";
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { Icon } from '@blueprintjs/core';
 
-import withEditorProps from "../withEditorProps";
-import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
+import withEditorProps from '../withEditorProps';
+import specialCutsiteFilterOptions from '../constants/specialCutsiteFilterOptions';
 
-import React from "react";
+import React from 'react';
 
-import "./style.css";
-import { TgSelect } from "teselagen-react-components";
+import './style.css';
+import { TgSelect } from 'teselagen-react-components';
 
-import { map, flatMap, includes, pickBy, isEmpty } from "lodash";
-import { omit } from "lodash";
-import { showDialog } from "../GlobalDialogUtils";
+import { map, flatMap, includes, pickBy, isEmpty } from 'lodash';
+import { omit } from 'lodash';
+import { showDialog } from '../GlobalDialogUtils';
 import {
   addCutsiteGroupClickHandler,
   CutsiteTag,
   getCutsiteWithNumCuts,
   getUserGroupLabel,
   withRestrictionEnzymes
-} from "./AdditionalCutsiteInfoDialog";
+} from './AdditionalCutsiteInfoDialog';
 
 const NoResults = withRestrictionEnzymes(
-  ({ cutsitesByName, allRestrictionEnzymes, queryString = "" }) => {
-    const enzymesByNameThatMatch = pickBy(
-      allRestrictionEnzymes,
-      function (v, k) {
-        if (cutsitesByName[k]) {
-          return false;
-        }
-        return includes(k.toLowerCase(), queryString.toLowerCase());
+  ({ cutsitesByName, allRestrictionEnzymes, queryString = '' }) => {
+    const enzymesByNameThatMatch = pickBy(allRestrictionEnzymes, function (v, k) {
+      if (cutsitesByName[k]) {
+        return false;
       }
-    );
+      return includes(k.toLowerCase(), queryString.toLowerCase());
+    });
     if (!isEmpty(enzymesByNameThatMatch)) {
       return (
         <div>
           No Active Results.. These inactive enzymes match:
           <br></br>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: 'flex' }}>
             {flatMap(enzymesByNameThatMatch, (e, i) => {
               if (i > 3) return [];
               return (
@@ -57,7 +54,7 @@ const NoResults = withRestrictionEnzymes(
     }
     return (
       <div className="noResultsTextPlusButton">
-        No results... Add enzymes to your list via the Manage Enzymes link{" "}
+        No results... Add enzymes to your list via the Manage Enzymes link{' '}
       </div>
     );
   }
@@ -71,42 +68,39 @@ export class CutsiteFilter extends React.Component {
     filteredRestrictionEnzymesUpdate: () => {},
     allCutsites: { cutsitesByName: {} },
     sequenceData: {
-      sequence: ""
+      sequence: ''
     }
   };
   //the queryTracker is just used for tracking purposes
-  state = { queryTracker: "" };
+  state = { queryTracker: '' };
 
   renderOptions = ({ label, value, canBeHidden }, props) => {
     // if (value === "manageEnzymes") {
     //   return this.getManageEnzymesLink();
     // }
-    const {
-      filteredRestrictionEnzymes,
-      filteredRestrictionEnzymesUpdate
-    } = props;
+    const { filteredRestrictionEnzymes, filteredRestrictionEnzymesUpdate } = props;
 
     return (
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%"
+          display: 'flex',
+          justifyContent: 'space-between',
+          width: '100%'
         }}
       >
-        {label}{" "}
+        {label}{' '}
         {canBeHidden && (
           <Icon
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
 
               filteredRestrictionEnzymesUpdate(
-                flatMap(filteredRestrictionEnzymes, (e) => {
+                flatMap(filteredRestrictionEnzymes, e => {
                   if (e.value === value) return [];
                   return e;
                 }).concat({
                   label,
-                  className: "veHiddenEnzyme",
+                  className: 'veHiddenEnzyme',
                   value,
                   // hiddenEnzyme: true,
                   isHidden: true,
@@ -138,14 +132,13 @@ export class CutsiteFilter extends React.Component {
       editorName,
       additionalEnzymes
     } = this.props;
-    const userEnzymeGroups =
-      enzymeGroupsOverride || window.getExistingEnzymeGroups();
+    const userEnzymeGroups = enzymeGroupsOverride || window.getExistingEnzymeGroups();
     let options = [
-      ...map(specialCutsiteFilterOptions, (opt) => opt),
+      ...map(specialCutsiteFilterOptions, opt => opt),
       ...map(userEnzymeGroups, (nameArray, name) => {
         return {
           label: getUserGroupLabel({ nameArray, name }),
-          value: "__userCreatedGroup" + name,
+          value: '__userCreatedGroup' + name,
           nameArray
         };
       }),
@@ -165,7 +158,7 @@ export class CutsiteFilter extends React.Component {
             value: key
           };
         })
-    ].map((n) => addClickableLabel(n, { closeDropDown }));
+    ].map(n => addClickableLabel(n, { closeDropDown }));
     // function openManageEnzymes() {
     //   dispatch({
     //     type: "CREATE_YOUR_OWN_ENZYME_RESET"
@@ -180,9 +173,9 @@ export class CutsiteFilter extends React.Component {
     return (
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          flexWrap: "wrap",
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
           ...style
         }}
       >
@@ -201,7 +194,7 @@ export class CutsiteFilter extends React.Component {
               }}
             ></NoResults>
           }
-          onInputChange={(queryTracker) => {
+          onInputChange={queryTracker => {
             this.setState({ queryTracker });
           }}
           placeholder="Filter cutsites..."
@@ -210,7 +203,7 @@ export class CutsiteFilter extends React.Component {
           filteredRestrictionEnzymesUpdate={filteredRestrictionEnzymesUpdate}
           optionRenderer={this.renderOptions}
           isSimpleSearch
-          onChange={(filteredRestrictionEnzymes) => {
+          onChange={filteredRestrictionEnzymes => {
             // if (
             //   filteredRestrictionEnzymes &&
             //   filteredRestrictionEnzymes.some(
@@ -223,16 +216,16 @@ export class CutsiteFilter extends React.Component {
             // }
             onChangeHook && onChangeHook(filteredRestrictionEnzymes);
             filteredRestrictionEnzymesUpdate(
-              map(filteredRestrictionEnzymes, (r) => {
-                return omit(r, ["label"]);
+              map(filteredRestrictionEnzymes, r => {
+                return omit(r, ['label']);
               })
             );
           }}
-          value={filteredRestrictionEnzymes.map((filteredOpt) => {
+          value={filteredRestrictionEnzymes.map(filteredOpt => {
             let toRet;
             if (filteredOpt.cutsThisManyTimes) {
               toRet = filteredOpt;
-            } else if (filteredOpt.value.includes("__userCreatedGroup")) {
+            } else if (filteredOpt.value.includes('__userCreatedGroup')) {
               toRet = filteredOpt;
             } else {
               const numCuts = (cutsitesByName[filteredOpt.value] || []).length;
@@ -256,12 +249,12 @@ export class CutsiteFilter extends React.Component {
             enzymeManageOverride
               ? enzymeManageOverride(this.props)
               : showDialog({
-                  dialogType: "EnzymesDialog"
+                  dialogType: 'EnzymesDialog'
                   // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
                 });
             closeDropDown();
           }}
-          style={{ width: "fit-content", fontSize: 11 }}
+          style={{ width: 'fit-content', fontSize: 11 }}
         >
           Manage Enzymes...
         </a>

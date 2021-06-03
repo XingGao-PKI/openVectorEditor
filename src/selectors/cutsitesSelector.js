@@ -1,12 +1,12 @@
-import circularSelector from "./circularSelector";
-import sequenceSelector from "./sequenceSelector";
-import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
-import cutsiteLabelColorSelector from "./cutsiteLabelColorSelector";
-import { createSelector } from "reselect";
-import bsonObjectid from "bson-objectid";
-import { flatMap as flatmap, map } from "lodash";
-import { getCutsitesFromSequence } from "ve-sequence-utils";
-import { getLowerCaseObj } from "../utils/arrayUtils";
+import circularSelector from './circularSelector';
+import sequenceSelector from './sequenceSelector';
+import restrictionEnzymesSelector from './restrictionEnzymesSelector';
+import cutsiteLabelColorSelector from './cutsiteLabelColorSelector';
+import { createSelector } from 'reselect';
+import bsonObjectid from 'bson-objectid';
+import { flatMap as flatmap, map } from 'lodash';
+import { getCutsitesFromSequence } from 've-sequence-utils';
+import { getLowerCaseObj } from '../utils/arrayUtils';
 
 function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
   //get the cutsites grouped by enzyme
@@ -22,21 +22,21 @@ function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
       const uniqueId = bsonObjectid().str;
       cutsite.id = uniqueId;
       cutsite.numberOfCuts = numberOfCuts;
-      cutsite.annotationType = "cutsite";
+      cutsite.annotationType = 'cutsite';
       cutsitesById[uniqueId] = cutsite;
       const mergedCutsiteColors = Object.assign(
-        { single: "salmon", double: "lightblue", multi: "lightgrey" },
+        { single: 'salmon', double: 'lightblue', multi: 'lightgrey' },
         cutsiteLabelColors
       );
       if (numberOfCuts === 1) {
         cutsite.labelColor = mergedCutsiteColors.single;
-        cutsite.labelClassname = "singleCutter";
+        cutsite.labelClassname = 'singleCutter';
       } else if (numberOfCuts === 2) {
         cutsite.labelColor = mergedCutsiteColors.double;
-        cutsite.labelClassname = "doubleCutter";
+        cutsite.labelClassname = 'doubleCutter';
       } else {
         cutsite.labelColor = mergedCutsiteColors.multi;
-        cutsite.labelClassname = "multiCutter";
+        cutsite.labelClassname = 'multiCutter';
       }
     });
   });

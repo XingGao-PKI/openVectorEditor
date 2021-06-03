@@ -18,7 +18,7 @@ class ReflexEvents {
   //
   /////////////////////////////////////////////////////////
   on(events, fct) {
-    events.split(" ").forEach(event => {
+    events.split(' ').forEach(event => {
       this._events[event] = this._events[event] || [];
       this._events[event].push(fct);
     });
@@ -36,7 +36,7 @@ class ReflexEvents {
       return;
     }
 
-    events.split(" ").forEach(event => {
+    events.split(' ').forEach(event => {
       if (event in this._events === false) return;
 
       if (fct) {
@@ -59,10 +59,7 @@ class ReflexEvents {
     let tmpArray = this._events[event].slice();
 
     for (let i = 0; i < tmpArray.length; ++i) {
-      let result = tmpArray[i].apply(
-        this,
-        Array.prototype.slice.call(arguments, 1)
-      );
+      let result = tmpArray[i].apply(this, Array.prototype.slice.call(arguments, 1));
 
       if (result !== undefined) {
         return result;

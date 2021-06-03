@@ -1,40 +1,40 @@
-import { map, flatMap } from "lodash";
-import { createReducer } from "redux-act";
-import createAction from "./utils/createMetaAction";
-import { removeItem } from "../utils/arrayUtils";
+import { map, flatMap } from 'lodash';
+import { createReducer } from 'redux-act';
+import createAction from './utils/createMetaAction';
+import { removeItem } from '../utils/arrayUtils';
 
 //manages which tab panels are shown in the editor
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const panelsShownUpdate = createAction("PANELS_SHOWN_UPDATE");
+export const panelsShownUpdate = createAction('PANELS_SHOWN_UPDATE');
 export const addPanelIfItDoesntAlreadyExist = createAction(
-  "addPanelIfItDoesntAlreadyExist"
+  'addPanelIfItDoesntAlreadyExist'
 );
-export const togglePanelFullScreen = createAction("togglePanelFullScreen");
-export const collapsePanel = createAction("collapsePanel");
-export const closePanel = createAction("closePanel");
-export const _collapseSplitScreen = createAction("_collapseSplitScreen");
-export const setPanelAsActive = createAction("setPanelAsActive");
-export const expandTabToSplitScreen = createAction("expandTabToSplitScreen");
+export const togglePanelFullScreen = createAction('togglePanelFullScreen');
+export const collapsePanel = createAction('collapsePanel');
+export const closePanel = createAction('closePanel');
+export const _collapseSplitScreen = createAction('_collapseSplitScreen');
+export const setPanelAsActive = createAction('setPanelAsActive');
+export const expandTabToSplitScreen = createAction('expandTabToSplitScreen');
 export const propertiesViewOpen = (unused, meta) => {
-  return setPanelAsActive("properties", meta);
+  return setPanelAsActive('properties', meta);
 };
 export const createNewDigest = (unused, meta) => {
   return dispatch => {
     dispatch(
       addPanelIfItDoesntAlreadyExist(
         {
-          id: "digestTool",
-          name: "New Digest",
+          id: 'digestTool',
+          name: 'New Digest',
           active: true,
           canClose: true
         },
         meta
       )
     );
-    dispatch(setPanelAsActive("digestTool", meta));
+    dispatch(setPanelAsActive('digestTool', meta));
   };
 };
 
@@ -43,8 +43,8 @@ export const createNewAlignment = (payload, meta) => {
     dispatch(
       addPanelIfItDoesntAlreadyExist(
         {
-          type: "alignment",
-          name: "New Alignment",
+          type: 'alignment',
+          name: 'New Alignment',
           active: true,
           canClose: true,
           ...payload
@@ -61,8 +61,8 @@ export const createNewMismatchesList = (payload, meta) => {
     dispatch(
       addPanelIfItDoesntAlreadyExist(
         {
-          type: "mismatches",
-          name: "Mismatches",
+          type: 'mismatches',
+          name: 'Mismatches',
           active: true,
           canClose: true,
           ...payload
@@ -154,12 +154,7 @@ export default createReducer(
         return panelGroup.map(panel => {
           return {
             ...panel,
-            active:
-              panelId === panel.id
-                ? true
-                : isPanelInGroup
-                ? false
-                : panel.active
+            active: panelId === panel.id ? true : isPanelInGroup ? false : panel.active
           };
         });
       });
@@ -172,12 +167,7 @@ export default createReducer(
         return panelGroup.map(panel => {
           return {
             ...panel,
-            active:
-              panelId === panel.id
-                ? true
-                : isPanelInGroup
-                ? false
-                : panel.active,
+            active: panelId === panel.id ? true : isPanelInGroup ? false : panel.active,
             fullScreen:
               panelId === panel.id
                 ? !panel.fullScreen
@@ -207,26 +197,26 @@ export default createReducer(
   [
     [
       {
-        id: "circular",
-        name: "Circular Map",
+        id: 'circular',
+        name: 'Circular Map',
         active: true
         //   canClose: true
       },
       {
-        id: "rail",
-        name: "Linear Map",
+        id: 'rail',
+        name: 'Linear Map',
         active: false
       }
     ],
     [
       {
-        id: "sequence",
-        name: "Sequence Map",
+        id: 'sequence',
+        name: 'Sequence Map',
         active: true
       },
       {
-        id: "properties",
-        name: "Properties",
+        id: 'properties',
+        name: 'Properties',
         active: false
       }
     ]

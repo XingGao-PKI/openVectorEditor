@@ -1,5 +1,5 @@
 export default {
-  caret: "veCaret",
-  selectionStart: "veSelectionLayerStart",
-  selectionEnd: "veSelectionLayerEnd"
+  caret: 'veCaret',
+  selectionStart: 'veSelectionLayerStart',
+  selectionEnd: 'veSelectionLayerEnd'
 };

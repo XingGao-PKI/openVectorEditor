@@ -1,18 +1,18 @@
-import React from "react";
-import { findDOMNode } from "react-dom";
-import PropTypes from "prop-types";
+import React from 'react';
+import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
 
-import { reduxForm } from "redux-form";
+import { reduxForm } from 'redux-form';
 
-import { wrapDialog } from "teselagen-react-components";
-import { compose } from "redux";
-import { Button, Classes, ButtonGroup } from "@blueprintjs/core";
-import classNames from "classnames";
+import { wrapDialog } from 'teselagen-react-components';
+import { compose } from 'redux';
+import { Button, Classes, ButtonGroup } from '@blueprintjs/core';
+import classNames from 'classnames';
 
-import withEditorProps from "../../withEditorProps";
-import CircularView from "../../CircularView";
-import LinearView from "../../LinearView";
-import "./style.css";
+import withEditorProps from '../../withEditorProps';
+import CircularView from '../../CircularView';
+import LinearView from '../../LinearView';
+import './style.css';
 
 class PrintDialog extends React.Component {
   state = {
@@ -39,10 +39,10 @@ class PrintDialog extends React.Component {
     return (
       <div
         style={addPaddingBottom ? { paddingBottom: 20 } : {}}
-        className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog")}
+        className={classNames(Classes.DIALOG_BODY, 'tg-min-width-dialog')}
       >
         {!hideLinearCircularToggle && (
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <ButtonGroup>
               <Button
                 onClick={() => {
@@ -67,12 +67,12 @@ class PrintDialog extends React.Component {
         <ComponentToPrint
           fullscreen={this.state && this.state.fullscreen}
           circular={isCirc}
-          editorName={editorName || "StandaloneEditor"}
-          ref={(el) => (this.componentRef = el)}
+          editorName={editorName || 'StandaloneEditor'}
+          ref={el => (this.componentRef = el)}
         />
         <br />
         {!hidePrintButton && (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <ReactToPrint
               trigger={() => <Button intent="primary">Print</Button>}
               content={() => this.componentRef}
@@ -100,11 +100,11 @@ class PrintDialog extends React.Component {
 
 export default compose(
   wrapDialog({
-    title: "Print"
+    title: 'Print'
   }),
   withEditorProps,
   reduxForm({
-    form: "PrintDialog"
+    form: 'PrintDialog'
   })
 )(PrintDialog);
 
@@ -133,7 +133,7 @@ class ReactToPrint extends React.Component {
   static defaultProps = {
     copyStyles: true,
     closeAfterPrint: true,
-    bodyClass: ""
+    bodyClass: ''
   };
 
   triggerPrint(target, noRemove) {
@@ -157,7 +157,7 @@ class ReactToPrint extends React.Component {
   removeWindow(targets) {
     targets &&
       setTimeout(() => {
-        (Array.isArray(targets) ? targets : [targets]).forEach((target) => {
+        (Array.isArray(targets) ? targets : [targets]).forEach(target => {
           target.parentNode.removeChild(target);
         });
       }, 500);
@@ -182,12 +182,12 @@ class ReactToPrint extends React.Component {
       );
       return false;
     }
-    let printWindow = document.createElement("iframe");
+    let printWindow = document.createElement('iframe');
 
     if (printPreview) {
-      let printOutline = document.createElement("div");
-      let closeButton = document.createElement("button");
-      let printButton = document.createElement("button");
+      let printOutline = document.createElement('div');
+      let closeButton = document.createElement('button');
+      let printButton = document.createElement('button');
       const elsToRemoveFromDomEventually = [
         printWindow,
         printOutline,
@@ -195,32 +195,32 @@ class ReactToPrint extends React.Component {
         printButton
       ];
 
-      printOutline.style.position = "absolute";
-      printOutline.style.top = "0px";
-      printOutline.style.left = "0px";
-      printOutline.style.width = "1210px";
-      printOutline.style.height = "1056px";
-      printOutline.style.background = "grey";
+      printOutline.style.position = 'absolute';
+      printOutline.style.top = '0px';
+      printOutline.style.left = '0px';
+      printOutline.style.width = '1210px';
+      printOutline.style.height = '1056px';
+      printOutline.style.background = 'grey';
       printOutline.style.zIndex = 100000300;
       document.body.appendChild(printOutline);
-      printButton.style.position = "absolute";
-      printButton.style.top = "0px";
-      printButton.style.left = "0px";
-      printButton.style.width = "100px";
-      printButton.style.background = "lightblue";
-      printButton.innerText = "print";
+      printButton.style.position = 'absolute';
+      printButton.style.top = '0px';
+      printButton.style.left = '0px';
+      printButton.style.width = '100px';
+      printButton.style.background = 'lightblue';
+      printButton.innerText = 'print';
       printButton.onclick = () => {
         this.triggerPrint(printWindow, true);
       };
       printButton.style.zIndex = 100000500;
       document.body.appendChild(printButton);
 
-      closeButton.style.position = "absolute";
-      closeButton.style.top = "0px";
-      closeButton.style.left = "250px";
-      closeButton.style.width = "100px";
-      closeButton.style.background = "lightblue";
-      closeButton.innerText = "close";
+      closeButton.style.position = 'absolute';
+      closeButton.style.top = '0px';
+      closeButton.style.left = '250px';
+      closeButton.style.width = '100px';
+      closeButton.style.background = 'lightblue';
+      closeButton.innerText = 'close';
       closeButton.onclick = () => {
         this.removeWindow(elsToRemoveFromDomEventually);
       };
@@ -253,36 +253,32 @@ class ReactToPrint extends React.Component {
 
     printWindow.onload = () => {
       /* IE11 support */
-      if (
-        window.navigator &&
-        window.navigator.userAgent.indexOf("Trident/7.0") > -1
-      ) {
+      if (window.navigator && window.navigator.userAgent.indexOf('Trident/7.0') > -1) {
         printWindow.onload = null;
       }
-      let domDoc =
-        printWindow.contentDocument || printWindow.contentWindow.document;
-      const srcCanvasEls = [...contentNodes.querySelectorAll("canvas")];
+      let domDoc = printWindow.contentDocument || printWindow.contentWindow.document;
+      const srcCanvasEls = [...contentNodes.querySelectorAll('canvas')];
 
       domDoc.open();
       domDoc.write(contentNodes.outerHTML);
       domDoc.close();
 
-      printWindow.style.position = "absolute";
+      printWindow.style.position = 'absolute';
       // printWindow.style.width = "100%";
       // printWindow.style.height = "100%";
-      printWindow.style.top = "-1000px";
-      printWindow.style.left = "-1000px";
-      printWindow.style.width = domDoc.body.scrollWidth + "px";
+      printWindow.style.top = '-1000px';
+      printWindow.style.left = '-1000px';
+      printWindow.style.width = domDoc.body.scrollWidth + 'px';
 
-      printWindow.style.height = domDoc.body.scrollHeight + "px";
+      printWindow.style.height = domDoc.body.scrollHeight + 'px';
 
       if (printPreview) {
-        printWindow.style.top = "0px";
-        printWindow.style.left = "0px";
-        printWindow.style.width = "1210px";
-        printWindow.style.height = "1056px";
+        printWindow.style.top = '0px';
+        printWindow.style.left = '0px';
+        printWindow.style.width = '1210px';
+        printWindow.style.height = '1056px';
 
-        printWindow.style.background = "white";
+        printWindow.style.background = 'white';
 
         printWindow.style.zIndex = 100000400;
       }
@@ -293,7 +289,7 @@ class ReactToPrint extends React.Component {
           ? `@page { size: auto;  margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact;} }`
           : pageStyle;
 
-      let styleEl = domDoc.createElement("style");
+      let styleEl = domDoc.createElement('style');
       styleEl.appendChild(domDoc.createTextNode(defaultPageStyle));
       domDoc.head.appendChild(styleEl);
 
@@ -303,46 +299,42 @@ class ReactToPrint extends React.Component {
       }
 
       try {
-        const canvasEls = domDoc.querySelectorAll("canvas");
+        const canvasEls = domDoc.querySelectorAll('canvas');
         [...canvasEls].forEach((node, index) => {
           if (node.getContext) {
-            node.getContext("2d").drawImage(srcCanvasEls[index], 0, 0);
+            node.getContext('2d').drawImage(srcCanvasEls[index], 0, 0);
           }
         });
       } catch (e) {
-        console.warn(
-          "An error occurred trying to get the canvas elements for printing:"
-        );
+        console.warn('An error occurred trying to get the canvas elements for printing:');
         console.warn(`gg2g20011 error:`, e);
       }
 
       if (copyStyles !== false) {
-        const headEls = document.querySelectorAll(
-          'style, link[rel="stylesheet"]'
-        );
+        const headEls = document.querySelectorAll('style, link[rel="stylesheet"]');
 
         [...headEls].forEach((node, index) => {
           let newHeadEl = domDoc.createElement(node.tagName);
-          let styleCSS = "";
+          let styleCSS = '';
 
-          if (node.tagName === "STYLE") {
+          if (node.tagName === 'STYLE') {
             if (node.sheet) {
               for (let i = 0; i < node.sheet.cssRules.length; i++) {
-                styleCSS += node.sheet.cssRules[i].cssText + "\r\n";
+                styleCSS += node.sheet.cssRules[i].cssText + '\r\n';
               }
 
-              newHeadEl.setAttribute("id", `react-to-print-${index}`);
+              newHeadEl.setAttribute('id', `react-to-print-${index}`);
               newHeadEl.appendChild(domDoc.createTextNode(styleCSS));
             }
           } else {
             let attributes = [...(node.attributes || [])];
-            attributes.forEach((attr) => {
+            attributes.forEach(attr => {
               newHeadEl.setAttribute(attr.nodeName, attr.nodeValue);
             });
 
-            newHeadEl.readystatechange = markLoaded.bind(null, "link");
-            newHeadEl.onload = markLoaded.bind(null, "link");
-            newHeadEl.onerror = markLoaded.bind(null, "link");
+            newHeadEl.readystatechange = markLoaded.bind(null, 'link');
+            newHeadEl.onload = markLoaded.bind(null, 'link');
+            newHeadEl.onerror = markLoaded.bind(null, 'link');
           }
 
           domDoc.head.appendChild(newHeadEl);
@@ -361,7 +353,7 @@ class ReactToPrint extends React.Component {
 
   render() {
     return React.cloneElement(this.props.trigger(), {
-      ref: (el) => (this.triggerRef = el),
+      ref: el => (this.triggerRef = el),
       onClick: this.startPrint
     });
   }

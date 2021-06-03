@@ -1,10 +1,10 @@
 /* @flow */
-import getRangeAngles from "./getRangeAnglesSpecial";
-import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
-import React from "react";
-import each from "lodash/each";
-import withHover from "../helperComponents/withHover";
-import pureNoFunc from "../utils/pureNoFunc";
+import getRangeAngles from './getRangeAnglesSpecial';
+import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
+import React from 'react';
+import each from 'lodash/each';
+import withHover from '../helperComponents/withHover';
+import pureNoFunc from '../utils/pureNoFunc';
 
 function Cutsites({
   radius,
@@ -41,17 +41,17 @@ function Cutsites({
         annotationCenterRadius: radius,
         text: annotation.restrictionEnzyme.name,
         color: annotation.restrictionEnzyme.color,
-        className: " veCutsiteLabel",
+        className: ' veCutsiteLabel',
         id: annotation.id,
-        onClick: (event) => {
+        onClick: event => {
           cutsiteClicked({ event, annotation });
           event.stopPropagation();
         },
-        onDoubleClick: (event) => {
+        onDoubleClick: event => {
           cutsiteDoubleClicked({ event, annotation });
           event.stopPropagation();
         },
-        onContextMenu: (event) => {
+        onContextMenu: event => {
           cutsiteRightClicked({ event, annotation });
           event.stopPropagation();
         }
@@ -59,7 +59,7 @@ function Cutsites({
     }
     svgGroup.push(
       <DrawCutsite
-        key={"cutsite" + index}
+        key={'cutsite' + index}
         {...{
           noRedux,
           editorName,

@@ -1,6 +1,6 @@
-import genericAnnotationProperties from "./GenericAnnotationProperties";
+import genericAnnotationProperties from './GenericAnnotationProperties';
 export default genericAnnotationProperties({
-  annotationType: "part",
+  annotationType: 'part',
   noColor: true,
   withTags: true
 });

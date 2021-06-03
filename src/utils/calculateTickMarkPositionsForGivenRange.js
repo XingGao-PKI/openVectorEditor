@@ -1,7 +1,4 @@
-import {
-  normalizePositionByRangeLength as norm,
-  getRangeLength
-} from "ve-range-utils";
+import { normalizePositionByRangeLength as norm, getRangeLength } from 've-range-utils';
 
 export default function calculateTickMarkPositionsForGivenRange({
   tickSpacing: _tickSpacing = 10,
@@ -21,8 +18,7 @@ export default function calculateTickMarkPositionsForGivenRange({
   let firstTickOffsetFromRangeStart;
   if (range.start > range.end) {
     // range spans origin, so make sure the 0 bp is included!
-    firstTickOffsetFromRangeStart =
-      ((sequenceLength - range.start) % tickSpacing) + 1;
+    firstTickOffsetFromRangeStart = ((sequenceLength - range.start) % tickSpacing) + 1;
   } else {
     firstTickOffsetFromRangeStart = tickSpacing - (range.start % tickSpacing);
   }

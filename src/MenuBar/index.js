@@ -1,13 +1,13 @@
-import React from "react";
-import { MenuBar, commandMenuEnhancer } from "teselagen-react-components";
-import { compose } from "redux";
-import { memoize } from "lodash";
-import withEditorProps from "../withEditorProps";
-import menuDef from "./defaultConfig";
-import getCommands from "../commands";
-import { Icon, Spinner } from "@blueprintjs/core";
+import React from 'react';
+import { MenuBar, commandMenuEnhancer } from 'teselagen-react-components';
+import { compose } from 'redux';
+import { memoize } from 'lodash';
+import withEditorProps from '../withEditorProps';
+import menuDef from './defaultConfig';
+import getCommands from '../commands';
+import { Icon, Spinner } from '@blueprintjs/core';
 
-const ident = (x) => x;
+const ident = x => x;
 
 class OveMenuBar extends React.Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class OveMenuBar extends React.Component {
       clearTimeout(this.clearId);
     }
     this.clearId = setTimeout(() => {
-      this.setState({ successMessage: "", successMessageLoading: false });
+      this.setState({ successMessage: '', successMessageLoading: false });
     }, 5000);
   };
 
@@ -52,7 +52,7 @@ class OveMenuBar extends React.Component {
     return (
       <div
         className="veMenuBarContainer"
-        style={{ display: "flex", width: "100%" /* height: "100%" */ }}
+        style={{ display: 'flex', width: '100%' /* height: "100%" */ }}
       >
         <MenuBar
           extraContent={
@@ -60,9 +60,9 @@ class OveMenuBar extends React.Component {
               <div
                 className="ove-menu-toast"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginLeft: "auto",
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginLeft: 'auto',
                   marginRight: 10
                 }}
               >
@@ -72,7 +72,7 @@ class OveMenuBar extends React.Component {
                   </div>
                 ) : (
                   <Icon icon="tick-circle" intent="success"></Icon>
-                )}{" "}
+                )}{' '}
                 &nbsp;
                 {this.state.successMessage}
               </div>

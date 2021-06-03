@@ -1,15 +1,15 @@
-import { featureColors } from "ve-sequence-utils";
-import pureNoFunc from "../../utils/pureNoFunc";
-import "./style.css";
-import forEach from "lodash/forEach";
-import React from "react";
+import { featureColors } from 've-sequence-utils';
+import pureNoFunc from '../../utils/pureNoFunc';
+import './style.css';
+import forEach from 'lodash/forEach';
+import React from 'react';
 
-import getXStartAndWidthOfRowAnnotation from "../getXStartAndWidthOfRowAnnotation";
+import getXStartAndWidthOfRowAnnotation from '../getXStartAndWidthOfRowAnnotation';
 
-import { getAnnotationRangeType } from "ve-range-utils";
-import AnnotationContainerHolder from "../AnnotationContainerHolder";
-import AnnotationPositioner from "../AnnotationPositioner";
-import PointedAnnotation from "./PointedAnnotation";
+import { getAnnotationRangeType } from 've-range-utils';
+import AnnotationContainerHolder from '../AnnotationContainerHolder';
+import AnnotationPositioner from '../AnnotationPositioner';
+import PointedAnnotation from './PointedAnnotation';
 
 function StackedAnnotations(props) {
   let {
@@ -48,7 +48,7 @@ function StackedAnnotations(props) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
     let { gapsBefore, gapsInside } = getGaps(annotationRange);
-    if (alignmentType === "Parallel Part Creation") {
+    if (alignmentType === 'Parallel Part Creation') {
       gapsBefore = 0;
       gapsInside = 0;
     }
@@ -56,7 +56,7 @@ function StackedAnnotations(props) {
     let annotationColor =
       annotation.color ||
       (annotation.type && featureColors[annotation.type]) ||
-      "#BBBBBB";
+      '#BBBBBB';
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
@@ -101,12 +101,8 @@ function StackedAnnotations(props) {
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           rangeType={
             annotation.noDirectionality
-              ? "middle"
-              : getAnnotationRangeType(
-                  annotationRange,
-                  annotation,
-                  annotation.forward
-                )
+              ? 'middle'
+              : getAnnotationRangeType(annotationRange, annotation, annotation.forward)
           }
           {...(annotation.noDirectionality && { pointiness: 0 })}
           height={
@@ -116,8 +112,7 @@ function StackedAnnotations(props) {
           }
           hideName={annotationRange.containsLocations && !disregardLocations}
           name={annotation.name}
-          {...(getExtraInnerCompProps &&
-            getExtraInnerCompProps(annotationRange, props))}
+          {...(getExtraInnerCompProps && getExtraInnerCompProps(annotationRange, props))}
         />
       </AnnotationPositioner>
     );

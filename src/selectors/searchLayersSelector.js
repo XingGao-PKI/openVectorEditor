@@ -1,7 +1,7 @@
-import { findSequenceMatches } from "ve-sequence-utils";
-import sequenceSelector from "./sequenceSelector";
-import { createSelector } from "reselect";
-import circularSelector from "./circularSelector";
+import { findSequenceMatches } from 've-sequence-utils';
+import sequenceSelector from './sequenceSelector';
+import { createSelector } from 'reselect';
+import circularSelector from './circularSelector';
 
 function searchLayersSelector(
   sequence,
@@ -17,14 +17,14 @@ function searchLayersSelector(
     return [];
   }
   if (isProtein) {
-    const searchingDna = dnaOrAA === "DNA";
+    const searchingDna = dnaOrAA === 'DNA';
     const matches = findSequenceMatches(
       searchingDna ? sequence : proteinSequence,
       searchString,
       {
         isCircular: false,
         isProteinSequence: true,
-        isAmbiguous: ambiguousOrLiteral === "AMBIGUOUS",
+        isAmbiguous: ambiguousOrLiteral === 'AMBIGUOUS',
         // isProteinSearch: dnaOrAA !== "DNA",
         searchReverseStrand: false
       }
@@ -42,8 +42,8 @@ function searchLayersSelector(
   }
   const matches = findSequenceMatches(sequence, searchString, {
     isCircular,
-    isAmbiguous: ambiguousOrLiteral === "AMBIGUOUS",
-    isProteinSearch: dnaOrAA !== "DNA",
+    isAmbiguous: ambiguousOrLiteral === 'AMBIGUOUS',
+    isProteinSearch: dnaOrAA !== 'DNA',
     searchReverseStrand: true
   }).sort(({ start }, { start: start2 }) => {
     return start - start2;
@@ -51,8 +51,7 @@ function searchLayersSelector(
   return matches.map(match => ({
     ...match,
     className:
-      "veSearchLayer " +
-      (match.bottomStrand ? " veSearchLayerBottomStrand" : ""),
+      'veSearchLayer ' + (match.bottomStrand ? ' veSearchLayerBottomStrand' : ''),
     isSearchLayer: true
   }));
 }

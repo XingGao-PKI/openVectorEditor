@@ -1,11 +1,11 @@
 //./caretPosition.js
-import { createReducer } from "redux-act";
-import createAction from "./utils/createMetaAction";
+import { createReducer } from 'redux-act';
+import createAction from './utils/createMetaAction';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const minimumOrfSizeUpdate = createAction("minimumOrfSizeUpdate");
+export const minimumOrfSizeUpdate = createAction('minimumOrfSizeUpdate');
 
 // ------------------------------------
 // Reducer

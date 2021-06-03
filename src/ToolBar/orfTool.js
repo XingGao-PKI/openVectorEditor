@@ -1,38 +1,30 @@
-import { Icon } from "@blueprintjs/core";
-import React from "react";
-import {
-  orfIcon,
-  CmdCheckbox,
-  CmdDiv,
-  InfoHelper
-} from "teselagen-react-components";
-import ToolbarItem from "./ToolbarItem";
-import { connectToEditor } from "../withEditorProps";
-import withEditorProps from "../withEditorProps";
-import getCommands from "../commands";
+import { Icon } from '@blueprintjs/core';
+import React from 'react';
+import { orfIcon, CmdCheckbox, CmdDiv, InfoHelper } from 'teselagen-react-components';
+import ToolbarItem from './ToolbarItem';
+import { connectToEditor } from '../withEditorProps';
+import withEditorProps from '../withEditorProps';
+import getCommands from '../commands';
 
-export default connectToEditor(
-  ({ annotationVisibility = {}, toolBar = {} }) => {
-    return {
-      toggled: annotationVisibility.orfs,
-      isOpen: toolBar.openItem === "orfTool"
-    };
-  }
-)(({ toolbarItemProps, toggled, annotationVisibilityToggle, isOpen }) => {
+export default connectToEditor(({ annotationVisibility = {}, toolBar = {} }) => {
+  return {
+    toggled: annotationVisibility.orfs,
+    isOpen: toolBar.openItem === 'orfTool'
+  };
+})(({ toolbarItemProps, toggled, annotationVisibilityToggle, isOpen }) => {
   return (
     <ToolbarItem
       {...{
         Icon: <Icon data-test="orfTool" icon={orfIcon} />,
-        onIconClick: function() {
-          annotationVisibilityToggle("orfs");
-          annotationVisibilityToggle("orfTranslations");
+        onIconClick: function () {
+          annotationVisibilityToggle('orfs');
+          annotationVisibilityToggle('orfTranslations');
         },
         toggled,
-        tooltip: "Show Open Reading Frames",
-        tooltipToggled: "Hide Open Reading Frames",
+        tooltip: 'Show Open Reading Frames',
+        tooltipToggled: 'Hide Open Reading Frames',
         Dropdown: OrfToolDropdown,
-        dropdowntooltip:
-          (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options",
+        dropdowntooltip: (!isOpen ? 'Show' : 'Hide') + ' Open Reading Frame Options',
         ...toolbarItemProps
       }}
     />
@@ -48,14 +40,8 @@ const OrfToolDropdown = withEditorProps(
     render() {
       return (
         <div className="veToolbarOrfOptionsHolder">
-          <CmdCheckbox
-            prefix="Show "
-            cmd={this.commands.toggleOrfTranslations}
-          />
-          <CmdCheckbox
-            prefix="Show "
-            cmd={this.commands.useGtgAndCtgAsStartCodons}
-          />
+          <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfTranslations} />
+          <CmdCheckbox prefix="Show " cmd={this.commands.useGtgAndCtgAsStartCodons} />
           <CmdDiv cmd={this.commands.minOrfSizeCmd} />
           <div className="vespacer" />
 

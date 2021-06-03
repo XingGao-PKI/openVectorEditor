@@ -1,6 +1,6 @@
-import React from "react";
-import { Icon, Tooltip } from "@blueprintjs/core";
-import "./style.css";
+import React from 'react';
+import { Icon, Tooltip } from '@blueprintjs/core';
+import './style.css';
 
 function VeWarning(props) {
   let { message, tooltip, ...rest } = props;

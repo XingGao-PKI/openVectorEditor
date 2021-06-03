@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react';
 import {
   DataTable,
   withSelectedEntities,
   CmdCheckbox,
   CmdDiv
-} from "teselagen-react-components";
-import { map } from "lodash";
+} from 'teselagen-react-components';
+import { map } from 'lodash';
 // import { Button } from "@blueprintjs/core";
-import { getRangeLength } from "ve-range-utils";
-import { getOrfColor } from "../../constants/orfFrameToColorMap";
-import { connectToEditor } from "../../withEditorProps";
-import { compose } from "recompose";
-import selectors from "../../selectors";
+import { getRangeLength } from 've-range-utils';
+import { getOrfColor } from '../../constants/orfFrameToColorMap';
+import { connectToEditor } from '../../withEditorProps';
+import { compose } from 'recompose';
+import selectors from '../../selectors';
 
-import getCommands from "../../commands";
-import { sizeSchema } from "./utils";
+import getCommands from '../../commands';
+import { sizeSchema } from './utils';
 
 class OrfProperties extends React.Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class OrfProperties extends React.Component {
     if (!record) return;
     const { dispatch, editorName } = this.props;
     dispatch({
-      type: "SELECTION_LAYER_UPDATE",
+      type: 'SELECTION_LAYER_UPDATE',
       payload: record,
       meta: {
         editorName
@@ -50,7 +50,10 @@ class OrfProperties extends React.Component {
       <React.Fragment>
         <DataTable
           topLeftItems={
-            <CmdCheckbox name="Show ORFs (Open Reading Frames)" cmd={this.commands.toggleOrfs} />
+            <CmdCheckbox
+              name="Show ORFs (Open Reading Frames)"
+              cmd={this.commands.toggleOrfs}
+            />
           }
           annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           noPadding
@@ -65,22 +68,20 @@ class OrfProperties extends React.Component {
           schema={{
             fields: [
               {
-                path: "color",
-                type: "string",
+                path: 'color',
+                type: 'string',
                 render: color => {
-                  return (
-                    <div style={{ height: 20, width: 20, background: color }} />
-                  );
+                  return <div style={{ height: 20, width: 20, background: color }} />;
                 }
               },
               {
-                path: "sizeAa",
-                displayName: "Size (aa)",
-                type: "string"
+                path: 'sizeAa',
+                displayName: 'Size (aa)',
+                type: 'string'
               },
               sizeSchema,
-              { path: "frame", type: "number" },
-              { path: "strand", type: "number" }
+              { path: 'frame', type: 'number' },
+              { path: 'strand', type: 'number' }
             ]
           }}
           entities={orfsToUse}
@@ -99,7 +100,7 @@ export default compose(
     const {
       readOnly,
       annotationVisibility = {},
-      sequenceData: { sequence = "" } = {},
+      sequenceData: { sequence = '' } = {},
       sequenceData,
       minimumOrfSize
     } = editorState;
@@ -112,5 +113,5 @@ export default compose(
       minimumOrfSize
     };
   }),
-  withSelectedEntities("orfProperties")
+  withSelectedEntities('orfProperties')
 )(OrfProperties);

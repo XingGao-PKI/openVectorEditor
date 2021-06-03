@@ -1,14 +1,14 @@
-import React from "react";
-import IntervalTree from "node-interval-tree";
-import { sortBy, noop } from "lodash";
-import { getRangeLength } from "ve-range-utils";
-import getRangeAngles from "./getRangeAnglesSpecial";
-import getYOffset from "./getYOffset";
-import withHover from "../helperComponents/withHover";
-import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
-import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
-import Feature from "./Feature";
-import getAnnotationClassnames from "../utils/getAnnotationClassnames";
+import React from 'react';
+import IntervalTree from 'node-interval-tree';
+import { sortBy, noop } from 'lodash';
+import { getRangeLength } from 've-range-utils';
+import getRangeAngles from './getRangeAnglesSpecial';
+import getYOffset from './getYOffset';
+import withHover from '../helperComponents/withHover';
+import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
+import getAnnotationNameAndStartStopString from '../utils/getAnnotationNameAndStartStopString';
+import Feature from './Feature';
+import getAnnotationClassnames from '../utils/getAnnotationClassnames';
 
 function drawAnnotations({
   Annotation,
@@ -42,10 +42,10 @@ function drawAnnotations({
   const labels = {};
 
   if (!Object.keys(annotations).length) return null;
-  sortBy(annotations, (a) => {
+  sortBy(annotations, a => {
     return -getRangeLength(a, sequenceLength);
   })
-    .map((annotation) => {
+    .map(annotation => {
       let {
         startAngle,
         endAngle,
@@ -73,11 +73,7 @@ function drawAnnotations({
         let yOffset1;
         let yOffset2;
         if (spansOrigin) {
-          annotationCopy.yOffset = getYOffset(
-            featureITree,
-            startAngle,
-            expandedEndAngle
-          );
+          annotationCopy.yOffset = getYOffset(featureITree, startAngle, expandedEndAngle);
         } else {
           //we need to check both locations to account for annotations that span the origin
           yOffset1 = getYOffset(featureITree, startAngle, expandedEndAngle);
@@ -156,13 +152,12 @@ function drawAnnotations({
       });
 
       const classNames = getAnnotationClassnames(annotation, {
-        viewName: "CircularView",
+        viewName: 'CircularView',
         type,
         isProtein
       });
 
-      const annotationRadius =
-        radius + annotation.yOffset * totalAnnotationHeight;
+      const annotationRadius = radius + annotation.yOffset * totalAnnotationHeight;
       const name =
         annotation.name ||
         (annotation.restrictionEnzyme && annotation.restrictionEnzyme.name);
@@ -175,14 +170,13 @@ function drawAnnotations({
           text: name,
           id: annotation.id,
           title: titleText,
-          className: `${classNames} ${annotation.labelClassName || ""}`,
+          className: `${classNames} ${annotation.labelClassName || ''}`,
           highPriorityLabel: annotation.highPriorityLabel,
           onClick: _onClick,
           onDoubleClick: _onDoubleClick,
-          fontStyle: fontStyle || "normal",
+          fontStyle: fontStyle || 'normal',
           color:
-            annotation.labelColor ||
-            (annotationType === "part" ? "purple" : "black"),
+            annotation.labelColor || (annotationType === 'part' ? 'purple' : 'black'),
           onContextMenu,
           ...labelOptions
         };
@@ -190,9 +184,9 @@ function drawAnnotations({
 
       let annotationColor = getColor
         ? getColor(annotation)
-        : annotation.color || "purple";
+        : annotation.color || 'purple';
 
-      DrawAnnotation.displayName = annotationType + "--- DrawAnnotation";
+      DrawAnnotation.displayName = annotationType + '--- DrawAnnotation';
       svgGroup.push(
         <DrawAnnotation
           {...{
@@ -221,15 +215,15 @@ function drawAnnotations({
             annotationProps: _annotationProps
           }}
           id={annotation.id}
-          key={"veAnnotation-" + annotationType + index}
+          key={'veAnnotation-' + annotationType + index}
         />
       );
     });
   return {
     component: (
       <g
-        className={"veAnnotations-" + annotationType}
-        key={"veAnnotations-" + annotationType}
+        className={'veAnnotations-' + annotationType}
+        key={'veAnnotations-' + annotationType}
       >
         {svgGroup}
       </g>
@@ -264,7 +258,7 @@ const DrawAnnotation = withHover(function ({
   annotationProps
 }) {
   const sharedProps = {
-    style: { cursor: "pointer" },
+    style: { cursor: 'pointer' },
     className: `${className} ${classNames}`,
     onContextMenu: onContextMenu,
     onClick: onClick,
@@ -285,8 +279,7 @@ const DrawAnnotation = withHover(function ({
       >
         {title}
         <Annotation
-          {...(locationAngles &&
-            locationAngles.length && { containsLocations: true })}
+          {...(locationAngles && locationAngles.length && { containsLocations: true })}
           totalAngle={totalAngle}
           color={annotationColor}
           isProtein={isProtein}
@@ -300,13 +293,11 @@ const DrawAnnotation = withHover(function ({
         locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
           return (
             <g
-              key={"location--" + annotation.id + "--" + i}
+              key={'location--' + annotation.id + '--' + i}
               {...PositionAnnotationOnCircle({
                 sAngle: startAngle,
                 eAngle: endAngle,
-                forward: reverseAnnotations
-                  ? !annotation.forward
-                  : annotation.forward
+                forward: reverseAnnotations ? !annotation.forward : annotation.forward
               })}
               {...sharedProps}
             >

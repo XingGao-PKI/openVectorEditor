@@ -1,111 +1,111 @@
-import { MenuItem } from "@blueprintjs/core";
-import React from "react";
-import { LimitAnnotations } from "../utils/useAnnotationLimits";
-import useMeltingTemp from "../utils/useMeltingTemp";
+import { MenuItem } from '@blueprintjs/core';
+import React from 'react';
+import { LimitAnnotations } from '../utils/useAnnotationLimits';
+import useMeltingTemp from '../utils/useMeltingTemp';
 
 export const fullSequenceTranslationMenu = {
-  text: "Full Sequence Translation",
-  cmd: "fullSequenceTranslations",
+  text: 'Full Sequence Translation',
+  cmd: 'fullSequenceTranslations',
   submenu: [
     {
       shouldDismissPopover: false,
-      cmd: "sequenceAA_allFrames",
-      text: "All Frames"
+      cmd: 'sequenceAA_allFrames',
+      text: 'All Frames'
       // frameNumber: "all" // TODO ?
     },
     {
       shouldDismissPopover: false,
-      cmd: "sequenceAA_frame1",
-      text: "Frame 1"
+      cmd: 'sequenceAA_frame1',
+      text: 'Frame 1'
       // frameNumber: 1 // TODO ?
     },
     {
       shouldDismissPopover: false,
-      cmd: "sequenceAA_frame2",
-      text: "Frame 2"
+      cmd: 'sequenceAA_frame2',
+      text: 'Frame 2'
       // frameNumber: 2 // TODO ?
     },
     {
       shouldDismissPopover: false,
-      cmd: "sequenceAA_frame3",
-      text: "Frame 3"
+      cmd: 'sequenceAA_frame3',
+      text: 'Frame 3'
       // frameNumber: 3 // TODO ?
     },
     {
       shouldDismissPopover: false,
-      cmd: "sequenceAAReverse_allFrames",
-      text: "All Reverse Frames"
+      cmd: 'sequenceAAReverse_allFrames',
+      text: 'All Reverse Frames'
       // frameNumber: "all" // TODO ?
     },
     {
       shouldDismissPopover: false,
-      cmd: "sequenceAAReverse_frame1",
-      text: "Frame -1"
+      cmd: 'sequenceAAReverse_frame1',
+      text: 'Frame -1'
       // frameNumber: 1 // TODO ?
     },
     {
       shouldDismissPopover: false,
-      cmd: "sequenceAAReverse_frame2",
-      text: "Frame -2"
+      cmd: 'sequenceAAReverse_frame2',
+      text: 'Frame -2'
       // frameNumber: 2 // TODO ?
     },
     {
       shouldDismissPopover: false,
-      cmd: "sequenceAAReverse_frame3",
-      text: "Frame -3"
+      cmd: 'sequenceAAReverse_frame3',
+      text: 'Frame -3'
       // frameNumber: 3 // TODO ?
     }
   ]
 };
 export default [
   // { cmd: "mapCaret" },
-  { cmd: "showAll", shouldDismissPopover: false },
-  { cmd: "hideAll", shouldDismissPopover: false },
-  { cmd: "toggleWarnings", shouldDismissPopover: false },
-  { cmd: "toggleAssemblyPieces", shouldDismissPopover: false },
-  { cmd: "toggleLineageAnnotations", shouldDismissPopover: false },
+  { cmd: 'showAll', shouldDismissPopover: false },
+  { cmd: 'hideAll', shouldDismissPopover: false },
+  { cmd: 'toggleWarnings', shouldDismissPopover: false },
+  { cmd: 'toggleAssemblyPieces', shouldDismissPopover: false },
+  { cmd: 'toggleLineageAnnotations', shouldDismissPopover: false },
   //deprecating
   //{ cmd: "toggleFeatures", shouldDismissPopover: false },
   {
-    cmd: "toggleFeatures",
+    cmd: 'toggleFeatures',
     onClick: () => {}, //override this click so that they have to hit the submenu
     shouldDismissPopover: false,
     submenu: [
       {
-        cmd: "toggleFeatures",
+        cmd: 'toggleFeatures',
         shouldDismissPopover: false
       },
       {
-        cmd: "featureTypesCmd",
+        cmd: 'featureTypesCmd',
         shouldDismissPopover: false
       },
       {
-        cmd: "filterFeatureLengthsCmd",
+        cmd: 'filterFeatureLengthsCmd',
         shouldDismissPopover: false
       }
     ]
   },
   {
-    cmd: "toggleTranslations",
+    cmd: 'toggleTranslations',
     onClick: () => {}, //override this click so that they have to hit the submenu
     shouldDismissPopover: false,
     submenu: [
       {
-        cmd: "toggleTranslations",
+        cmd: 'toggleTranslations',
         shouldDismissPopover: false
       },
       {
-        cmd: "toggleCdsFeatureTranslations",
+        cmd: 'toggleCdsFeatureTranslations',
         shouldDismissPopover: false
       },
       {
-        cmd: "toggleOrfTranslations",
+        cmd: 'toggleOrfTranslations',
         shouldDismissPopover: false
       },
-      { cmd: "toggleAminoAcidNumbers_dna", shouldDismissPopover: false }
+      { cmd: 'toggleAminoAcidNumbers_dna', shouldDismissPopover: false }
     ]
   },
-  { cmd: "togglePrimers", shouldDismissPopover: false },
+  { cmd: 'togglePrimers', shouldDismissPopover: false },
   // {
   //   // TODO preprocess this as needed
   //   cmd: "featureTypes",
@@ -114,116 +114,116 @@ export default [
   //   submenu: [{ text: "TO DO...", disabled: true }]
   // },
   {
-    cmd: "togglePartsWithSubmenu",
+    cmd: 'togglePartsWithSubmenu',
     onClick: () => {},
     shouldDismissPopover: false
   },
-  { cmd: "toggleCutsites", shouldDismissPopover: false },
+  { cmd: 'toggleCutsites', shouldDismissPopover: false },
   // TODO translations, cds feature translations?
   {
-    cmd: "toggleOrfs",
+    cmd: 'toggleOrfs',
     onClick: () => {}, //override this click so that they have to hit the submenu
     shouldDismissPopover: false,
     submenu: [
       {
-        cmd: "toggleOrfs",
+        cmd: 'toggleOrfs',
         shouldDismissPopover: false
       },
       {
-        cmd: "toggleOrfTranslations",
+        cmd: 'toggleOrfTranslations',
         shouldDismissPopover: false
       },
       {
-        cmd: "useGtgAndCtgAsStartCodons",
+        cmd: 'useGtgAndCtgAsStartCodons',
         shouldDismissPopover: false
       },
       {
-        cmd: "minOrfSizeCmd",
+        cmd: 'minOrfSizeCmd',
         shouldDismissPopover: false
       }
     ]
   },
   // { cmd: "complementary" },
   // { cmd: "spaces" },
-  { divider: "" },
+  { divider: '' },
   {
-    cmd: "toggleShowGCContent",
+    cmd: 'toggleShowGCContent',
     shouldDismissPopover: false,
-    text: "Percent GC Content of Selection"
+    text: 'Percent GC Content of Selection'
   },
   {
-    text: "Melting Temp of Selection",
+    text: 'Melting Temp of Selection',
     component: ToggleShowMeltingTemp
   },
   {
-    text: "Sequence Case",
-    cmd: "sequenceCase",
+    text: 'Sequence Case',
+    cmd: 'sequenceCase',
     submenu: [
       {
-        cmd: "toggleSequenceMapFontUpper",
-        text: "Upper Case",
+        cmd: 'toggleSequenceMapFontUpper',
+        text: 'Upper Case',
         shouldDismissPopover: false
       },
       {
-        cmd: "toggleSequenceMapFontRaw",
-        text: "No Preference",
+        cmd: 'toggleSequenceMapFontRaw',
+        text: 'No Preference',
         shouldDismissPopover: false
       },
       {
-        cmd: "toggleSequenceMapFontLower",
-        text: "Lower Case",
+        cmd: 'toggleSequenceMapFontLower',
+        text: 'Lower Case',
         shouldDismissPopover: false
       }
     ]
   },
-  { divider: "" },
+  { divider: '' },
   fullSequenceTranslationMenu,
-  { divider: "" },
+  { divider: '' },
 
-  { cmd: "toggleAxis", shouldDismissPopover: false },
-  { cmd: "toggleAxisNumbers", shouldDismissPopover: false },
+  { cmd: 'toggleAxis', shouldDismissPopover: false },
+  { cmd: 'toggleAxisNumbers', shouldDismissPopover: false },
   {
-    cmd: "toggleAminoAcidNumbers_protein",
+    cmd: 'toggleAminoAcidNumbers_protein',
     shouldDismissPopover: false
   },
-  { cmd: "toggleSequence", shouldDismissPopover: false },
-  { cmd: "toggleReverseSequence", shouldDismissPopover: false },
-  { cmd: "toggleDnaColors", shouldDismissPopover: false },
+  { cmd: 'toggleSequence', shouldDismissPopover: false },
+  { cmd: 'toggleReverseSequence', shouldDismissPopover: false },
+  { cmd: 'toggleDnaColors', shouldDismissPopover: false },
 
-  { divider: "" },
+  { divider: '' },
   {
-    text: "Limits",
-    cmd: "limitsMenu",
+    text: 'Limits',
+    cmd: 'limitsMenu',
     submenu: [
       {
-        text: "Max Features To Show",
+        text: 'Max Features To Show',
         component: LimitAnnotations,
-        type: "features"
+        type: 'features'
       },
       {
-        text: "Max Parts To Show",
-        type: "parts",
+        text: 'Max Parts To Show',
+        type: 'parts',
         component: LimitAnnotations
       },
       {
-        text: "Max Cutsites To Show",
+        text: 'Max Cutsites To Show',
         component: LimitAnnotations,
-        type: "cutsites"
+        type: 'cutsites'
       }
     ]
   },
   {
-    text: "Labels",
+    text: 'Labels',
     submenu: [
-      { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
-      { cmd: "togglePartLabels", shouldDismissPopover: false },
-      { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
+      { cmd: 'toggleFeatureLabels', shouldDismissPopover: false },
+      { cmd: 'togglePartLabels', shouldDismissPopover: false },
+      { cmd: 'toggleCutsiteLabels', shouldDismissPopover: false },
 
-      { divider: "" },
+      { divider: '' },
 
-      { cmd: "toggleExternalLabels", shouldDismissPopover: false },
-      { cmd: "adjustLabelLineIntensity", shouldDismissPopover: false },
-      { cmd: "adjustLabelSize", shouldDismissPopover: false }
+      { cmd: 'toggleExternalLabels', shouldDismissPopover: false },
+      { cmd: 'adjustLabelLineIntensity', shouldDismissPopover: false },
+      { cmd: 'adjustLabelSize', shouldDismissPopover: false }
     ]
   }
 ];
@@ -237,7 +237,7 @@ function ToggleShowMeltingTemp(props) {
       onClick={() => {
         setShowMeltingTemp(!showMeltingTemp);
       }}
-      icon={showMeltingTemp ? "small-tick" : "blank"}
+      icon={showMeltingTemp ? 'small-tick' : 'blank'}
     ></MenuItem>
   );
 }

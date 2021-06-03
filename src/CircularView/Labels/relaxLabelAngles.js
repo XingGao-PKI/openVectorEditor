@@ -1,4 +1,4 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep } from 'lodash';
 
 export default relaxLabelAngles;
 
@@ -38,15 +38,9 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
     let labelCenter = label.angle;
     if (labelCenter <= totalLength / 4) {
       rightTopLabels.push(label);
-    } else if (
-      labelCenter > totalLength / 4 &&
-      labelCenter <= totalLength / 2
-    ) {
+    } else if (labelCenter > totalLength / 4 && labelCenter <= totalLength / 2) {
       rightBottomLabels.push(label);
-    } else if (
-      labelCenter > totalLength / 2 &&
-      labelCenter <= (3 * totalLength) / 4
-    ) {
+    } else if (labelCenter > totalLength / 2 && labelCenter <= (3 * totalLength) / 4) {
       leftBottomLabels.push(label);
     } else {
       leftTopLabels.push(label);
@@ -91,9 +85,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
   // Scale Right Top Labels
   let labelsToReturn = [];
   rightTopLabels = rightTopLabels.sort(sortLabelsByAngleReverse);
-  labelsToReturn = labelsToReturn.concat(
-    repositionAndGroupLabels(rightTopLabels, true)
-  );
+  labelsToReturn = labelsToReturn.concat(repositionAndGroupLabels(rightTopLabels, true));
 
   // Scale Right Bottom Labels
   rightBottomLabels = rightBottomLabels.sort(sortLabelsByAngle);
@@ -109,9 +101,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
 
   // Scale Left Top Labels
   leftTopLabels = leftTopLabels.sort(sortLabelsByAngle);
-  labelsToReturn = labelsToReturn.concat(
-    repositionAndGroupLabels(leftTopLabels)
-  );
+  labelsToReturn = labelsToReturn.concat(repositionAndGroupLabels(leftTopLabels));
 
   return labelsToReturn;
 
@@ -140,9 +130,7 @@ function combineLabels(labels, numberOfBuckets) {
   Object.keys(labels).forEach(function (key) {
     let label = labels[key];
 
-    let bucket = Math.floor(
-      (label.annotationCenterAngle / 6.29) * numberOfBuckets
-    );
+    let bucket = Math.floor((label.annotationCenterAngle / 6.29) * numberOfBuckets);
     if (!buckets[bucket]) {
       buckets[bucket] = label;
     } else {

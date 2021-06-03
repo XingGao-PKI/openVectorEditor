@@ -1,6 +1,6 @@
-import React from "react";
-import { Icon, Slider, Intent } from "@blueprintjs/core";
-import { preventDefaultStopPropagation } from "../utils/editorUtils";
+import React from 'react';
+import { Icon, Slider, Intent } from '@blueprintjs/core';
+import { preventDefaultStopPropagation } from '../utils/editorUtils';
 
 export default class UncontrolledSliderWithPlusMinusBtns extends React.Component {
   state = { value: 0 };
@@ -20,8 +20,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
     const { value } = this.state;
     const { title, initialValue, label, style, ...rest } = this.props;
 
-    const stepSize =
-      this.props.stepSize || (this.props.max - this.props.min) / 10;
+    const stepSize = this.props.stepSize || (this.props.max - this.props.min) / 10;
 
     return (
       <div
@@ -32,7 +31,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
         onMouseDown={preventDefaultStopPropagation}
         onMouseUp={preventDefaultStopPropagation}
         title={title}
-        style={{ ...style, display: "flex", marginLeft: 15, marginRight: 20 }}
+        style={{ ...style, display: 'flex', marginLeft: 15, marginRight: 20 }}
       >
         <Icon
           onClick={() => {
@@ -46,13 +45,13 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
             this.props.onChange(newVal);
             this.props.onRelease(newVal);
           }}
-          style={{ cursor: "pointer", marginRight: 10 }}
+          style={{ cursor: 'pointer', marginRight: 10 }}
           intent={Intent.PRIMARY}
-          icon={this.props.leftIcon || "minus"}
+          icon={this.props.leftIcon || 'minus'}
         />
         <Slider
           {...{ ...rest, value }}
-          onChange={(value) => {
+          onChange={value => {
             this.setState({ value });
             this.props.onChange && this.props.onChange(value);
           }}
@@ -69,9 +68,9 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
             this.props.onChange(newVal);
             this.props.onRelease(newVal);
           }}
-          style={{ cursor: "pointer", marginLeft: 10 }}
+          style={{ cursor: 'pointer', marginLeft: 10 }}
           intent={Intent.PRIMARY}
-          icon={this.props.rightIcon || "plus"}
+          icon={this.props.rightIcon || 'plus'}
         />
       </div>
     );

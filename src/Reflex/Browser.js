@@ -5,20 +5,19 @@
 class Browser {
   // Check if not running on server
   static isBrowser() {
-    return typeof window !== "undefined";
+    return typeof window !== 'undefined';
   }
 
   // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
   static isOpera() {
     return (
-      Browser.isBrowser() &&
-      (!!window.opera || navigator.userAgent.indexOf(" OPR/") >= 0)
+      Browser.isBrowser() && (!!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0)
     );
   }
 
   // Firefox 1.0+
   static isFirefox() {
-    return Browser.isBrowser() && typeof InstallTrigger !== "undefined";
+    return Browser.isBrowser() && typeof InstallTrigger !== 'undefined';
   }
 
   // Safari 3.0+
@@ -38,24 +37,23 @@ class Browser {
 
   // Edge 20+
   static isEdge() {
-    return Browser.isBrowser() && (!Browser.isIE() && !!window.StyleMedia);
+    return Browser.isBrowser() && !Browser.isIE() && !!window.StyleMedia;
   }
 
   // Chrome 1+
   static isChrome() {
-    return Browser.isBrowser() && (!!window.chrome && !!window.chrome.webstore);
+    return Browser.isBrowser() && !!window.chrome && !!window.chrome.webstore;
   }
 
   // Blink engine detection
   static isBlink() {
     return (
-      Browser.isBrowser() &&
-      ((Browser.isChrome() || Browser.isOpera()) && !!window.CSS)
+      Browser.isBrowser() && (Browser.isChrome() || Browser.isOpera()) && !!window.CSS
     );
   }
 
   static getUserAgent() {
-    return typeof navigator === "undefined" ? "" : navigator.userAgent;
+    return typeof navigator === 'undefined' ? '' : navigator.userAgent;
   }
 
   static isAndroid() {
@@ -67,9 +65,7 @@ class Browser {
   }
 
   static isIOS() {
-    return (
-      Browser.isBrowser() && Browser.getUserAgent().match(/iPhone|iPad|iPod/i)
-    );
+    return Browser.isBrowser() && Browser.getUserAgent().match(/iPhone|iPad|iPod/i);
   }
 
   static isOpera() {
@@ -78,8 +74,7 @@ class Browser {
 
   static isWindows() {
     return (
-      (Browser.isBrowser() && Browser.isWindowsDesktop()) ||
-      Browser.isWindowsMobile()
+      (Browser.isBrowser() && Browser.isWindowsDesktop()) || Browser.isWindowsMobile()
     );
   }
 

@@ -1,0 +1,7 @@
+*.svg
+.DS_Store
+*.json
+index.ejs
+.*
+browserslist
+assets

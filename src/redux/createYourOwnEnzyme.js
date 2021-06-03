@@ -1,24 +1,18 @@
 //./selectionLayer.js
-import { createReducer, createAction } from "redux-act";
+import { createReducer, createAction } from 'redux-act';
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const createYourOwnEnzymeUpdate = createAction(
-  "CREATE_YOUR_OWN_ENZYME_UPDATE"
-);
-export const createYourOwnEnzymeReset = createAction(
-  "CREATE_YOUR_OWN_ENZYME_RESET"
-);
-export const createYourOwnEnzymeClose = createAction(
-  "CREATE_YOUR_OWN_ENZYME_CLOSE"
-);
+export const createYourOwnEnzymeUpdate = createAction('CREATE_YOUR_OWN_ENZYME_UPDATE');
+export const createYourOwnEnzymeReset = createAction('CREATE_YOUR_OWN_ENZYME_RESET');
+export const createYourOwnEnzymeClose = createAction('CREATE_YOUR_OWN_ENZYME_CLOSE');
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 const initialValues = {
-  name: "Example Enzyme",
-  sequence: "ggatcc",
+  name: 'Example Enzyme',
+  sequence: 'ggatcc',
   chop_top_index: 1,
   chop_bottom_index: 5,
   isOpen: false

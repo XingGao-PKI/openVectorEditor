@@ -1,10 +1,10 @@
-import React from "react";
-import { convertDnaCaretPositionOrRangeToAA } from "ve-sequence-utils";
-import { convertRangeTo1Based } from "ve-range-utils";
+import React from 'react';
+import { convertDnaCaretPositionOrRangeToAA } from 've-sequence-utils';
+import { convertRangeTo1Based } from 've-range-utils';
 
 export const sizeSchema = {
-  path: "size",
-  type: "string",
+  path: 'size',
+  type: 'string',
   render: (val, _record, i, props) => {
     const record = props.isProtein
       ? convertDnaCaretPositionOrRangeToAA(_record)
@@ -14,7 +14,7 @@ export const sizeSchema = {
 
     return (
       <span>
-        {props.isProtein ? Math.floor(val / 3) : val}{" "}
+        {props.isProtein ? Math.floor(val / 3) : val}{' '}
         <span style={{ fontSize: 10 }}>
           {hasJoinedLocations ? (
             record.locations.map((loc, i) => {

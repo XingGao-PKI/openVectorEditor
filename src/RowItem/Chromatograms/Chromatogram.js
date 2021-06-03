@@ -1,5 +1,5 @@
-import React from "react";
-import { Button } from "@blueprintjs/core";
+import React from 'react';
+import { Button } from '@blueprintjs/core';
 // import { InfoHelper } from "teselagen-react-components";
 
 class Chromatogram extends React.Component {
@@ -16,13 +16,9 @@ class Chromatogram extends React.Component {
   shouldComponentUpdate(newProps) {
     const { props } = this;
     if (
-      [
-        "alignmentData",
-        "chromatogramData",
-        "charWidth",
-        "row.start",
-        "row.end"
-      ].some(key => props[key] !== newProps[key])
+      ['alignmentData', 'chromatogramData', 'charWidth', 'row.start', 'row.end'].some(
+        key => props[key] !== newProps[key]
+      )
     ) {
       const charWidth = newProps.charWidth;
       const { scalePct } = this.state;
@@ -51,7 +47,7 @@ class Chromatogram extends React.Component {
     const { charWidth } = this.props;
     const { scalePct } = this.state;
     const peakCanvas = this.canvasRef;
-    const ctx = peakCanvas.getContext("2d");
+    const ctx = peakCanvas.getContext('2d');
     ctx.clearRect(0, 0, peakCanvas.width, peakCanvas.height);
     const newScalePct = scalePct + 0.01;
     this.updatePeakDrawing(newScalePct, charWidth);
@@ -62,7 +58,7 @@ class Chromatogram extends React.Component {
     const { charWidth } = this.props;
     const { scalePct } = this.state;
     const peakCanvas = this.canvasRef;
-    const ctx = peakCanvas.getContext("2d");
+    const ctx = peakCanvas.getContext('2d');
     ctx.clearRect(0, 0, peakCanvas.width, peakCanvas.height);
     const newScalePct = scalePct - 0.01;
     this.updatePeakDrawing(newScalePct, charWidth);
@@ -78,7 +74,7 @@ class Chromatogram extends React.Component {
       <div
         className="chromatogram"
         style={{
-          position: "relative"
+          position: 'relative'
         }}
       >
         <Button
@@ -88,7 +84,7 @@ class Chromatogram extends React.Component {
           onClick={this.scaleChromatogramYPeaksHigher}
           style={{
             zIndex: 10,
-            position: "sticky",
+            position: 'sticky',
             // left: 275
             left: 145
           }}
@@ -100,7 +96,7 @@ class Chromatogram extends React.Component {
           onClick={this.scaleChromatogramYPeaksLower}
           style={{
             zIndex: 10,
-            position: "sticky",
+            position: 'sticky',
             // left: 305
             left: 175
           }}
@@ -110,9 +106,9 @@ class Chromatogram extends React.Component {
           className="chromatogram-trace"
           style={{
             zIndex: -1,
-            position: "relative",
+            position: 'relative',
             left: posOfSeqRead,
-            display: "inline-block"
+            display: 'inline-block'
           }}
         >
           <canvas
@@ -139,13 +135,13 @@ function drawTrace({
   scalePct
 }) {
   const colors = {
-    adenine: "green",
-    thymine: "red",
-    guanine: "black",
-    cytosine: "blue",
-    other: "purple"
+    adenine: 'green',
+    thymine: 'red',
+    guanine: 'black',
+    cytosine: 'blue',
+    other: 'purple'
   };
-  const ctx = peakCanvas.getContext("2d");
+  const ctx = peakCanvas.getContext('2d');
 
   const formattedPeaks = { a: [], t: [], g: [], c: [] };
   const bottomBuffer = 0;
@@ -173,7 +169,7 @@ function drawTrace({
   //   scalePct = scaledHeight / Math.max(aMax, tMax, gMax, cMax);
   // };
 
-  this.scalePeaks = function(traceIn) {
+  this.scalePeaks = function (traceIn) {
     const newPeaks = [];
     for (let count = 0; count < traceIn.length; count++) {
       newPeaks[count] = scalePct * traceIn[count];
@@ -181,7 +177,7 @@ function drawTrace({
     return newPeaks;
   };
 
-  this.preparePeaks = function() {
+  this.preparePeaks = function () {
     // this.findTallest();
     formattedPeaks.a = this.scalePeaks(traceData.aTrace);
     formattedPeaks.t = this.scalePeaks(traceData.tTrace);
@@ -189,7 +185,7 @@ function drawTrace({
     formattedPeaks.c = this.scalePeaks(traceData.cTrace);
   };
 
-  this.drawPeaks = function(trace, lineColor) {
+  this.drawPeaks = function (trace, lineColor) {
     ctx.beginPath();
     //loop through base positions [ 43, 53, 70, 77, ...]
     // looping through the entire sequence length
@@ -208,23 +204,16 @@ function drawTrace({
         endBasePos = traceData.basePos[baseIndex + 1] - 5;
       }
 
-      for (
-        let innerIndex = startBasePos;
-        innerIndex < endBasePos;
-        innerIndex++
-      ) {
+      for (let innerIndex = startBasePos; innerIndex < endBasePos; innerIndex++) {
         const gapsBeforeSequence = getGaps(0).gapsBefore;
         const gapsBeforeMinusBeginningGaps =
           getGaps(baseIndex).gapsBefore - gapsBeforeSequence;
         // innerIndex = 43, 44, 45, ... 52
         // shift x-position of the beginning of the base's peak if there are gaps before the base
         const scalingFactor = charWidth / (endBasePos - startBasePos);
-        let startXPosition =
-          (baseIndex + gapsBeforeMinusBeginningGaps) * charWidth;
+        let startXPosition = (baseIndex + gapsBeforeMinusBeginningGaps) * charWidth;
 
-        if (
-          getGaps(baseIndex - 1).gapsBefore !== getGaps(baseIndex).gapsBefore
-        ) {
+        if (getGaps(baseIndex - 1).gapsBefore !== getGaps(baseIndex).gapsBefore) {
           if (innerIndex === startBasePos) {
             ctx.moveTo(
               startXPosition + scalingFactor * (innerIndex - startBasePos),
@@ -237,9 +226,7 @@ function drawTrace({
           );
         } else {
           startXPosition =
-            (baseIndex +
-              getGaps(baseIndex - 1).gapsBefore -
-              gapsBeforeSequence) *
+            (baseIndex + getGaps(baseIndex - 1).gapsBefore - gapsBeforeSequence) *
             charWidth;
           ctx.lineTo(
             startXPosition + scalingFactor * (innerIndex - startBasePos),
@@ -278,13 +265,12 @@ function drawTrace({
   //       }
   //   }
 
-  this.drawQualityScoreHistogram = function() {
+  this.drawQualityScoreHistogram = function () {
     const qualMax = Math.max(...traceData.qualNums);
     const scalePctQual = scaledHeight / qualMax;
     const gapsBeforeSequence = getGaps(0).gapsBefore;
     for (let count = 0; count < traceData.qualNums.length; count++) {
-      const gapsBeforeMinusBeginningGaps =
-        getGaps(count).gapsBefore - gapsBeforeSequence;
+      const gapsBeforeMinusBeginningGaps = getGaps(count).gapsBefore - gapsBeforeSequence;
       ctx.rect(
         (count + gapsBeforeMinusBeginningGaps) * charWidth,
         scaledHeight - traceData.qualNums[count] * scalePctQual,
@@ -292,13 +278,13 @@ function drawTrace({
         traceData.qualNums[count] * scalePctQual
       );
     }
-    ctx.fillStyle = "#f4f1fa";
+    ctx.fillStyle = '#f4f1fa';
     ctx.fill();
-    ctx.strokeStyle = "#e9e3f4";
+    ctx.strokeStyle = '#e9e3f4';
     ctx.stroke();
   };
 
-  this.paintCanvas = function() {
+  this.paintCanvas = function () {
     this.drawQualityScoreHistogram();
     this.preparePeaks();
     this.drawPeaks(formattedPeaks.a, colors.adenine);

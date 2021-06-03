@@ -1,9 +1,9 @@
-import React from "react";
-import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
-import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
-import shouldFlipText from "./shouldFlipText";
-import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
-import { divideBy3 } from "../utils/proteinUtils";
+import React from 'react';
+import getAngleForPositionMidpoint from './getAngleForPositionMidpoint';
+import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
+import shouldFlipText from './shouldFlipText';
+import calculateTickMarkPositionsForGivenRange from '../utils/calculateTickMarkPositionsForGivenRange';
+import { divideBy3 } from '../utils/proteinUtils';
 
 const Axis = ({
   radius,
@@ -17,11 +17,8 @@ const Axis = ({
   ringThickness = 4,
   isProtein
 }) => {
-  const height =
-    ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0);
-  const radiusToUse = showAxisNumbers
-    ? radius + textOffset + tickMarkHeight
-    : radius;
+  const height = ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0);
+  const radiusToUse = showAxisNumbers ? radius + textOffset + tickMarkHeight : radius;
   const tickPositions = calculateTickMarkPositionsForGivenRange({
     range: {
       start: 0,
@@ -33,14 +30,11 @@ const Axis = ({
   });
   const tickMarksAndLabels = showAxisNumbers
     ? tickPositions.map(function (tickPosition, index) {
-        const tickAngle = getAngleForPositionMidpoint(
-          tickPosition,
-          sequenceLength
-        );
+        const tickAngle = getAngleForPositionMidpoint(tickPosition, sequenceLength);
         const tickAnglePlusRotation = tickAngle + rotationRadians;
         return (
           <g
-            key={"axis" + index}
+            key={'axis' + index}
             {...PositionAnnotationOnCircle({
               sAngle: tickAngle,
               eAngle: tickAngle,
@@ -49,20 +43,18 @@ const Axis = ({
           >
             <text
               transform={
-                (shouldFlipText(tickAnglePlusRotation) ? "rotate(180)" : "") +
+                (shouldFlipText(tickAnglePlusRotation) ? 'rotate(180)' : '') +
                 ` translate(0, ${
-                  shouldFlipText(tickAnglePlusRotation)
-                    ? -textOffset
-                    : textOffset
+                  shouldFlipText(tickAnglePlusRotation) ? -textOffset : textOffset
                 })`
               }
               style={{
-                textAnchor: "middle",
-                dominantBaseline: "central",
-                fontSize: "small"
+                textAnchor: 'middle',
+                dominantBaseline: 'central',
+                fontSize: 'small'
               }}
             >
-              {divideBy3(tickPosition + 1, isProtein) + ""}
+              {divideBy3(tickPosition + 1, isProtein) + ''}
             </text>
             <rect width={tickMarkWidth} height={tickMarkHeight} />
           </g>
@@ -76,13 +68,13 @@ const Axis = ({
         id="circularViewAxis"
         key="circleOuter"
         r={radiusToUse + ringThickness}
-        style={{ fill: "white", stroke: "black", strokeWidth: 0.5 }}
+        style={{ fill: 'white', stroke: 'black', strokeWidth: 0.5 }}
       />
       <circle
         id="circularViewAxis"
         key="circle"
         r={radiusToUse}
-        style={{ fill: "white", stroke: "black", strokeWidth: 0.5 }}
+        style={{ fill: 'white', stroke: 'black', strokeWidth: 0.5 }}
       />
       {tickMarksAndLabels}
     </g>

@@ -1,9 +1,9 @@
-import polarToSpecialCartesian from "../utils/polarToSpecialCartesian";
-import relaxLabelAngles from "./relaxLabelAngles";
-import withHover from "../../helperComponents/withHover";
-import "./style.css";
-import React from "react";
-import { cloneDeep, clamp } from "lodash";
+import polarToSpecialCartesian from '../utils/polarToSpecialCartesian';
+import relaxLabelAngles from './relaxLabelAngles';
+import withHover from '../../helperComponents/withHover';
+import './style.css';
+import React from 'react';
+import { cloneDeep, clamp } from 'lodash';
 
 const fontWidthToFontSize = 1.75;
 
@@ -35,25 +35,18 @@ function Labels({
         annotationCenterAngle: _annotationCenterAngle,
         annotationCenterRadius
       } = label;
-      const annotationCenterAngle =
-        _annotationCenterAngle + (rotationRadians || 0);
+      const annotationCenterAngle = _annotationCenterAngle + (rotationRadians || 0);
       return {
         ...label,
-        width: (label.text || "Unlabeled").length * fontWidth,
+        width: (label.text || 'Unlabeled').length * fontWidth,
         //three points define the label:
         innerPoint: {
-          ...polarToSpecialCartesian(
-            annotationCenterRadius,
-            annotationCenterAngle
-          ),
+          ...polarToSpecialCartesian(annotationCenterRadius, annotationCenterAngle),
           radius: annotationCenterRadius,
           angle: annotationCenterAngle
         },
         truncatedInnerPoint: {
-          ...polarToSpecialCartesian(
-            outerPointRadius - 15,
-            annotationCenterAngle
-          ),
+          ...polarToSpecialCartesian(outerPointRadius - 15, annotationCenterAngle),
           radius: outerPointRadius - 15,
           angle: annotationCenterAngle
         },
@@ -73,8 +66,8 @@ function Labels({
       return label;
     });
   let groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius)
-    .filter((l) => !!l)
-    .map((originalLabel) => {
+    .filter(l => !!l)
+    .map(originalLabel => {
       //we need to search the labelGroup to see if any of the sub labels are highPriorityLabels
       //if they are, they should take precedence as the main group identifier
       if (originalLabel.highPriorityLabel) {
@@ -83,7 +76,7 @@ function Labels({
       }
 
       const _highPrioritySublabel = originalLabel.labelAndSublabels.find(
-        (l) => l.highPriorityLabel
+        l => l.highPriorityLabel
       );
       if (_highPrioritySublabel) {
         const highPrioritySublabel = cloneDeep(_highPrioritySublabel);
@@ -91,18 +84,18 @@ function Labels({
         // but first we need to give it the sub-labels
 
         [
-          "angle",
-          "annotationCenterAngle",
-          "annotationCenterRadius",
-          "innerPoint",
-          "labelAndSublabels",
-          "labelIds",
-          "outerPoint",
-          "radius",
-          "truncatedInnerPoint",
-          "x",
-          "y"
-        ].forEach((k) => {
+          'angle',
+          'annotationCenterAngle',
+          'annotationCenterRadius',
+          'innerPoint',
+          'labelAndSublabels',
+          'labelIds',
+          'outerPoint',
+          'radius',
+          'truncatedInnerPoint',
+          'x',
+          'y'
+        ].forEach(k => {
           highPrioritySublabel[k] = originalLabel[k];
         });
 
@@ -175,12 +168,12 @@ const DrawLabelGroup = withHover(function ({
   multipleLabels
   // isIdHashmap,
 }) {
-  let { text = "Unlabeled" } = label;
+  let { text = 'Unlabeled' } = label;
   let groupLabelXStart;
   //Add the number of unshown labels
   if (label.labelAndSublabels && label.labelAndSublabels.length > 1) {
     // if (label.x > 0) {
-    text = "+" + (label.labelAndSublabels.length - 1) + "," + text;
+    text = '+' + (label.labelAndSublabels.length - 1) + ',' + text;
     // } else {
     //   text += ', +' + (label.labelAndSublabels.length - 1)
     // }
@@ -189,7 +182,7 @@ const DrawLabelGroup = withHover(function ({
   let labelLength = text.length * fontWidth;
   let maxLabelLength = labelAndSublabels.reduce(function (
     currentLength,
-    { text = "Unlabeled" }
+    { text = 'Unlabeled' }
   ) {
     if (text.length > currentLength) {
       return text.length;
@@ -210,10 +203,9 @@ const DrawLabelGroup = withHover(function ({
       let numberOfCharsToChop = Math.ceil(distancePastBoundary / fontWidth) + 2;
       //   if (numberOfCharsToChop > text.length) numberOfCharsToChop = text.length
       //label overflows the boundaries!
-      text = text.slice(0, -numberOfCharsToChop) + "..";
+      text = text.slice(0, -numberOfCharsToChop) + '..';
       groupLabelXStart =
-        labelXStart +
-        (labelOnLeft ? distancePastBoundary : -distancePastBoundary);
+        labelXStart + (labelOnLeft ? distancePastBoundary : -distancePastBoundary);
       labelXStart += labelOnLeft ? distancePastBoundary : 0;
     }
   }
@@ -271,7 +263,7 @@ const DrawLabelGroup = withHover(function ({
       line,
 
       <PutMyParentOnTop editorName={editorName} key="gGroup">
-        <g className={className + " topLevelLabelGroup"}>
+        <g className={className + ' topLevelLabelGroup'}>
           <rect
             onMouseOver={cancelFn}
             // zIndex={10}
@@ -298,11 +290,9 @@ const DrawLabelGroup = withHover(function ({
                   noRedux={noRedux}
                   editorName={editorName}
                   logHover
-                  key={"labelItem" + index}
+                  key={'labelItem' + index}
                   className={
-                    (label.className || "") +
-                    labelClass +
-                    " veDrawGroupInnerLabel"
+                    (label.className || '') + labelClass + ' veDrawGroupInnerLabel'
                   }
                   id={label.id}
                   {...{ labelXStart, label, fontWidth, index, dy }}
@@ -322,14 +312,12 @@ const DrawLabelGroup = withHover(function ({
         x={labelXStart}
         textLength={text.length * fontWidth}
         lengthAdjust="spacing"
-        className={
-          labelClass + label.className + (hovered ? " veAnnotationHovered" : "")
-        }
+        className={labelClass + label.className + (hovered ? ' veAnnotationHovered' : '')}
         y={textYStart}
         style={{
           fontSize: fontWidth * fontWidthToFontSize,
           fontStyle: label.fontStyle,
-          fill: label.color || "black"
+          fill: label.color || 'black'
           // stroke: label.color ? label.color : "black"
         }}
       >
@@ -365,7 +353,7 @@ const DrawLabelGroup = withHover(function ({
 });
 
 function LabelLine(pointArray, options) {
-  let points = "";
+  let points = '';
   pointArray.forEach(function ({ x, y }) {
     if (!x && x !== 0) return;
     points += `${x},${y} `;
@@ -388,12 +376,12 @@ function LabelLine(pointArray, options) {
       /> */}
       <polyline
         {...{
-          key: "polyline-long",
+          key: 'polyline-long',
           points,
-          stroke: "black",
-          fill: "none",
+          stroke: 'black',
+          fill: 'none',
           strokeWidth: 1,
-          className: "veLabelLine",
+          className: 'veLabelLine',
           ...options
         }}
       />
@@ -413,7 +401,7 @@ const DrawGroupInnerLabel = withHover(
         onContextMenu={label.onContextMenu}
         dy={index === 0 ? dy / 2 : dy}
         style={{
-          fill: label.color ? label.color : "black",
+          fill: label.color ? label.color : 'black',
           fontStyle: label.fontStyle
         }}
         {...{ onMouseOver }}
@@ -451,7 +439,7 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
           noRedux,
           passHoveredId: true, //needed to get the hoveredId
           isLabelGroup: true,
-          className: "DrawLabelGroup",
+          className: 'DrawLabelGroup',
           multipleLabels,
           labelAndSublabels,
           labelIds,
@@ -476,17 +464,12 @@ class PutMyParentOnTop extends React.Component {
     const { editorName } = this.props;
     //we use this component to re-order the svg groupedLabels because z-index won't work in svgs
     try {
-      const el = document.querySelector(
-        `.veEditor.${editorName} .topLevelLabelGroup`
-      );
+      const el = document.querySelector(`.veEditor.${editorName} .topLevelLabelGroup`);
       const parent = el.parentElement.parentElement;
       const i = Array.prototype.indexOf.call(parent.children, el.parentElement);
       parent.insertBefore(parent.children[i], null); //insert at the end of the list..
     } catch (error) {
-      console.warn(
-        "OVE-975239 - hit an error trying to re-order labels:",
-        error
-      );
+      console.warn('OVE-975239 - hit an error trying to re-order labels:', error);
     }
   }
   render() {

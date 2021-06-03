@@ -1,5 +1,5 @@
-import createAction from "./utils/createMetaAction";
-import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import createAction from './utils/createMetaAction';
+import createMergedDefaultStateReducer from './utils/createMergedDefaultStateReducer';
 
 // ------------------------------------
 // Actions
@@ -12,23 +12,18 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 //   "Open_PROPERTIES_VIEW",
 //   () => {}
 // ); //NOTE!!:: second argument sanitizes actions so no payload is passed
-export const propertiesViewTabUpdate = createAction("propertiesViewTabUpdate"); //NOTE!!:: second argument sanitizes actions so no payload is passed
+export const propertiesViewTabUpdate = createAction('propertiesViewTabUpdate'); //NOTE!!:: second argument sanitizes actions so no payload is passed
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
-    [propertiesViewTabUpdate]: (
-      state,
-      tabId,
-      selectedAnnotationOrAnnotationId
-    ) => {
+    [propertiesViewTabUpdate]: (state, tabId, selectedAnnotationOrAnnotationId) => {
       return {
         ...state,
         selectedAnnotationId: selectedAnnotationOrAnnotationId
-          ? selectedAnnotationOrAnnotationId.id ||
-            selectedAnnotationOrAnnotationId
+          ? selectedAnnotationOrAnnotationId.id || selectedAnnotationOrAnnotationId
           : undefined,
         tabId
       };
@@ -37,6 +32,6 @@ export default createMergedDefaultStateReducer(
   {
     propertiesSideBarOpen: false,
     // propertiesSideBarOpen: true,
-    tabId: "general"
+    tabId: 'general'
   }
 );

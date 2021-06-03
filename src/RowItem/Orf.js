@@ -1,6 +1,6 @@
-import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
-import React from "react";
-import orfFrameToColorMap from "../constants/orfFrameToColorMap";
+import getAnnotationNameAndStartStopString from '../utils/getAnnotationNameAndStartStopString';
+import React from 'react';
+import orfFrameToColorMap from '../constants/orfFrameToColorMap';
 
 function Orf(props) {
   let {
@@ -23,38 +23,34 @@ function Orf(props) {
   let arrow = null;
   let endCircle = null;
   let circle = (
-    <circle
-      key="circle"
-      r={heightToUse / 2}
-      cx={heightToUse / 2}
-      cy={heightToUse / 2}
-    />
+    <circle key="circle" r={heightToUse / 2} cx={heightToUse / 2} cy={heightToUse / 2} />
   );
-  if (rangeType === "end" || rangeType === "beginningAndEnd") {
+  if (rangeType === 'end' || rangeType === 'beginningAndEnd') {
     arrow = (
       <path
-        transform={`translate(${
-          width + gapsInside - Math.max(charWidth, 5)
-        },0) scale(${Math.max(charWidth, 8) / 64},${heightToUse / 64})`}
+        transform={`translate(${width + gapsInside - Math.max(charWidth, 5)},0) scale(${
+          Math.max(charWidth, 8) / 64
+        },${heightToUse / 64})`}
         d={
-          rangeType === "start"
-            ? "M0 16 L0 48 L16 64 L48 64 L64 48 L64 16 L48 0 L16 0 Z"
-            : "M0 64 L64 32 L0 0 Z"
+          rangeType === 'start'
+            ? 'M0 16 L0 48 L16 64 L48 64 L64 48 L64 16 L48 0 L16 0 Z'
+            : 'M0 64 L64 32 L0 0 Z'
         }
       />
     );
   }
-  if (rangeType === "start" || rangeType === "beginningAndEnd") {
+  if (rangeType === 'start' || rangeType === 'beginningAndEnd') {
     endCircle = circle;
   }
-  let internalStartCodonCircles = normalizedInternalStartCodonIndices.map(
-    function (internalStartCodon, index) {
-      return React.cloneElement(circle, {
-        key: index,
-        transform: `translate(${charWidth * internalStartCodon},0)`
-      });
-    }
-  );
+  let internalStartCodonCircles = normalizedInternalStartCodonIndices.map(function (
+    internalStartCodon,
+    index
+  ) {
+    return React.cloneElement(circle, {
+      key: index,
+      transform: `translate(${charWidth * internalStartCodon},0)`
+    });
+  });
   return (
     <g
       onClick={function (event) {
@@ -68,15 +64,13 @@ function Orf(props) {
       stroke={color}
       fillOpacity={1}
       fill={color}
-      transform={
-        forward ? null : `translate(${width + gapsInside},0) scale(-1,1)`
-      }
+      transform={forward ? null : `translate(${width + gapsInside},0) scale(-1,1)`}
     >
       <path
         transform={
-          (rangeType === "start" ? `translate(${charWidth},0)` : "") +
+          (rangeType === 'start' ? `translate(${charWidth},0)` : '') +
           `scale(${
-            (width + gapsInside - (rangeType === "middle" ? 0 : charWidth)) / 64
+            (width + gapsInside - (rangeType === 'middle' ? 0 : charWidth)) / 64
           },${heightToUse / 64})`
         }
         d="M0 40 L64 40 L64 20 L0 20 Z"
@@ -85,11 +79,11 @@ function Orf(props) {
       {endCircle}
       {internalStartCodonCircles}
       <title>
-        {" "}
+        {' '}
         {getAnnotationNameAndStartStopString(annotation, {
-          startText: "Open Reading Frame:",
+          startText: 'Open Reading Frame:',
           isProtein
-        })}{" "}
+        })}{' '}
       </title>
     </g>
   );

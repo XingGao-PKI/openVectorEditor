@@ -1,10 +1,10 @@
-import isNumber from "lodash/isNumber";
-import { getRangeAngles } from "ve-range-utils";
-import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
-import React from "react";
-import draggableClassnames from "../constants/draggableClassnames";
-import pureNoFunc from "../utils/pureNoFunc";
-import { getSelectionMessage } from "../utils/editorUtils";
+import isNumber from 'lodash/isNumber';
+import { getRangeAngles } from 've-range-utils';
+import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
+import React from 'react';
+import draggableClassnames from '../constants/draggableClassnames';
+import pureNoFunc from '../utils/pureNoFunc';
+import { getSelectionMessage } from '../utils/editorUtils';
 
 function Caret({
   caretPosition,
@@ -32,7 +32,7 @@ function Caret({
         height: 0
       })}
       onClick={onClick}
-      className={className + " veCaret " + draggableClassnames.caret}
+      className={className + ' veCaret ' + draggableClassnames.caret}
     >
       <title>
         {selectionMessage ||
@@ -50,8 +50,7 @@ function Caret({
         <polygon
           className="vePolygonCaretHandle"
           fill="black"
-          points={`0,${-outerRadius + 2} 5,${-outerRadius -
-            10} -5,${-outerRadius - 10}`}
+          points={`0,${-outerRadius + 2} 5,${-outerRadius - 10} -5,${-outerRadius - 10}`}
         />
       ) : null}
     </g>

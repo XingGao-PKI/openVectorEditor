@@ -1,7 +1,7 @@
-import shortid from "shortid";
+import shortid from 'shortid';
 
-import { startCase } from "lodash";
-import { convertRangeTo1Based } from "ve-range-utils";
+import { startCase } from 'lodash';
+import { convertRangeTo1Based } from 've-range-utils';
 
 export const dialogHolder = {};
 
@@ -21,9 +21,9 @@ export function hideDialog() {
 
 export function showAddOrEditAnnotationDialog({ type, annotation }) {
   const typeToDialogType = {
-    part: "AddOrEditPartDialog",
-    feature: "AddOrEditFeatureDialog",
-    primer: "AddOrEditPrimerDialog"
+    part: 'AddOrEditPartDialog',
+    feature: 'AddOrEditFeatureDialog',
+    primer: 'AddOrEditPrimerDialog'
   };
   const dialogType = typeToDialogType[type];
   const nameUpper = startCase(type);
@@ -32,8 +32,7 @@ export function showAddOrEditAnnotationDialog({ type, annotation }) {
     dialogType,
     props: {
       dialogProps: {
-        title:
-          annotation && annotation.id ? `Edit ${nameUpper}` : `New ${nameUpper}`
+        title: annotation && annotation.id ? `Edit ${nameUpper}` : `New ${nameUpper}`
       },
       initialValues: {
         ...(annotation

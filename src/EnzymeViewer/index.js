@@ -1,15 +1,15 @@
-import { Icon } from "@blueprintjs/core";
-import React from "react";
-import copyToClipboard from "copy-to-clipboard";
+import { Icon } from '@blueprintjs/core';
+import React from 'react';
+import copyToClipboard from 'copy-to-clipboard';
 
-import RowItem from "../RowItem";
-import "./style.css";
+import RowItem from '../RowItem';
+import './style.css';
 
 export default ({
-  extraClasses = "",
-  sequence = "nnnnn",
-  paddingEnd = "-------",
-  paddingStart = "-------",
+  extraClasses = '',
+  sequence = 'nnnnn',
+  paddingEnd = '-------',
+  paddingStart = '-------',
   reverseSnipPosition,
   forwardSnipPosition
 }) => {
@@ -17,16 +17,16 @@ export default ({
 
   return (
     <div
-      style={{ cursor: "pointer", position: "relative" }}
+      style={{ cursor: 'pointer', position: 'relative' }}
       onClick={() => {
         copyToClipboard(sequence);
-        window.toastr.success("Recognition Site Copied");
+        window.toastr.success('Recognition Site Copied');
       }}
-      className={"enzyme-rowitem " + extraClasses}
+      className={'enzyme-rowitem ' + extraClasses}
     >
       <Icon
         className="tg-icon-duplicate-inner"
-        style={{ display: "none", position: "absolute", top: 3, left: 3 }}
+        style={{ display: 'none', position: 'absolute', top: 3, left: 3 }}
         icon="duplicate"
       ></Icon>
       <RowItem
@@ -55,11 +55,10 @@ export default ({
                     start: paddingStart.length,
                     end: paddingStart.length + sequence.length - 1
                   },
-                  topSnipBeforeBottom:
-                    forwardSnipPosition < reverseSnipPosition,
+                  topSnipBeforeBottom: forwardSnipPosition < reverseSnipPosition,
                   bottomSnipPosition: paddingStart.length + reverseSnipPosition,
                   topSnipPosition: paddingStart.length + forwardSnipPosition,
-                  id: "fake1",
+                  id: 'fake1',
                   restrictionEnzyme: {}
                 }
               }
