@@ -1,11 +1,11 @@
+import React from "react";
 import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import shouldFlipText from "./shouldFlipText";
-import React from "react";
 import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
 import { divideBy3 } from "../utils/proteinUtils";
 
-function Axis({
+const Axis = ({
   radius,
   sequenceLength,
   rotationRadians,
@@ -16,13 +16,13 @@ function Axis({
   textOffset = 15,
   ringThickness = 4,
   isProtein
-}) {
-  let height =
+}) => {
+  const height =
     ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0);
   const radiusToUse = showAxisNumbers
     ? radius + textOffset + tickMarkHeight
     : radius;
-  let tickPositions = calculateTickMarkPositionsForGivenRange({
+  const tickPositions = calculateTickMarkPositionsForGivenRange({
     range: {
       start: 0,
       end: sequenceLength
@@ -31,9 +31,9 @@ function Axis({
     sequenceLength,
     isProtein
   });
-  let tickMarksAndLabels = showAxisNumbers
+  const tickMarksAndLabels = showAxisNumbers
     ? tickPositions.map(function (tickPosition, index) {
-        let tickAngle = getAngleForPositionMidpoint(
+        const tickAngle = getAngleForPositionMidpoint(
           tickPosition,
           sequenceLength
         );
@@ -69,7 +69,7 @@ function Axis({
         );
       })
     : null;
-  let component = (
+  const component = (
     <g key="veAxis" className="veAxis">
       <circle
         className="veAxisFill"
@@ -91,6 +91,6 @@ function Axis({
     component,
     height
   };
-}
+};
 
 export default Axis;

@@ -1,5 +1,7 @@
-import { normalizePositionByRangeLength as norm } from "ve-range-utils";
-import { getRangeLength } from "ve-range-utils";
+import {
+  normalizePositionByRangeLength as norm,
+  getRangeLength
+} from "ve-range-utils";
 
 export default function calculateTickMarkPositionsForGivenRange({
   tickSpacing: _tickSpacing = 10,
@@ -14,7 +16,7 @@ export default function calculateTickMarkPositionsForGivenRange({
   if (isProtein) {
     tickSpacing = Math.floor((_tickSpacing / 2) * 3);
   }
-  let rangeLength = getRangeLength(range, sequenceLength);
+  const rangeLength = getRangeLength(range, sequenceLength);
 
   let firstTickOffsetFromRangeStart;
   if (range.start > range.end) {
@@ -24,7 +26,7 @@ export default function calculateTickMarkPositionsForGivenRange({
   } else {
     firstTickOffsetFromRangeStart = tickSpacing - (range.start % tickSpacing);
   }
-  let tickMarks = [];
+  const tickMarks = [];
   if (range.start === 0) tickMarks.push(isProtein ? 2 : 0);
   for (
     let tick = firstTickOffsetFromRangeStart - 1;
