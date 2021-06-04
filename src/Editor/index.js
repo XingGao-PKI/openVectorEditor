@@ -124,6 +124,10 @@ export class Editor extends React.Component {
     };
   }
 
+  getChildContext() {
+    return { blueprintPortalClassName: 'ove-portal' };
+  }
+
   componentDidMount() {
     if (isMobile()) {
       let firstActivePanelId;
@@ -744,9 +748,7 @@ export class Editor extends React.Component {
 
     return (
       <ReadOnlyContext.Consumer>
-        {(value) => {
-          console.log(value);
-
+        {value => {
           return (
             <DropHandler
               key="dropHandler"

@@ -1,5 +1,5 @@
 import React, { useReducer, createContext } from 'react';
-import { createAction } from './util';
+import { createAction, contextMapperSetup } from './util';
 
 export const ReadOnlyContext = createContext({ readOnly: false });
 
@@ -18,6 +18,8 @@ const reducer = (state, action) => {
       return state;
   }
 };
+
+export const mapReadOnlyToProps = contextMapperSetup(ReadOnlyContext);
 
 export const ReadOnly = props => {
   const [readOnly, dispatch] = useReducer(reducer, true);

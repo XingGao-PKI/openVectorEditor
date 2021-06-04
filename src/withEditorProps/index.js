@@ -29,6 +29,7 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from '../GlobalDialogUtils';
+import { mapReadOnlyToProps } from '../Context/ReadOnlyContext';
 
 async function getSaveDialogEl() {
   return new Promise(resolve => {
@@ -454,7 +455,8 @@ export default compose(
       window.toastr.success('Complemented Sequence Successfully');
     },
     handleInverse
-  })
+  }),
+  Component => mapReadOnlyToProps(Component, ({ readOnly }) => ({ readOnly }))
 );
 
 function mapStateToProps(state, ownProps) {

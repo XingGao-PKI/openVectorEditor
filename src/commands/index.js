@@ -9,7 +9,6 @@ import {
   annotationTypes,
   getSequenceDataBetweenRange
 } from 've-sequence-utils';
-import { oveCommandFactory } from '../utils/commandUtils';
 import {
   upperFirst,
   map,
@@ -21,6 +20,7 @@ import {
   reduce,
   some
 } from 'lodash';
+import { oveCommandFactory } from '../utils/commandUtils';
 import showFileDialog from '../utils/showFileDialog';
 import { defaultCopyOptions } from '../redux/copyOptions';
 import { divideBy3 } from '../utils/proteinUtils';
@@ -152,7 +152,7 @@ const fileCommandDefs = {
           }}
           data-test="filter-parts-by-tag"
         >
-          <PartTagSearch dontAutoOpen {...props}></PartTagSearch>
+          <PartTagSearch dontAutoOpen {...props} />
         </div>
       );
     },
@@ -177,8 +177,8 @@ const fileCommandDefs = {
               value={props.featureLengthsToHide.min}
               min={0}
               // max={props.featureLengthsToHide.max} //tnr: I think it is better to not bound the max
-              fill={true}
-              clampValueOnBlur={true}
+              fill
+              clampValueOnBlur
               data-test="min-feature-length"
             />
             <NumericInput
@@ -194,8 +194,8 @@ const fileCommandDefs = {
               value={props.featureLengthsToHide.max}
               min={0}
               // max={props.sequenceLength} //tnr: I think it is better to not bound the max
-              fill={true}
-              clampValueOnBlur={true}
+              fill
+              clampValueOnBlur
               data-test="max-feature-length"
             />
           </div>
@@ -313,7 +313,7 @@ const fileCommandDefs = {
     hotkey: 'mod+p'
   },
   ...partsPrimersFeatures.reduce((acc, type) => {
-    //showRemoveDuplicatesDialogFeatures showRemoveDuplicatesDialogParts showRemoveDuplicatesDialogPrimers
+    // showRemoveDuplicatesDialogFeatures showRemoveDuplicatesDialogParts showRemoveDuplicatesDialogPrimers
     acc[`showRemoveDuplicatesDialog${type}`] = {
       name: `Remove Duplicate ${startCase(type)}`,
       isDisabled: props => props.readOnly,
@@ -356,7 +356,7 @@ const fileCommandDefs = {
     return acc;
   }, {})
 };
-//copy options
+// copy options
 const toggleCopyOptionCommandDefs = {};
 Object.keys(defaultCopyOptions).forEach(type => {
   const cmdId = `toggleCopy${upperFirst(type)}`;
@@ -488,11 +488,11 @@ const editCommandDefs = {
         ),
         confirmButtonText: 'Back',
         cancelButtonText: null,
-        canEscapeKeyCancel: true //this is false by default
+        canEscapeKeyCancel: true // this is false by default
       })
   },
   versionNumber: {
-    name: 'OVE Version:  ' + packageJson.version,
+    name: `OVE Version:  ${packageJson.version}`,
     handler: () => {
       const win = window.open(
         'https://github.com/TeselaGen/openVectorEditor/commits/master',
@@ -590,7 +590,7 @@ const editCommandDefs = {
     },
     isDisabled: props => props.sequenceLength === 0,
     hotkey: 'mod+a'
-    //tnr: we can't pass the following because it will block inputs
+    // tnr: we can't pass the following because it will block inputs
     // hotkeyProps: { preventDefault: true, stopPropagation: true }
   },
 
@@ -660,7 +660,7 @@ const editCommandDefs = {
           window.toastr.success(
             `Sequence Case Edited Successfully. To avoid confusion we set: 'View > Sequence Case' to 'No Preference'`,
             {
-              timeout: 10000
+              timeout: 10_000
             }
           );
         }
@@ -676,7 +676,7 @@ const editCommandDefs = {
         }
         if (newSeq !== orginalSeq) {
           !toastFired && window.toastr.success(`Sequence Case Edited Successfully`);
-          //don't trigger a mutation unless something has actually changed
+          // don't trigger a mutation unless something has actually changed
           props.updateSequenceData({
             ...props.sequenceData,
             sequence: isSelection
@@ -956,7 +956,7 @@ const cirularityCommandDefs = {
 const labelToggleCommandDefs = {};
 ['feature', 'part', 'cutsite'].forEach(type => {
   const cmdId = `toggle${upperFirst(type)}Labels`;
-  const plural = type + 's';
+  const plural = `${type}s`;
   labelToggleCommandDefs[cmdId] = {
     toggle: ['show', 'hide'],
     handler: props => props.annotationLabelVisibilityToggle(plural),
@@ -1013,10 +1013,10 @@ const viewPropertiesCommandDefs = [
     handler: (props, state, ctxInfo) => {
       const annotation = get(ctxInfo, 'context.annotation');
       props.propertiesViewOpen();
-      //we need to clear the properties tab first in case the same item has already been selected
+      // we need to clear the properties tab first in case the same item has already been selected
       props.propertiesViewTabUpdate(key, undefined);
       setTimeout(() => {
-        //then shortly after we can update it with the correct annotation
+        // then shortly after we can update it with the correct annotation
         props.propertiesViewTabUpdate(key, annotation);
       }, 0);
     }
@@ -1032,19 +1032,19 @@ const annotationToggleCommandDefs = {};
   {
     type: 'warnings',
     isHidden: p => {
-      return !map(p.sequenceData['warnings']).length;
+      return !map(p.sequenceData.warnings).length;
     }
   },
   {
     type: 'assemblyPieces',
     isHidden: p => {
-      return !map(p.sequenceData['assemblyPieces']).length;
+      return !map(p.sequenceData.assemblyPieces).length;
     }
   },
   {
     type: 'lineageAnnotations',
     isHidden: p => {
-      return !map(p.sequenceData['lineageAnnotations']).length;
+      return !map(p.sequenceData.lineageAnnotations).length;
     }
   },
   { type: 'cutsites', isHidden: isProtein },
@@ -1151,7 +1151,7 @@ const annotationToggleCommandDefs = {};
     isActive: props => {
       return props && props.annotationVisibility && props.annotationVisibility[type];
     },
-    ...obj, //spread this here to override the above props if necessary
+    ...obj, // spread this here to override the above props if necessary
     isHidden: props => {
       return (
         (props && props.typesToOmit && props.typesToOmit[type] === false) ||
