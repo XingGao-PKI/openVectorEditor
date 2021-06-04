@@ -21,7 +21,7 @@ const reducer = (state, action) => {
 
 export const ReadOnly = props => {
   const [readOnly, dispatch] = useReducer(reducer, true);
-  const updateReadOnly = readOnly => dispatch({ type: UPDATE_READ_ONLY, readOnly });
+  const updateReadOnly = v => dispatch({ type: UPDATE_READ_ONLY, readOnly: v });
   const toggleReadOnly = () => dispatch({ type: TOGGLE_READ_ONLY });
   return (
     <ReadOnlyContext.Provider value={{ readOnly, updateReadOnly, toggleReadOnly }}>

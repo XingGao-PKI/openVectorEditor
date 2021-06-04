@@ -9,21 +9,21 @@ import {
 } from 'teselagen-react-components';
 import { reduxForm, FieldArray } from 'redux-form';
 import { anyToJson } from 'bio-parsers';
-import { flatMap } from 'lodash';
+import { flatMap, cloneDeep } from 'lodash';
 import axios from 'axios';
 import uniqid from 'shortid';
-import { cloneDeep } from 'lodash';
+
 import classNames from 'classnames';
 
-import ToolbarItem from './ToolbarItem';
-import { connectToEditor } from '../withEditorProps';
-import withEditorProps from '../withEditorProps';
-import { showDialog } from '../GlobalDialogUtils';
 import { compose } from 'recompose';
+import ToolbarItem from './ToolbarItem';
+import withEditorProps, { connectToEditor } from '../withEditorProps';
+
+import { showDialog } from '../GlobalDialogUtils';
 
 export default connectToEditor(({ readOnly, toolBar = {} }) => {
   return {
-    readOnly: readOnly,
+    readOnly,
     isOpen: toolBar.openItem === 'alignmentTool'
   };
 })(({ toolbarItemProps, isOpen }) => {
@@ -44,50 +44,50 @@ export default connectToEditor(({ readOnly, toolBar = {} }) => {
   );
 });
 
-class AlignmentToolDropdown extends React.Component {
-  render() {
-    const {
-      savedAlignments = [],
-      hasSavedAlignments,
-      toggleDropdown,
-      sequenceData
-    } = this.props;
-    return (
-      <div>
-        <Button
-          intent={Intent.PRIMARY}
-          onClick={() => {
-            toggleDropdown();
-            showDialog({
-              dialogType: 'AlignmentToolDialog',
-              props: {
-                createNewAlignment: this.props.createNewAlignment,
-                upsertAlignmentRun: this.props.upsertAlignmentRun,
-                initialValues: {
-                  addedSequences: [{ ...sequenceData, isTemplate: true }]
-                }
+const AlignmentToolDropdown = props => {
+  const {
+    savedAlignments = [],
+    hasSavedAlignments,
+    toggleDropdown,
+    sequenceData,
+    createNewAlignment,
+    upsertAlignmentRun
+  } = props;
+  return (
+    <div>
+      <Button
+        intent={Intent.PRIMARY}
+        onClick={() => {
+          toggleDropdown();
+          showDialog({
+            dialogType: 'AlignmentToolDialog',
+            props: {
+              createNewAlignment,
+              upsertAlignmentRun,
+              initialValues: {
+                addedSequences: [{ ...sequenceData, isTemplate: true }]
               }
-            });
-          }}
-        >
-          Create New Alignment
-        </Button>
-        <div className="vespacer" />
-        {hasSavedAlignments && (
-          <div>
-            <h6>Saved Alignments:</h6>
-            {!savedAlignments.length && (
-              <div style={{ fontStyle: 'italic' }}> No Alignments</div>
-            )}
-            {savedAlignments.map((savedAlignment, i) => {
-              return <div key={i}>Saved Alignment {i}</div>;
-            })}
-          </div>
-        )}
-      </div>
-    );
-  }
-}
+            }
+          });
+        }}
+      >
+        Create New Alignment
+      </Button>
+      <div className="vespacer" />
+      {hasSavedAlignments && (
+        <div>
+          <h6>Saved Alignments:</h6>
+          {!savedAlignments.length && (
+            <div style={{ fontStyle: 'italic' }}> No Alignments</div>
+          )}
+          {savedAlignments.map((savedAlignment, i) => {
+            return <div key={i}>Saved Alignment {i}</div>;
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
 const ConnectedAlignmentToolDropdown = withEditorProps(AlignmentToolDropdown);
 
 const instance = axios.create({
@@ -99,6 +99,7 @@ class AlignmentTool extends React.Component {
   state = {
     templateSeqIndex: 0
   };
+
   sendSelectedDataToBackendForAlignment = async values => {
     const {
       addedSequences,
@@ -132,7 +133,7 @@ class AlignmentTool extends React.Component {
             ].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1);
             const elementsToTrim = ['baseCalls', 'basePos', 'qualNums'];
             // eslint-disable-next-line no-unused-vars
-            for (let element in addedSequencesToUseTrimmed[i].chromatogramData) {
+            for (const element in addedSequencesToUseTrimmed[i].chromatogramData) {
               if (elementsToTrim.indexOf(element) !== -1) {
                 addedSequencesToUseTrimmed[i].chromatogramData[
                   element
@@ -158,9 +159,9 @@ class AlignmentTool extends React.Component {
     // const alignmentIdMismatches = uniqid();
     createNewAlignment({
       id: alignmentId,
-      name: seqsToAlign[0].name + ' Alignment'
+      name: `${seqsToAlign[0].name} Alignment`
     });
-    //set the alignment to loading
+    // set the alignment to loading
     upsertAlignmentRun({
       id: alignmentId,
       loading: true
@@ -175,7 +176,7 @@ class AlignmentTool extends React.Component {
 
     window.toastr.success('Alignment submitted.');
     const replaceProtocol = url => {
-      return url.replace('http://', window.location.protocol + '//');
+      return url.replace('http://', `${window.location.protocol}//`);
     };
 
     const seqInfoToSend = seqsToAlign.map(({ sequence, name, id }) => {
@@ -195,7 +196,7 @@ class AlignmentTool extends React.Component {
     } = await instance.post(
       replaceProtocol('http://j5server.teselagen.com/alignment/run'),
       {
-        //only send over the bear necessities :)
+        // only send over the bear necessities :)
         sequencesToAlign: seqInfoToSend,
         isPairwiseAlignment,
         isAlignToRefSeq
@@ -208,7 +209,7 @@ class AlignmentTool extends React.Component {
     }
     if (!alignedSequences && !pairwiseAlignments)
       window.toastr.error('Error running sequence alignment!');
-    //set the alignment to loading
+    // set the alignment to loading
     upsertAlignmentRun({
       id: alignmentId,
       pairwiseAlignments:
@@ -263,6 +264,7 @@ class AlignmentTool extends React.Component {
     });
     onChange([]);
   };
+
   renderAddSequence = ({ fields, templateSeqIndex }) => {
     const { handleSubmit } = this.props;
 
@@ -465,7 +467,7 @@ function array_move(arr, old_index, new_index) {
 function mottTrim(qualNums) {
   let startPos = 0;
   let endPos = 0;
-  let totalScoreInfo = [];
+  const totalScoreInfo = [];
   let score = 0;
   let totalScore = 0;
   const cutoff = 0.05;

@@ -9,6 +9,7 @@ import addAlignment from '../addAlignment';
 import AlignmentView from '../AlignmentView';
 import sizeMe from 'react-sizeme';
 import VersionHistoryView from '../VersionHistoryView';
+import ContextWrapper from '../Context/Context';
 
 let store;
 
@@ -18,7 +19,9 @@ function StandaloneEditor(props) {
   }
   return (
     <Provider store={store}>
-      <Editor {...props} />
+      <ContextWrapper>
+        <Editor {...props} />
+      </ContextWrapper>
     </Provider>
   );
 }
@@ -40,7 +43,9 @@ function StandaloneVersionHistoryView(props) {
   }
   return (
     <Provider store={store}>
-      <VersionHistoryView {...{ ...props }} />
+      <ContextWrapper>
+        <VersionHistoryView {...{ ...props }} />
+      </ContextWrapper>
     </Provider>
   );
 }
