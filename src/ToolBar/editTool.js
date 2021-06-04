@@ -1,13 +1,11 @@
 import { Icon } from '@blueprintjs/core';
 import React from 'react';
 import ToolbarItem from './ToolbarItem';
-import { connectToEditor } from '../withEditorProps';
+import { ReadOnlyContext } from '../Context/ReadOnlyContext';
 
-export default connectToEditor(editorState => {
-  return {
-    readOnly: editorState.readOnly
-  };
-})(({ toolbarItemProps, readOnly, toggleReadOnlyMode }) => {
+export default ({ toolbarItemProps }) => {
+  const { readOnly, toggleReadOnly } = React.useContext(ReadOnlyContext);
+  console.log(readOnly)
   const tooltip = (
     <span>
       Switch to {readOnly ? 'edit' : 'read only'} mode{' '}
@@ -19,8 +17,8 @@ export default connectToEditor(editorState => {
     <ToolbarItem
       tooltip={tooltip}
       Icon={<Icon icon={readOnly ? 'lock' : 'unlock'} />}
-      onIconClick={toggleReadOnlyMode}
+      onIconClick={toggleReadOnly}
       {...toolbarItemProps}
     />
   );
-});
+};

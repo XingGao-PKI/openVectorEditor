@@ -1,4 +1,3 @@
-import { connectToEditor } from '../withEditorProps';
 // import download from 'in-browser-download'
 import {
   Popover,
@@ -9,6 +8,7 @@ import {
   Intent
 } from '@blueprintjs/core';
 import React from 'react';
+import { connectToEditor } from '../withEditorProps';
 import './style.css';
 
 class ToolbarItem extends React.Component {
@@ -54,10 +54,9 @@ class ToolbarItem extends React.Component {
 
     const buttonTarget = (
       <div
-        className={
-          `veToolbarItemOuter ve-tool-container-${toolName}` +
-          (disabled ? ' disabled ' : '')
-        }
+        className={`veToolbarItemOuter ve-tool-container-${toolName}${
+          disabled ? ' disabled ' : ''
+        }`}
       >
         {renderIconAbove && (
           <div>
@@ -102,10 +101,10 @@ class ToolbarItem extends React.Component {
                   <div>{dropdownicon}</div>
                 </div>
               ) : isOpen ? (
-                <BpIcon data-test={toolName + 'Dropdown'} iconSize={13} icon="caret-up" />
+                <BpIcon data-test={`${toolName}Dropdown`} iconSize={13} icon="caret-up" />
               ) : (
                 <BpIcon
-                  data-test={toolName + 'Dropdown'}
+                  data-test={`${toolName}Dropdown`}
                   iconSize={13}
                   icon="caret-down"
                 />
