@@ -1,7 +1,7 @@
 import React, { useReducer, createContext } from 'react';
 import { createAction } from './util';
 
-export const ReadOnlyContext = createContext({});
+export const ReadOnlyContext = createContext({ readOnly: false });
 
 // actions
 const UPDATE_READ_ONLY = createAction('UPDATE_READ_ONLY');

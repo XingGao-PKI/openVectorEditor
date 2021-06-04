@@ -1,4 +1,4 @@
-import { debounce, get, some } from 'lodash';
+import { debounce, get, some, flatMap, map, filter, pick, camelCase } from 'lodash';
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from 'teselagen-react-components';
 import {
@@ -11,17 +11,19 @@ import {
 } from '@blueprintjs/core';
 import PropTypes from 'prop-types';
 
+import { compose } from 'redux';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import React from 'react';
+import isMobile from 'is-mobile';
 import VersionHistoryView from '../VersionHistoryView';
 import { importSequenceFromFile } from '../withEditorProps';
 import getAdditionalEnzymesSelector from '../selectors/getAdditionalEnzymesSelector';
 import 'tg-react-reflex/styles.css';
-import React from 'react';
 // import DrawChromatogram from "./DrawChromatogram";
 import AlignmentView from '../AlignmentView';
 // import * as customIcons from "teselagen-react-components";
 // import { Button } from "@blueprintjs/core";
-import { compose } from 'redux';
-//tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
+// tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 /* eslint-disable */
 import { connectToEditor, handleSave } from '../withEditorProps';
 import { withHandlers } from 'recompose';
@@ -30,8 +32,6 @@ import CommandHotkeyHandler from './CommandHotkeyHandler';
 
 import { ReflexContainer, ReflexSplitter, ReflexElement } from '../Reflex';
 /* eslint-enable */
-
-import { flatMap, map, filter, pick, camelCase } from 'lodash';
 
 import ToolBar from '../ToolBar';
 import CircularView from '../CircularView';
@@ -42,15 +42,14 @@ import DropHandler from './DropHandler';
 import Properties from '../helperComponents/PropertiesDialog';
 import './style.css';
 
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import DigestTool from '../DigestTool/DigestTool';
 import { insertItem, removeItem } from '../utils/arrayUtils';
 import Mismatches from '../AlignmentView/Mismatches';
 import SimpleCircularOrLinearView from '../SimpleCircularOrLinearView';
 import { userDefinedHandlersAndOpts } from './userDefinedHandlersAndOpts';
 import { GlobalDialog } from '../GlobalDialog';
-import isMobile from 'is-mobile';
 import { getClientX, getClientY } from '../utils/editorUtils';
+import { ReadOnlyContext } from '../Context/ReadOnlyContext';
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -88,7 +87,7 @@ const getListStyle = (isDraggingOver /* isDragging */) => {
     alignItems: 'flex-end',
     flex: '0 0 auto',
     flexDirection: 'row',
-    overflowX: 'auto', //can't be overflowX: "scroll" because firefox has issues with hiding the scroll bar https://github.com/TeselaGen/openVectorEditor/issues/352
+    overflowX: 'auto', // can't be overflowX: "scroll" because firefox has issues with hiding the scroll bar https://github.com/TeselaGen/openVectorEditor/issues/352
     borderBottom: '1px solid lightgray',
     borderTop: '1px solid lightgray',
     paddingTop: 3,
@@ -109,42 +108,21 @@ const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
     whiteSpace: 'nowrap',
     wordWrap: 'normal',
     opacity: 0,
-    ...(isDragging && { opacity: 0.7, zIndex: 10000, background: 'lightgrey' }),
+    ...(isDragging && { opacity: 0.7, zIndex: 10_000, background: 'lightgrey' }),
     ...(isDraggingOver && { background: 'lightblue' }),
     left: '50%'
   };
 };
 
 export class Editor extends React.Component {
-  state = {
-    isHotkeyDialogOpen: false,
-    tabDragging: false,
-    previewModeFullscreen: false
-  };
-
-  getExtraPanel = (/*panelOptions */) => {
-    return [];
-  };
-
-  getChildContext() {
-    //tnrtodo this will need to be updated once blueprint uses the react 16 api
-    return { blueprintPortalClassName: 'ove-portal' };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isHotkeyDialogOpen: false,
+      tabDragging: false,
+      previewModeFullscreen: false
+    };
   }
-  componentDidUpdate(prevProps) {
-    //autosave if necessary!
-    if (
-      this.props.shouldAutosave &&
-      prevProps.sequenceData &&
-      prevProps.sequenceData.stateTrackingId &&
-      this.props.sequenceData.stateTrackingId !== prevProps.sequenceData.stateTrackingId
-    ) {
-      this.props.handleSave();
-    }
-  }
-  updateDimensions = debounce(() => {
-    // (this.hasFullscreenPanel || this.fitHeight) &&
-    this.setState({ randomRerenderTrigger: Math.random() });
-  }, 100);
 
   componentDidMount() {
     if (isMobile()) {
@@ -158,11 +136,33 @@ export class Editor extends React.Component {
       this.props.collapseSplitScreen(firstActivePanelId);
     }
     window.addEventListener('resize', this.updateDimensions);
-    this.forceUpdate(); //we need to do this to get an accurate height measurement on first render
+    this.forceUpdate(); // we need to do this to get an accurate height measurement on first render
   }
+
+  componentDidUpdate(prevProps) {
+    // autosave if necessary!
+    if (
+      this.props.shouldAutosave &&
+      prevProps.sequenceData &&
+      prevProps.sequenceData.stateTrackingId &&
+      this.props.sequenceData.stateTrackingId !== prevProps.sequenceData.stateTrackingId
+    ) {
+      this.props.handleSave();
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateDimensions);
   }
+
+  getExtraPanel = (/* panelOptions */) => {
+    return [];
+  };
+
+  updateDimensions = debounce(() => {
+    // (this.hasFullscreenPanel || this.fitHeight) &&
+    this.setState({ randomRerenderTrigger: Math.random() });
+  }, 100);
 
   onTabDragStart = () => {
     this.setState({ tabDragging: true });
@@ -178,7 +178,7 @@ export class Editor extends React.Component {
 
     let newPanelsShown;
     if (result.destination.droppableId !== result.source.droppableId) {
-      //we're moving a tab from one group to another group
+      // we're moving a tab from one group to another group
       const secondPanel = panelsShown.length === 1 ? [[]] : [];
       const panelsToMapOver = [...panelsShown, ...secondPanel];
       newPanelsShown = map(panelsToMapOver, (panelGroup, groupIndex) => {
@@ -190,13 +190,14 @@ export class Editor extends React.Component {
           Number(groupIndex) ===
           Number(result.destination.droppableId.replace('droppable-id-', ''))
         ) {
-          //we're adding to this group
+          // we're adding to this group
           return insertItem(
             panelGroup.map(tabPanel => ({ ...tabPanel, active: false })),
             { ...panelToMove, active: true },
             result.destination.index
           );
-        } else if (
+        }
+        if (
           Number(groupIndex) ===
           Number(result.source.droppableId.replace('droppable-id-', ''))
         ) {
@@ -207,18 +208,17 @@ export class Editor extends React.Component {
               ...(panelToMove.active && index === 0 && { active: true })
             };
           });
-        } else {
-          return panelGroup;
         }
+        return panelGroup;
       });
     } else {
-      //we're moving tabs within the same group
+      // we're moving tabs within the same group
       newPanelsShown = map(panelsShown, (panelGroup, groupIndex) => {
         if (
           Number(groupIndex) ===
           Number(result.destination.droppableId.replace('droppable-id-', ''))
         ) {
-          //we'removing a tab around in this group
+          // we'removing a tab around in this group
           return reorder(
             panelGroup.map((tabPanel, i) => {
               return {
@@ -259,6 +259,7 @@ export class Editor extends React.Component {
   closeHotkeyDialog = () => {
     this.setState({ isHotkeyDialogOpen: false });
   };
+
   openHotkeyDialog = () => {
     this.setState({ isHotkeyDialogOpen: true });
   };
@@ -267,9 +268,9 @@ export class Editor extends React.Component {
     const { togglePreviewFullscreen } = this.props;
     if (togglePreviewFullscreen) togglePreviewFullscreen();
     else {
-      this.setState({
-        previewModeFullscreen: !this.state.previewModeFullscreen
-      });
+      this.setState(prevState => ({
+        previewModeFullscreen: !prevState.previewModeFullscreen
+      }));
     }
   };
 
@@ -288,7 +289,6 @@ export class Editor extends React.Component {
       withRotateCircularView = true,
       displayMenuBarAboveTools = true,
       updateSequenceData,
-      readOnly,
       setPanelAsActive,
       style = {},
       maxAnnotationsToDisplay,
@@ -319,7 +319,7 @@ export class Editor extends React.Component {
       return (
         <VersionHistoryView
           {...{
-            onSave, //we need to pass this user defined handler
+            onSave, // we need to pass this user defined handler
             updateSequenceData,
             caretPositionUpdate,
             editorName,
@@ -354,7 +354,7 @@ export class Editor extends React.Component {
       }
     };
     try {
-      //tnr: fixes https://github.com/TeselaGen/openVectorEditor/issues/689
+      // tnr: fixes https://github.com/TeselaGen/openVectorEditor/issues/689
       if (previewModeFullscreen) {
         window.document.body.classList.add('tg-no-scroll-body');
       } else {
@@ -411,12 +411,12 @@ export class Editor extends React.Component {
       xOffset = fullScreenOffsets.xOffset || 0;
       yOffset = fullScreenOffsets.yOffset || 0;
     }
-    let w = window,
-      d = document,
-      e = d.documentElement,
-      g = d.getElementsByTagName('body')[0],
-      x = w.innerWidth || e.clientWidth || g.clientWidth,
-      y = w.innerHeight || e.clientHeight || g.clientHeight;
+    const w = window;
+    const d = document;
+    const e = d.documentElement;
+    const g = d.getElementsByTagName('body')[0];
+    const x = w.innerWidth || e.clientWidth || g.clientWidth;
+    const y = w.innerHeight || e.clientHeight || g.clientHeight;
     const windowDimensions = {
       width: x - xOffset,
       height: Math.max(y, minHeight) - yOffset
@@ -476,7 +476,7 @@ export class Editor extends React.Component {
         panelMap[activePanelType] && panelMap[activePanelType].panelSpecificProps;
       const panelSpecificPropsToSpread =
         panelMap[activePanelType] && panelMap[activePanelType].panelSpecificPropsToSpread;
-      let panel = Panel ? (
+      const panel = Panel ? (
         <Panel
           withRotateCircularView={withRotateCircularView}
           {...pickedUserDefinedHandlersAndOpts}
@@ -497,7 +497,7 @@ export class Editor extends React.Component {
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           tabHeight={tabHeight}
           {...editorDimensions}
-          isInsideEditor //pass this prop to let the sub components know they're being rendered as an editor tab
+          isInsideEditor // pass this prop to let the sub components know they're being rendered as an editor tab
         />
       ) : (
         <div> No Panel Found!</div>
@@ -534,7 +534,7 @@ export class Editor extends React.Component {
       if (index > 0) {
         toReturn.push(
           <ReflexSplitter
-            key={activePanelId + 'splitter'}
+            key={`${activePanelId}splitter`}
             style={{
               // height: height + 38,
               zIndex: 1
@@ -551,15 +551,15 @@ export class Editor extends React.Component {
           {...reflexElementProps}
         >
           {[
-            <Droppable //the tab holder
-              key={'droppable-id-' + index.toString()}
+            <Droppable // the tab holder
+              key={`droppable-id-${index.toString()}`}
               direction="horizontal"
-              droppableId={'droppable-id-' + index.toString()}
+              droppableId={`droppable-id-${index.toString()}`}
             >
               {(provided, snapshot) => (
                 <div
                   className="ve-draggable-tabs"
-                  data-test={'ve-draggable-tabs' + index}
+                  data-test={`ve-draggable-tabs${index}`}
                   ref={provided.innerRef}
                   style={{
                     height: tabHeight,
@@ -619,13 +619,13 @@ export class Editor extends React.Component {
                                 }}
                                 className={
                                   (id === activePanelId ? 'veTabActive ' : '') +
-                                  camelCase('veTab-' + nameToShow)
+                                  camelCase(`veTab-${nameToShow}`)
                                 }
                               >
                                 {isFullScreen && (
-                                  <div //we need this div to wrap the tooltip to help the tooltip stay in the correct position https://github.com/TeselaGen/openVectorEditor/issues/436
+                                  <div // we need this div to wrap the tooltip to help the tooltip stay in the correct position https://github.com/TeselaGen/openVectorEditor/issues/436
                                     style={{
-                                      zIndex: 15002,
+                                      zIndex: 15_002,
                                       position: 'fixed',
                                       top: 15,
                                       right: 25
@@ -667,10 +667,10 @@ export class Editor extends React.Component {
             </Droppable>,
             ...(panelsToShow.length === 1
               ? [
-                  <Droppable //extra add tab box (only shown when there is 1 tab being shown)!
+                  <Droppable // extra add tab box (only shown when there is 1 tab being shown)!
                     key="extra-drop-box"
                     direction="horizontal"
-                    droppableId={'droppable-id-' + (index + 1).toString()}
+                    droppableId={`droppable-id-${(index + 1).toString()}`}
                   >
                     {(provided, snapshot) => (
                       <div
@@ -702,7 +702,7 @@ export class Editor extends React.Component {
                 key="veWhiteBackground"
                 className="veWhiteBackground"
                 style={{
-                  zIndex: 15000,
+                  zIndex: 15_000,
                   position: 'fixed',
                   top: 0,
                   left: 0,
@@ -743,112 +743,122 @@ export class Editor extends React.Component {
     }
 
     return (
-      <DropHandler
-        key="dropHandler"
-        importSequenceFromFile={this.props.importSequenceFromFile}
-        disabled={readOnly || hideSingleImport}
-        style={{
-          width: '100%',
-          maxWidth: '100%',
-          // ...(fitHeight && {
-          // height: "100%",
-          //  }),
-          position: 'relative',
-          // height: "100%",
-          // ...(fitHeight && {
-          height,
-          minHeight,
-          display: 'flex',
-          flexDirection: 'column',
-          ...(previewModeFullscreen && {
-            background: 'white',
-            zIndex: 15000,
-            position: 'fixed',
-            // paddingTop: 20,
-            top: yOffset || 0,
-            left: xOffset || 0,
-            ...windowDimensions
-          }),
-          ...style
-        }}
-        className={`veEditor ${editorName} ${
-          previewModeFullscreen ? 'previewModeFullscreen' : ''
-        }`}
-      >
-        <GlobalDialog
-          editorName={editorName}
-          {...pickedUserDefinedHandlersAndOpts}
-          dialogOverrides={pick(this.props, [
-            'AddOrEditFeatureDialogOverride',
-            'AddOrEditPartDialogOverride',
-            'AddOrEditPrimerDialogOverride'
-          ])}
-        />
-        <ToolBar
-          {...pickedUserDefinedHandlersAndOpts}
-          openHotkeyDialog={this.openHotkeyDialog}
-          key="toolbar"
-          showMenuBar={showMenuBar}
-          displayMenuBarAboveTools={displayMenuBarAboveTools}
-          handleFullscreenClose={handleFullscreenClose || this.togglePreviewFullscreen}
-          isProtein={sequenceData.isProtein}
-          userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
-          closeFullscreen={
-            !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
-          }
-          {...{
-            modifyTools: this.props.modifyTools,
-            contentLeft: this.props.contentLeft,
-            editorName,
-            toolList: this.props.toolList
-          }}
-          withDigestTool
-          {...ToolBarProps}
-        />
+      <ReadOnlyContext.Consumer>
+        {(value) => {
+          console.log(value);
 
-        <CommandHotkeyHandler
-          menuSearchHotkey={this.props.menuSearchHotkey}
-          hotkeyDialogProps={{
-            isOpen: this.state.isHotkeyDialogOpen,
-            onClose: this.closeHotkeyDialog
-          }}
-          {...pickedUserDefinedHandlersAndOpts}
-          editorName={editorName}
-        />
-
-        <div
-          style={{
-            position: 'relative',
-            flexGrow: '1',
-            minHeight: 0,
-            display: 'flex'
-          }}
-          className="tg-editor-container"
-          id="section-to-print"
-        >
-          <DragDropContext
-            onDragStart={this.onTabDragStart}
-            onDragEnd={this.onTabDragEnd}
-          >
-            <ReflexContainer
-              onPanelCollapse={({ activePanelId }) => {
-                this.props.collapsePanel(activePanelId);
+          return (
+            <DropHandler
+              key="dropHandler"
+              importSequenceFromFile={this.props.importSequenceFromFile}
+              disabled={value.readOnly || hideSingleImport}
+              style={{
+                width: '100%',
+                maxWidth: '100%',
+                // ...(fitHeight && {
+                // height: "100%",
+                //  }),
+                position: 'relative',
+                // height: "100%",
+                // ...(fitHeight && {
+                height,
+                minHeight,
+                display: 'flex',
+                flexDirection: 'column',
+                ...(previewModeFullscreen && {
+                  background: 'white',
+                  zIndex: 15_000,
+                  position: 'fixed',
+                  // paddingTop: 20,
+                  top: yOffset || 0,
+                  left: xOffset || 0,
+                  ...windowDimensions
+                }),
+                ...style
               }}
-              /* style={{}} */ orientation="vertical"
+              className={`veEditor ${editorName} ${
+                previewModeFullscreen ? 'previewModeFullscreen' : ''
+              }`}
             >
-              {panels}
-            </ReflexContainer>
-          </DragDropContext>
-        </div>
+              <GlobalDialog
+                editorName={editorName}
+                {...pickedUserDefinedHandlersAndOpts}
+                dialogOverrides={pick(this.props, [
+                  'AddOrEditFeatureDialogOverride',
+                  'AddOrEditPartDialogOverride',
+                  'AddOrEditPrimerDialogOverride'
+                ])}
+              />
+              <ToolBar
+                {...pickedUserDefinedHandlersAndOpts}
+                openHotkeyDialog={this.openHotkeyDialog}
+                key="toolbar"
+                showMenuBar={showMenuBar}
+                displayMenuBarAboveTools={displayMenuBarAboveTools}
+                handleFullscreenClose={
+                  handleFullscreenClose || this.togglePreviewFullscreen
+                }
+                isProtein={sequenceData.isProtein}
+                userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
+                closeFullscreen={
+                  !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
+                }
+                {...{
+                  modifyTools: this.props.modifyTools,
+                  contentLeft: this.props.contentLeft,
+                  editorName,
+                  toolList: this.props.toolList
+                }}
+                withDigestTool
+                {...ToolBarProps}
+              />
 
-        <StatusBar
-          {...pickedUserDefinedHandlersAndOpts}
-          isProtein={sequenceData.isProtein}
-          showCircularity={showCircularity && !sequenceData.isProtein}
-          editorName={editorName}
-          {...StatusBarProps}
-        />
-      </DropHandler>
+              <CommandHotkeyHandler
+                menuSearchHotkey={this.props.menuSearchHotkey}
+                hotkeyDialogProps={{
+                  isOpen: this.state.isHotkeyDialogOpen,
+                  onClose: this.closeHotkeyDialog
+                }}
+                {...pickedUserDefinedHandlersAndOpts}
+                editorName={editorName}
+              />
+
+              <div
+                style={{
+                  position: 'relative',
+                  flexGrow: '1',
+                  minHeight: 0,
+                  display: 'flex'
+                }}
+                className="tg-editor-container"
+                id="section-to-print"
+              >
+                <DragDropContext
+                  onDragStart={this.onTabDragStart}
+                  onDragEnd={this.onTabDragEnd}
+                >
+                  <ReflexContainer
+                    onPanelCollapse={({ activePanelId }) => {
+                      this.props.collapsePanel(activePanelId);
+                    }}
+                    /* style={{}} */ orientation="vertical"
+                  >
+                    {panels}
+                  </ReflexContainer>
+                </DragDropContext>
+              </div>
+
+              <StatusBar
+                {...pickedUserDefinedHandlersAndOpts}
+                isProtein={sequenceData.isProtein}
+                showCircularity={showCircularity && !sequenceData.isProtein}
+                editorName={editorName}
+                {...StatusBarProps}
+              />
+            </DropHandler>
+          );
+        }}
+      </ReadOnlyContext.Consumer>
     );
   }
 }

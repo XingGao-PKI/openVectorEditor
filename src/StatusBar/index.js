@@ -7,6 +7,8 @@ import {
   Popover,
   RadioGroup
 } from '@blueprintjs/core';
+import { isString } from 'lodash';
+import useLocalStorageState from 'use-local-storage-state';
 import {
   connectToEditor,
   updateCircular,
@@ -23,12 +25,13 @@ import {
   getSequenceDataBetweenRange
 } from 've-sequence-utils';
 import useMeltingTemp from '../utils/useMeltingTemp';
-import useLocalStorageState from 'use-local-storage-state';
-import { isString } from 'lodash';
+import { ReadOnlyContext } from '../Context/ReadOnlyContext';
 
-const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
-  readOnly
-}))(({ onSave, readOnly, showReadOnly, disableSetReadOnly, updateReadOnlyMode }) => {
+const EditReadOnlyItem = props => {
+  const { onSave, showReadOnly, disableSetReadOnly } = props;
+
+  const { readOnly, updateReadOnly } = React.useContext(ReadOnlyContext);
+
   return showReadOnly ? (
     <StatusBarItem dataTest="veStatusBar-readOnly">
       {onSave ? (
@@ -37,11 +40,11 @@ const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
             { label: 'Read Only', value: 'readOnly' },
             { label: 'Editable', value: 'editable' }
           ]}
-          disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
+          disabled={disableSetReadOnly || !onSave}
           className={Classes.MINIMAL}
           value={readOnly ? 'readOnly' : 'editable'}
           onChange={({ target: { value } }) => {
-            updateReadOnlyMode(value === 'readOnly');
+            updateReadOnly(value === 'readOnly');
           }}
         />
       ) : readOnly ? (
@@ -51,7 +54,7 @@ const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
       )}
     </StatusBarItem>
   ) : null;
-});
+};
 
 const ShowSelectionItem = compose(
   connectToEditor(
@@ -80,11 +83,11 @@ const ShowSelectionItem = compose(
     sequenceData = { sequence: '' },
     showGCContent,
     GCDecimalDigits,
-    handleInverse
+    handleInverse: handleInverses
   }) => {
     const [showMeltingTemp] = useMeltingTemp();
 
-    const sequence = getSequenceDataBetweenRange(sequenceData, selectionLayer).sequence;
+    const { sequence } = getSequenceDataBetweenRange(sequenceData, selectionLayer);
 
     return (
       <React.Fragment>
@@ -103,14 +106,14 @@ const ShowSelectionItem = compose(
           <Button
             minimal
             disabled={sequenceLength <= 0}
-            onClick={handleInverse}
+            onClick={handleInverses}
             style={{ marginLeft: 5, color: '#48AFF0' }}
             small
           >
             Select Inverse
           </Button>
         </StatusBarItem>
-        {showMeltingTemp && <MeltingTemp sequence={sequence}></MeltingTemp>}
+        {showMeltingTemp && <MeltingTemp sequence={sequence} />}
       </React.Fragment>
     );
   }
@@ -127,18 +130,14 @@ const ShowLengthItem = connectToEditor(({ sequenceData = { sequence: '' } }) => 
 
 const EditCircularityItem = compose(
   connectToEditor(
-    ({
-      readOnly,
-      sequenceData,
-      sequenceData: { circular /* materiallyAvailable */ } = {}
-    }) => ({
-      readOnly,
+    ({ sequenceData, sequenceData: { circular /* materiallyAvailable */ } = {} }) => ({
       sequenceData,
       circular
     })
   ),
   withHandlers({ updateCircular })
-)(({ readOnly, showCircularity, circular, updateCircular }) => {
+)(({ showCircularity, circular, updateCircular: _updateCircular }) => {
+  const { readOnly } = React.useContext(ReadOnlyContext);
   return showCircularity ? (
     <StatusBarItem dataTest="veStatusBar-circularity">
       {readOnly ? (
@@ -150,7 +149,7 @@ const EditCircularityItem = compose(
       ) : (
         <HTMLSelect
           onChange={({ target: { value } }) => {
-            updateCircular(value === 'circular');
+            _updateCircular(value === 'circular');
           }}
           className={Classes.MINIMAL}
           value={circular ? 'circular' : 'linear'}
@@ -164,11 +163,12 @@ const EditCircularityItem = compose(
   ) : null;
 });
 const EditAvailabilityItem = connectToEditor(
-  ({ readOnly, sequenceData: { materiallyAvailable } = {} }) => ({
-    readOnly,
+  ({ sequenceData: { materiallyAvailable } = {} }) => ({
     materiallyAvailable
   })
-)(({ readOnly, showAvailability, materiallyAvailable, updateAvailability }) => {
+)(({ showAvailability, materiallyAvailable, updateAvailability }) => {
+  const { readOnly } = React.useContext(ReadOnlyContext);
+
   return showAvailability ? (
     <StatusBarItem>
       {readOnly ? (
@@ -259,8 +259,8 @@ function MeltingTemp({ sequence }) {
           <div style={{ maxWidth: 300, padding: 20 }}>
             Using Tm calculations based on these{' '}
             <a href="https://github.com/TeselaGen/ve-sequence-utils">algorithms</a>
-            <br></br>
-            <br></br>
+            <br />
+            <br />
             <RadioGroup
               label="Choose Tm Type:"
               options={[
@@ -269,17 +269,17 @@ function MeltingTemp({ sequence }) {
               ]}
               onChange={e => setTmType(e.target.value)}
               selectedValue={tmType}
-            ></RadioGroup>
+            />
             {hasWarning && (
               <div>
                 <Icon
                   style={{ marginLeft: 5, marginRight: 5 }}
                   size={10}
                   icon="warning-sign"
-                ></Icon>
+                />
                 {hasWarning}
-                <br></br>
-                <br></br>
+                <br />
+                <br />
                 Try using the Default Tm
               </div>
             )}
@@ -293,7 +293,7 @@ function MeltingTemp({ sequence }) {
               style={{ marginLeft: 5, marginRight: 5 }}
               size={10}
               icon="warning-sign"
-            ></Icon>
+            />
           )}
         </Button>
       </Popover>
