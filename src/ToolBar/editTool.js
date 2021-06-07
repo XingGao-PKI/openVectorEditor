@@ -5,6 +5,7 @@ import { ReadOnlyContext } from '../Context/ReadOnlyContext';
 
 export default ({ toolbarItemProps }) => {
   const { readOnly, toggleReadOnly } = React.useContext(ReadOnlyContext);
+  console.log(readOnly)
   const tooltip = (
     <span>
       Switch to {readOnly ? 'edit' : 'read only'} mode{' '}

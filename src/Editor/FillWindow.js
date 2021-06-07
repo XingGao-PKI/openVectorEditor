@@ -10,18 +10,16 @@ export default class FillWindow extends React.Component {
   componentDidMount() {
     window.addEventListener('resize', this.updateDimensions);
   }
-
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateDimensions);
   }
-
   render() {
-    const w = window;
-    const d = document;
-    const e = d.documentElement;
-    const g = d.getElementsByTagName('body')[0];
-    const width = w.innerWidth || e.clientWidth || g.clientWidth;
-    const height = w.innerHeight || e.clientHeight || g.clientHeight;
+    let w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.getElementsByTagName('body')[0],
+      width = w.innerWidth || e.clientWidth || g.clientWidth,
+      height = w.innerHeight || e.clientHeight || g.clientHeight;
     const windowDimensions = {
       width,
       height
