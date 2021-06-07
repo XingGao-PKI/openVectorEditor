@@ -1,10 +1,10 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { HashRouter as Router, Route, Link, Redirect } from 'react-router-dom';
-import { Button, Drawer, Tooltip } from '@blueprintjs/core';
+import React from "react";
+import { Provider } from "react-redux";
+import { HashRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import { Button, Drawer, Tooltip } from "@blueprintjs/core";
 
-import { render } from 'react-dom';
-import store from './store';
+import store from "./store";
+import { render } from "react-dom";
 
 import {
   CircularView,
@@ -14,41 +14,41 @@ import {
   updateEditor,
   EnzymeViewer,
   SimpleCircularOrLinearView
-} from '../../src';
+} from "../../src";
 
-import exampleSequenceData from './exampleData/exampleSequenceData';
-import StandaloneDemo from './StandaloneDemo';
-import SimpleCircularOrLinearViewDemo from './SimpleCircularOrLinearViewDemo';
-import StandaloneAlignmentDemo from './StandaloneAlignmentDemo';
-import AlignmentDemo from './AlignmentDemo';
-import VersionHistoryView from '../../src/VersionHistoryView';
-import pjson from '../../package.json';
-import EditorDemo from './EditorDemo';
+import exampleSequenceData from "./exampleData/exampleSequenceData";
+import StandaloneDemo from "./StandaloneDemo";
+import SimpleCircularOrLinearViewDemo from "./SimpleCircularOrLinearViewDemo";
+import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
+import AlignmentDemo from "./AlignmentDemo";
+import VersionHistoryView from "../../src/VersionHistoryView";
+import pjson from "../../package.json";
+import EditorDemo from "./EditorDemo";
 
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
 
 // import _CutsiteProperties from "../../src/helperComponents/PropertiesDialog/CutsiteProperties";
 // import withEditorProps from "../../src/withEditorProps";
 // import _OrfProperties from "../../src/helperComponents/PropertiesDialog/OrfProperties";
-import './style.css';
+import "./style.css";
 
 const links = [
-  { name: 'Editor', url: 'Editor' },
-  { name: 'Standalone', url: 'Standalone' },
-  { name: 'VersionHistoryView', url: 'VersionHistoryView' },
-  { name: 'StandaloneAlignment', url: 'StandaloneAlignment' },
-  { name: 'Alignment', url: 'Alignment' },
-  { name: 'SimpleCircularOrLinearView', url: 'SimpleCircularOrLinearView' },
+  { name: "Editor", url: "Editor" },
+  { name: "Standalone", url: "Standalone" },
+  { name: "VersionHistoryView", url: "VersionHistoryView" },
+  { name: "StandaloneAlignment", url: "StandaloneAlignment" },
+  { name: "Alignment", url: "Alignment" },
+  { name: "SimpleCircularOrLinearView", url: "SimpleCircularOrLinearView" },
   {
-    name: 'SimpleCircularOrLinearViewNoRedux',
-    url: 'SimpleCircularOrLinearViewNoRedux'
+    name: "SimpleCircularOrLinearViewNoRedux",
+    url: "SimpleCircularOrLinearViewNoRedux"
   },
-  { name: 'DigestTool', url: 'DigestTool' },
-  { name: 'EnzymeViewer', url: 'EnzymeViewer' },
-  { name: 'CircularView', url: 'CircularView' },
-  { name: 'RowView', url: 'RowView' },
-  { name: 'LinearView', url: 'LinearView' },
-  { name: 'ToolBar', url: 'ToolBar' }
+  { name: "DigestTool", url: "DigestTool" },
+  { name: "EnzymeViewer", url: "EnzymeViewer" },
+  { name: "CircularView", url: "CircularView" },
+  { name: "RowView", url: "RowView" },
+  { name: "LinearView", url: "LinearView" },
+  { name: "ToolBar", url: "ToolBar" }
 ].map(({ url, name }) => {
   return (
     <div key={name} style={{ height: 20, marginLeft: 10 }}>
@@ -61,9 +61,9 @@ links.push(
     key="umdDemo"
     style={{ marginLeft: 10 }}
     href={
-      window.location.href.includes('localhost')
+      window.location.href.includes("localhost")
         ? `${window.location.origin}/UMDDemo.html`
-        : 'http://teselagen.github.io/openVectorEditor/UMDDemo.html'
+        : "http://teselagen.github.io/openVectorEditor/UMDDemo.html"
     }
   >
     UMD demo
@@ -75,7 +75,7 @@ class Demo extends React.Component {
     super(props);
 
     this.state = {
-      darkMode: document.body.className.includes('bp3-dark')
+      darkMode: document.body.className.includes("bp3-dark")
     };
   }
 
@@ -83,12 +83,12 @@ class Demo extends React.Component {
     this.setState({
       darkMode: !this.state.darkMode
     });
-    document.body.classList.toggle('bp3-dark');
+    document.body.classList.toggle("bp3-dark");
   };
 
   render() {
     const { darkMode } = this.state;
-    if (window.location.href.includes('SimpleCircularOrLinearViewNoRedux')) {
+    if (window.location.href.includes("SimpleCircularOrLinearViewNoRedux")) {
       return (
         <div>
           <SimpleCircularOrLinearView
@@ -97,78 +97,78 @@ class Demo extends React.Component {
               sequenceData: {
                 size: 164,
                 sequence:
-                  'GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc',
-                name: 'Test Seq',
-                circular: true, // toggle to true to change this!
+                  "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc",
+                name: "Test Seq",
+                circular: true, //toggle to true to change this!
                 features: [
                   {
-                    name: 'Feat 1',
-                    id: 'fakeId2',
-                    color: 'green',
+                    name: "Feat 1",
+                    id: "fakeId2",
+                    color: "green",
                     start: 1,
                     end: 20
                   }
                 ],
                 parts: [
                   {
-                    name: 'Part 1',
-                    id: 'fakeId1',
+                    name: "Part 1",
+                    id: "fakeId1",
                     start: 10,
                     end: 20,
-                    ...(this.state.togglePartColor && { color: 'override_red' })
+                    ...(this.state.togglePartColor && { color: "override_red" })
                   },
                   {
-                    name: 'Part 2',
-                    id: 'fakeId3',
+                    name: "Part 2",
+                    id: "fakeId3",
                     start: 25,
                     end: 30,
                     ...(this.state.togglePartColor && {
-                      color: 'override_blue'
+                      color: "override_blue"
                     })
                   }
                 ]
               }
             }}
-          />
+          ></SimpleCircularOrLinearView>
           <SimpleCircularOrLinearView
             {...{
               noRedux: true,
               sequenceData: {
                 size: 164,
                 sequence:
-                  'GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc',
-                name: 'Test Seq',
-                circular: false, // toggle to true to change this!
+                  "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc",
+                name: "Test Seq",
+                circular: false, //toggle to true to change this!
                 features: [
                   {
-                    name: 'Feat 1',
-                    id: 'fakeId2',
-                    color: 'green',
+                    name: "Feat 1",
+                    id: "fakeId2",
+                    color: "green",
                     start: 1,
                     end: 20
                   }
                 ],
                 parts: [
                   {
-                    name: 'Part 1',
-                    id: 'fakeId1',
+                    name: "Part 1",
+                    id: "fakeId1",
                     start: 10,
                     end: 20,
-                    ...(this.state.togglePartColor && { color: 'override_red' })
+                    ...(this.state.togglePartColor && { color: "override_red" })
                   },
                   {
-                    name: 'Part 2',
-                    id: 'fakeId3',
+                    name: "Part 2",
+                    id: "fakeId3",
                     start: 25,
                     end: 30,
                     ...(this.state.togglePartColor && {
-                      color: 'override_blue'
+                      color: "override_blue"
                     })
                   }
                 ]
               }
             }}
-          />
+          ></SimpleCircularOrLinearView>
         </div>
       );
     }
@@ -178,10 +178,10 @@ class Demo extends React.Component {
         <Router>
           <div
             style={{
-              height: '100%',
-              display: 'flex',
+              height: "100%",
+              display: "flex",
               flexGrow: 1,
-              flexDirection: 'column'
+              flexDirection: "column"
             }}
           >
             <Drawer
@@ -194,9 +194,9 @@ class Demo extends React.Component {
             >
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  width: '100%'
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  width: "100%"
                 }}
               >
                 <Button
@@ -205,32 +205,37 @@ class Demo extends React.Component {
                   }}
                   minimal
                   icon="cross"
-                />
+                ></Button>
               </div>
               {links}
             </Drawer>
             <div
               style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-between",
                 flexShrink: 0
               }}
             >
               <Button
-                onClick={() => this.setState({ sidebarOpen: !this.state.sidebarOpen })}
+                onClick={() =>
+                  this.setState({ sidebarOpen: !this.state.sidebarOpen })
+                }
                 intent="primary"
                 minimal
                 icon="menu"
-              />
+              ></Button>
               <span style={{ marginTop: 5, marginLeft: 10 }}>
                 Version: {pjson.version}
-              </span>{' '}
-              <Tooltip content={darkMode ? 'Light Theme' : 'Dark Theme'} key="theme">
+              </span>{" "}
+              <Tooltip
+                content={darkMode ? "Light Theme" : "Dark Theme"}
+                key="theme"
+              >
                 <Button
                   data-test="tg-toggle-dark-mode"
-                  icon={darkMode ? 'flash' : 'moon'}
-                  intent={darkMode ? 'warning' : undefined}
+                  icon={darkMode ? "flash" : "moon"}
+                  intent={darkMode ? "warning" : undefined}
                   minimal
                   onClick={this.changeDarkMode}
                 />
@@ -249,47 +254,47 @@ class Demo extends React.Component {
                   <div>
                     <VersionHistoryView
                       onSave={() => {
-                        window.alert('onSave triggered!');
+                        window.alert("onSave triggered!");
                         // console.info("onSave triggered:", args);
                       }}
                       exitVersionHistoryView={() => {
-                        window.alert('exit requested!');
+                        window.alert("exit requested!");
                       }}
-                      getSequenceAtVersion={versionId => {
+                      getSequenceAtVersion={(versionId) => {
                         // in a real version we'd go to server and get a real sequence based on the version id
                         // const seq = await api.getSeqAtVersion()
                         // return seq
                         if (versionId === 2) {
                           return {
-                            sequence: 'thomaswashere'
+                            sequence: "thomaswashere"
                           };
-                        }
-                        if ((versionId = 3)) {
+                        } else if ((versionId = 3)) {
                           return {
                             features: [{ start: 4, end: 6 }],
                             sequence:
-                              'GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc'
+                              "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
+                          };
+                        } else {
+                          console.error("we shouldn't be here...");
+                          return {
+                            sequence: "taa"
                           };
                         }
-                        console.error("we shouldn't be here...");
-                        return {
-                          sequence: 'taa'
-                        };
                       }}
                       getVersionList={() => {
-                        // fake talking to some api
-                        return new Promise(resolve => {
+                        //fake talking to some api
+                        return new Promise((resolve) => {
                           setTimeout(() => {
                             resolve([
                               {
-                                dateChanged: '12/30/2211',
-                                editedBy: 'Nara',
+                                dateChanged: "12/30/2211",
+                                editedBy: "Nara",
                                 // revisionType: "Sequence Deletion",
                                 versionId: 2
                               },
                               {
-                                dateChanged: '8/30/2211',
-                                editedBy: 'Ralph',
+                                dateChanged: "8/30/2211",
+                                editedBy: "Ralph",
                                 // revisionType: "Feature Edit",
                                 versionId: 3
                               }
@@ -350,10 +355,10 @@ class Demo extends React.Component {
             <Route
               render={() => {
                 const enzyme = {
-                  name: 'BsaI',
-                  site: 'ggtctc',
-                  forwardRegex: 'g{2}tctc',
-                  reverseRegex: 'gagac{2}',
+                  name: "BsaI",
+                  site: "ggtctc",
+                  forwardRegex: "g{2}tctc",
+                  reverseRegex: "gagac{2}",
                   topSnipOffset: 7,
                   bottomSnipOffset: 11
                 };
@@ -401,15 +406,14 @@ class Demo extends React.Component {
 class WrapSimpleDemo extends React.Component {
   constructor(props) {
     super(props);
-    updateEditor(store, 'DemoEditor', {
+    updateEditor(store, "DemoEditor", {
       readOnly: false,
       sequenceData: exampleSequenceData
     });
   }
-
   render() {
     return this.props.children;
   }
 }
 
-render(<Demo />, document.querySelector('#demo'));
+render(<Demo />, document.querySelector("#demo"));
