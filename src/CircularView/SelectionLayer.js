@@ -1,4 +1,3 @@
-import { noop } from 'teselagen-react-components';
 import Caret from './Caret';
 import sector from 'paths-js/sector';
 import getRangeAngles from './getRangeAnglesSpecial';
@@ -7,6 +6,8 @@ import React from 'react';
 import draggableClassnames from '../constants/draggableClassnames';
 import pureNoFunc from '../utils/pureNoFunc';
 import { getSelectionMessage, preventDefaultStopPropagation } from '../utils/editorUtils';
+
+const noop = () => undefined;
 
 function SelectionLayer({
   isDraggable,

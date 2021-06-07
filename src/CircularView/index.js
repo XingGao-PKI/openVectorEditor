@@ -1,3 +1,8 @@
+import sortBy from 'lodash/sortBy';
+import { normalizePositionByRangeLength, getPositionFromAngle } from 've-range-utils';
+import React, { useRef, useState } from 'react';
+import Draggable from 'react-draggable';
+import { upperFirst, map } from 'lodash';
 import VeWarning from '../helperComponents/VeWarning';
 import Labels from './Labels';
 import SelectionLayer from './SelectionLayer';
@@ -7,10 +12,6 @@ import Orf from './Orf';
 import Feature from './Feature';
 import Primer from './Primer';
 import Cutsite from './Cutsite';
-import sortBy from 'lodash/sortBy';
-import { normalizePositionByRangeLength, getPositionFromAngle } from 've-range-utils';
-import React, { useRef, useState } from 'react';
-import Draggable from 'react-draggable';
 import withEditorInteractions from '../withEditorInteractions';
 import Part from './Part';
 import drawAnnotations from './drawAnnotations';
@@ -18,7 +19,6 @@ import './style.css';
 import draggableClassnames from '../constants/draggableClassnames';
 import { getOrfColor } from '../constants/orfFrameToColorMap';
 import { getSingular } from '../utils/annotationTypes';
-import { upperFirst, map } from 'lodash';
 
 import UncontrolledSliderWithPlusMinusBtns from '../helperComponents/UncontrolledSliderWithPlusMinusBtns';
 import useAnnotationLimits from '../utils/useAnnotationLimits';
@@ -45,21 +45,21 @@ export function CircularView(props) {
     if (!clientX) {
       return;
     }
-    let boundingRect = circRef.current.getBoundingClientRect();
-    //get relative click positions
-    let clickX = clientX - boundingRect.left - boundingRect.width / 2;
-    let clickY = clientY - boundingRect.top - boundingRect.height / 2;
+    const boundingRect = circRef.current.getBoundingClientRect();
+    // get relative click positions
+    const clickX = clientX - boundingRect.left - boundingRect.width / 2;
+    const clickY = clientY - boundingRect.top - boundingRect.height / 2;
 
-    //get angle
+    // get angle
     let angle = Math.atan2(clickY, clickX) + Math.PI / 2 - rotationRadians;
-    if (angle < 0) angle += Math.PI * 2; //normalize the angle if necessary
+    if (angle < 0) angle += Math.PI * 2; // normalize the angle if necessary
     let nearestCaretPos =
       sequenceLength === 0
         ? 0
         : normalizePositionByRangeLength(
             getPositionFromAngle(angle, sequenceLength, true),
             sequenceLength
-          ); //true because we're in between positions
+          ); // true because we're in between positions
     if (props.sequenceData && props.sequenceData.isProtein) {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
@@ -77,8 +77,8 @@ export function CircularView(props) {
       )
     });
   }
-  let {
-    //set defaults for all of these vars
+  const {
+    // set defaults for all of these vars
     width = 400,
     height = 400,
     scale = 1,
@@ -93,7 +93,6 @@ export function CircularView(props) {
     annotationVisibility = {},
     annotationLabelVisibility = {},
     caretPosition = -1,
-    circularAndLinearTickSpacing,
     editorDragged = noop,
     editorDragStarted = noop,
     editorClicked = noop,
@@ -111,10 +110,11 @@ export function CircularView(props) {
     fontHeightMultiplier,
     labelSize
   } = props;
+  let { circularAndLinearTickSpacing } = props;
 
-  let { sequence = 'atgc', circular } = sequenceData;
-  let sequenceLength = sequence.length;
-  let sequenceName = hideName ? '' : sequenceData.name || '';
+  const { sequence = 'atgc', circular } = sequenceData;
+  const sequenceLength = sequence.length;
+  const sequenceName = hideName ? '' : sequenceData.name || '';
   circularAndLinearTickSpacing =
     circularAndLinearTickSpacing ||
     (sequenceLength < 10
@@ -124,19 +124,19 @@ export function CircularView(props) {
       : Math.ceil(sequenceLength / 100) * 10);
 
   const baseRadius = 80;
-  let innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
+  const innerRadius = baseRadius - annotationHeight / 2; // tnr: -annotationHeight/2 because features are drawn from the center
   let radius = baseRadius;
   let annotationsSvgs = [];
   let labels = {};
 
   const { isProtein } = sequenceData;
-  //RENDERING CONCEPTS:
-  //-"Circular" annotations get a radius, and a curvature based on their radius:
-  //<CircularFeature>
-  //-Then we rotate the annotations as necessary (and optionally flip them):
-  //<PositionAnnotationOnCircle>
+  // RENDERING CONCEPTS:
+  // -"Circular" annotations get a radius, and a curvature based on their radius:
+  // <CircularFeature>
+  // -Then we rotate the annotations as necessary (and optionally flip them):
+  // <PositionAnnotationOnCircle>
 
-  let layersToDraw = [
+  const layersToDraw = [
     { zIndex: 10, layerName: 'sequenceChars' },
     {
       zIndex: 20,
@@ -238,15 +238,15 @@ export function CircularView(props) {
       Comp: Labels,
       circularViewWidthVsHeightRatio: width / height,
       passLabels: true,
-      labelLineIntensity: labelLineIntensity,
-      labelSize: labelSize,
-      fontHeightMultiplier: fontHeightMultiplier,
+      labelLineIntensity,
+      labelSize,
+      fontHeightMultiplier,
       textScalingFactor: 700 / Math.min(width, height)
     }
   ];
   const paredDownMessages = [];
 
-  let output = layersToDraw
+  const output = layersToDraw
     .map(opts => {
       const {
         layerName,
@@ -264,7 +264,7 @@ export function CircularView(props) {
       if (!(alwaysShow || annotationVisibility[layerName])) {
         return null;
       }
-      //DRAW FEATURES
+      // DRAW FEATURES
       let comp;
       let results;
 
@@ -275,15 +275,19 @@ export function CircularView(props) {
         radius,
         noRedux,
         isProtein,
-        onClick: props[singularName + 'Clicked'],
-        onDoubleClick: props[singularName + 'DoubleClicked'],
-        onRightClicked: props[singularName + 'RightClicked'],
+        onClick: props[`${singularName}Clicked`],
+        onDoubleClick: props[`${singularName}DoubleClicked`],
+        onRightClicked: props[`${singularName}RightClicked`],
         sequenceLength,
         editorName,
         ...rest
       };
+
+      if (layerName === 'cutsites') {
+        console.log(sharedProps)
+      }
       if (isAnnotation) {
-        //we're drawing features/cutsites/primers/orfs/etc (something that lives on the seqData)
+        // we're drawing features/cutsites/primers/orfs/etc (something that lives on the seqData)
         if (!map(sequenceData[layerName]).length) {
           radius -= spaceBefore;
           return null;
@@ -293,9 +297,9 @@ export function CircularView(props) {
           (maxAnnotationsToDisplay
             ? maxAnnotationsToDisplay[layerName]
             : limits[layerName]) || 50;
-        let [annotations, paredDown] = isAnnotation
+        const [annotations, paredDown] = isAnnotation
           ? pareDownAnnotations(
-              sequenceData['filtered' + nameUpper] || sequenceData[layerName] || {},
+              sequenceData[`filtered${nameUpper}`] || sequenceData[layerName] || {},
               maxToShow
             )
           : [];
@@ -311,7 +315,7 @@ export function CircularView(props) {
         }
         results = drawAnnotations({
           Annotation: Comp || Feature,
-          fontStyle: fontStyle,
+          fontStyle,
           annotationType: singularName,
           type: singularName,
           reverseAnnotations: true,
@@ -320,12 +324,12 @@ export function CircularView(props) {
           annotationHeight,
           spaceBetweenAnnotations,
           ...sharedProps,
-          ...props[singularName + 'Options']
+          ...props[`${singularName}Options`]
         });
       } else {
-        //we're drawing axis/selectionLayer/caret/etc (something that doesn't live on the seqData)
+        // we're drawing axis/selectionLayer/caret/etc (something that doesn't live on the seqData)
         results = Comp({
-          rotationRadians: rotationRadians,
+          rotationRadians,
           ...(passLabels && { labels }),
           ...sharedProps
         });
@@ -333,7 +337,7 @@ export function CircularView(props) {
       if (results) {
         // //update the radius, labels, and svg
         radius += results.height || 0;
-        //tnr: we had been storing labels as a keyed-by-id object but that caused parts and features with the same id to override eachother
+        // tnr: we had been storing labels as a keyed-by-id object but that caused parts and features with the same id to override eachother
         labels = [...map(labels), ...map(results.labels || {})];
         comp = results.component || results;
       }
@@ -352,14 +356,14 @@ export function CircularView(props) {
     return arr.concat(result);
   }, []);
 
-  //debug hash marks
+  // debug hash marks
   // annotationsSvgs = annotationsSvgs.concat([0,50,100,150,190].map(function (pos) {
   //     return <text key={pos} transform={`translate(0,${-pos})`}>{pos}</text>
   // }))
 
   function drawSelectionLayer() {
-    //DRAW SELECTION LAYER
-    let selectionLayers = [
+    // DRAW SELECTION LAYER
+    const selectionLayers = [
       ...additionalSelectionLayers,
       ...searchLayers,
       ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
@@ -373,7 +377,7 @@ export function CircularView(props) {
                 index,
                 isDraggable: true,
                 isProtein,
-                key: 'veCircularViewSelectionLayer' + index,
+                key: `veCircularViewSelectionLayer${index}`,
                 selectionLayer,
                 onRightClicked: selectionLayer.isSearchLayer
                   ? searchLayerRightClicked
@@ -386,9 +390,8 @@ export function CircularView(props) {
               }}
             />
           );
-        } else {
-          return null;
         }
+        return null;
       })
       .filter(el => {
         return !!el;
@@ -396,9 +399,9 @@ export function CircularView(props) {
   }
 
   function drawCaret() {
-    //DRAW CARET
+    // DRAW CARET
     if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength >= 0) {
-      //only render if there is no selection layer
+      // only render if there is no selection layer
       return (
         <Caret
           {...{
@@ -414,7 +417,7 @@ export function CircularView(props) {
     }
   }
 
-  //tnr: Make the radius have a minimum so the empty yellow axis circle doesn't take up the entire screen
+  // tnr: Make the radius have a minimum so the empty yellow axis circle doesn't take up the entire screen
   if (radius < 150) radius = 150;
   const widthToUse = Math.max(Number(width) || 300);
   const heightToUse = Math.max(Number(height) || 300);
@@ -431,7 +434,7 @@ export function CircularView(props) {
         <RotateCircularView
           editorName={editorName}
           setRotationRadians={setRotationRadians}
-        ></RotateCircularView>
+        />
       )}
       <Draggable
         // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
@@ -583,7 +586,7 @@ function RotateCircularView({ setRotationRadians, editorName }) {
         initialValue={0}
         max={360}
         min={0}
-      ></UncontrolledSliderWithPlusMinusBtns>
+      />
     </div>
   );
 }

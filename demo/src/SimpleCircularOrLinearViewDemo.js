@@ -1,180 +1,90 @@
-import { setupOptions, setParamsIfNecessary } from "./utils/setupOptions";
-import React from "react";
-import { Callout } from "@blueprintjs/core";
+import React from 'react';
+import { SimpleCircularOrLinearView } from '../../src';
 
-import { SimpleCircularOrLinearView } from "../../src";
-import renderToggle from "./utils/renderToggle";
+const SimpleCircularOrLinearViewDemo = () => (
+  <div>
+    <br />
+    <br />
+    <br />
+    <br />
 
-const defaultState = {
-  hoverPart: false,
-  toggleSelection: false,
-  noSequence: false,
-  hideNameAndInfo: false,
-  circular: false,
-  changeSize: false,
-  togglePartColor: false,
-  toggleNoRedux: false
-};
+    <SimpleCircularOrLinearView
+      annotationVisibility={{
+        features: true,
+        parts: true,
+        cutsites: true,
+        primers: true
+      }}
+      sequenceData={{
+        sequence:
+          'TTGTACACTTTTTTGTTGATATGTCATTCTTGTTGATTACATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCCGGCTTCAGCCGGG',
+        name: 'Test Seq',
+        circular: true,
+        features: [
+          {
+            name: 'Feat 1',
+            id: 'fakeId2',
+            color: 'green',
+            start: 1,
+            end: 20
+          },
+          {
+            name: 'Feat 2',
+            id: 'fakeId233',
+            color: 'red',
+            start: 50,
+            end: 130
+          },
+          {
+            name: 'Feat 3',
+            id: 'fakeI11d233',
+            color: 'yellow',
+            start: 300,
+            end: 450
+          },
+          {
+            name: 'Feat 23',
+            id: 'aacc',
+            color: 'purple',
+            start: 600,
+            end: 900
+          }
+        ],
+        parts: [
+          {
+            name: 'Part 1',
+            id: 'fakeId1',
+            start: 10,
+            end: 20
+          },
+          {
+            name: 'Part 2',
+            id: 'fakeId3',
+            start: 25,
+            end: 30
+          },
+          {
+            name: 'Part 3',
+            id: 'fakeId13',
+            start: 60,
+            end: 90
+          },
+          {
+            name: 'Part 5',
+            id: 'fakeId3',
+            start: 90,
+            end: 150
+          },
+          {
+            name: 'Part 6',
+            id: 'fakeId311',
+            start: 500,
+            end: 690
+          }
+        ]
+      }}
+    />
+  </div>
+);
 
-export default class SimpleCircularOrLinearViewDemo extends React.Component {
-  constructor(props) {
-    super(props);
-    setupOptions({ that: this, defaultState, props });
-  }
-  componentDidUpdate() {
-    setParamsIfNecessary({ that: this, defaultState });
-  }
-  render() {
-    return (
-      <div>
-        <Callout>
-          This view is meant to be a helper for showing a simple (non-redux
-          connected) circular or linear view!
-        </Callout>
-
-        <div>
-          {renderToggle({
-            that: this,
-            type: "hoverPart",
-            label: "Toggle Part 1 Hover"
-          })}
-
-          {renderToggle({ that: this, type: "toggleSelection" })}
-          {renderToggle({ that: this, type: "limitLengthTo50Bps" })}
-          {renderToggle({
-            that: this,
-            type: "noSequence",
-            label: "Don't pass .sequence, just .size",
-            description:
-              "You can pass sequenceData.noSequence=true if you don't want to have to pass the actual sequence. If you do this you must pass a sequenceData.size property"
-          })}
-          {renderToggle({ that: this, type: "hideNameAndInfo" })}
-          {/* {renderToggle({ that: this, type: "showCutsites" })} */}
-          {renderToggle({ that: this, type: "circular" })}
-          {renderToggle({ that: this, type: "changeSize" })}
-          {renderToggle({ that: this, type: "togglePartColor" })}
-          {renderToggle({
-            that: this,
-            type: "toggleNoRedux",
-            description:
-              "Pass noRedux=true if you want to render this component in a redux-free environment. Note: passing hoveredIds will not work with noRedux=true"
-          })}
-        </div>
-        <br />
-        <br />
-        <br />
-        <br />
-
-        <SimpleCircularOrLinearView
-          {...{
-            ...(this.state.toggleNoRedux && { noRedux: true }),
-            ...(this.state.hideNameAndInfo && { hideName: true }),
-            ...(this.state.hoverPart && { hoveredId: "fakeId1" }),
-            ...(this.state.changeSize && { height: 500, width: 500 }),
-            // annotationVisibility: {
-            //   cutsites: this.state.showCutsites
-            // }
-
-            ...(this.state.toggleSelection && {
-              selectionLayer: { start: 2, end: 30 }
-            }),
-            partClicked: () => {
-              window.toastr.success("Part Clicked!");
-            },
-            partRightClicked: () => {
-              window.toastr.success("Part Right Clicked!");
-            },
-
-            sequenceData: {
-              // annotationLabelVisibility: {
-              //   parts: false,
-              //   features: false,
-              //   cutsites: false,
-              //   primers: false
-              // },
-              // annotationVisibility: {
-              //   axis: sequenceData.circular
-              // }
-              ...(this.state.noSequence
-                ? {
-                    noSequence: true,
-                    size: this.state.limitLengthTo50Bps ? 50 : 164
-                  }
-                : {
-                    sequence: this.state.limitLengthTo50Bps
-                      ? "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAaga"
-                      : "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
-                  }),
-              name: "Test Seq",
-              circular: this.state.circular, //toggle to true to change this!
-              features: [
-                {
-                  name: "Feat 1",
-                  id: "fakeId2",
-                  color: "green",
-                  start: 1,
-                  end: 20
-                }
-              ],
-              parts: [
-                {
-                  name: "Part 1",
-                  id: "fakeId1",
-                  start: 10,
-                  end: 20,
-                  ...(this.state.togglePartColor && { color: "override_red" })
-                },
-                {
-                  name: "Part 2",
-                  id: "fakeId3",
-                  start: 25,
-                  end: 30,
-                  ...(this.state.togglePartColor && { color: "override_blue" })
-                }
-              ]
-            }
-          }}
-        />
-
-        <br />
-        <code>
-          <h3> Usage: </h3>
-          <pre>
-            {`<SimpleCircularOrLinearView
-  {...{
-    ...(this.state.hideNameAndInfo && { hideName: true }),
-    ...(this.state.hoverPart && { hoveredId: "fakeId1" }),
-    ...(this.state.changeSize && { height: 500, width: 500 }),
-
-    sequenceData: {
-      name: "Test Seq",
-      circular: this.state.circular, //toggle to true to change this!
-      parts: [
-        {
-          name: "Part 1",
-          id: "fakeId1",
-          start: 10,
-          end: 20
-        },
-        {
-          name: "Part 2",
-          id: "fakeId4",
-          start: 25,
-          end: 30
-        }
-      ],
-      sequence:
-        "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
-    }
-  }}
-/>`
-              .split("\n")
-              .map((l, i) => (
-                <div key={i}>{l}</div>
-              ))}
-          </pre>
-        </code>
-      </div>
-    );
-  }
-}
+export default SimpleCircularOrLinearViewDemo;

@@ -29,14 +29,27 @@
     "plugin:react-hooks/recommended"
   ],
   "rules": {
-    "import/extensions": ["error", "ignorePackages", {
-      "js": "never",
-      "jsx": "never"
-    }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never"
+      }
+    ],
     "no-console": ["warn", {
       "allow": ["error"]
     }],
 
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
     "no-underscore-dangle": "off",
     "no-continue": "off",
     "no-restricted-syntax": "off",
@@ -90,7 +103,6 @@
     "react/forbid-prop-types": "warn",
     "react/no-array-index-key": "warn",
     "react/no-unused-prop-types": "warn",
-    "react/jsx-filename-extension": "warn",
     "react/no-access-state-in-setstate": "warn",
 
     "jsx-a11y/no-autofocus": "warn",

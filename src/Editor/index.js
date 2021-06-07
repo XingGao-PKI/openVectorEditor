@@ -392,10 +392,10 @@ export class Editor extends React.Component {
                 height={null}
                 isProtein={sequenceData.isProtein}
                 annotationLabelVisibility={{
-                  features: false,
-                  parts: false,
-                  cutsites: false,
-                  primers: false
+                  features: true,
+                  parts: true,
+                  cutsites: true,
+                  primers: true
                 }}
               />
             </div>

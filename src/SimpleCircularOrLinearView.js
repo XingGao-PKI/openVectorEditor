@@ -1,16 +1,24 @@
 import React from 'react';
+import {
+  // aliasedEnzymesByName,
+  defaultEnzymesByName
+} from 've-sequence-utils';
+import { map } from 'lodash';
+
 import { CircularView } from './CircularView';
-import { LinearView } from './LinearView';
-import { HoveredIdContext } from './helperComponents/withHover';
+import { cutsitesSelector } from './selectors/cutsitesSelector';
+// import { LinearView } from './LinearView';
 import { visibilityDefaultValues } from './redux/annotationVisibility';
 
-//this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
-export default props => {
+const allEnzymes = map(defaultEnzymesByName);
+
+// this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
+const SimpleCircularOrLinearView = props => {
   const {
     sequenceData: _sequenceData,
     annotationVisibility: _annotationVisibility = {}
   } = props;
-  const Component = _sequenceData.circular ? CircularView : LinearView;
+  const Component =  CircularView;
   const tickSpacing = _sequenceData.circular
     ? undefined
     : Math.floor(
@@ -18,13 +26,13 @@ export default props => {
           5
       );
   let sequenceData = _sequenceData;
-  let annotationVisibility = {
+  const annotationVisibility = {
     ...visibilityDefaultValues,
     ..._annotationVisibility
   };
 
-  //here we're making it possible to not pass a sequenceData.sequence
-  //we can just pass a .size property to save having to send the whole sequence if it isn't needed!
+  // here we're making it possible to not pass a sequenceData.sequence
+  // we can just pass a .size property to save having to send the whole sequence if it isn't needed!
   if (_sequenceData.noSequence) {
     annotationVisibility.sequence = false;
     annotationVisibility.reverseSequence = false;
@@ -39,18 +47,22 @@ export default props => {
     };
   }
 
+  const { cutsitesArray } = cutsitesSelector(
+    _sequenceData.sequence,
+    _sequenceData.circular,
+    allEnzymes
+  );
+
   return (
-    <HoveredIdContext.Provider value={{ hoveredId: props.hoveredId }}>
-      <Component
-        {...{
-          width: 300,
-          height: 300,
-          ...props,
-          tickSpacing,
-          annotationVisibility,
-          sequenceData
-        }}
-      />
-    </HoveredIdContext.Provider>
+    <Component
+      {...props}
+      width={500}
+      height={500}
+      tickSpacing={tickSpacing}
+      annotationVisibility={annotationVisibility}
+      sequenceData={{ ...sequenceData, cutsites: cutsitesArray.slice(0, 60) }}
+    />
   );
 };
+
+export default SimpleCircularOrLinearView;
