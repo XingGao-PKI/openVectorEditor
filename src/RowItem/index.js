@@ -175,14 +175,15 @@ export class RowItem extends React.PureComponent {
       if (noDraw) {
         return null;
       }
+      const nullFun = () => null;
       const pluralType = pluralize(type);
       const ranges =
         annotationLabelVisibility[pluralType] && annotationVisibility[pluralType]
           ? map(row[pluralType], a =>
               assign(a, {
-                onClick: this.props[`${type}Clicked`],
-                onRightClick: this.props[`${type}RightClicked`],
-                onDoubleClick: this.props[`${type}DoubleClicked`]
+                onClick: this.props[`${type}Clicked`] || nullFun,
+                onRightClick: this.props[`${type}RightClicked`] || nullFun,
+                onDoubleClick: this.props[`${type}DoubleClicked`] || nullFun
               })
             )
           : [];

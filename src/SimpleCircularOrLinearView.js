@@ -60,6 +60,7 @@ const SimpleCircularOrLinearView = props => {
       height={500}
       tickSpacing={tickSpacing}
       annotationVisibility={annotationVisibility}
+      annotationLabelVisibility={annotationVisibility}
       sequenceData={{ ...sequenceData, cutsites: cutsitesArray.slice(0, 60) }}
     />
   );

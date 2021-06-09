@@ -199,6 +199,8 @@ class _LinearView extends React.Component {
                 ...rest.annotationVisibility,
                 sequence: true,
                 cutsitesInSequence: true,
+                axis: true,
+                axisNumbers: true,
                 ...annotationVisibilityOverrides
               },
               ...RowItemProps

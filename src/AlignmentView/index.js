@@ -10,17 +10,18 @@ import {
   InputGroup,
   Menu,
   MenuItem,
-  Tooltip
+  Tooltip,
+  ResizeSensor
 } from '@blueprintjs/core';
 import { InfoHelper, Loading, showContextMenu } from 'teselagen-react-components';
-import { store } from '@risingstack/react-easy-state';
-import { throttle, cloneDeep, map } from 'lodash';
+import { store, view } from '@risingstack/react-easy-state';
+import { throttle, cloneDeep, map, debounce, noop } from 'lodash';
 import PropTypes from 'prop-types';
 import { getSequenceDataBetweenRange } from 've-sequence-utils';
 import ReactList from '@teselagen/react-list';
+import { getContext, compose, branch, renderComponent } from 'recompose';
 import { NonReduxEnhancedLinearView } from '../LinearView';
 import Minimap from './Minimap';
-import { getContext, compose, branch, renderComponent } from 'recompose';
 import AlignmentVisibilityTool from './AlignmentVisibilityTool';
 import * as alignmentActions from '../redux/alignments';
 import estimateRowHeight from '../RowView/estimateRowHeight';
@@ -37,13 +38,11 @@ import {
   updateSelectionOrCaret,
   editorDragStopped
 } from '../withEditorInteractions/clickAndDragUtils';
-import { ResizeSensor } from '@blueprintjs/core';
+
 import Draggable from 'react-draggable';
 import draggableClassnames from '../constants/draggableClassnames';
 import Caret from '../RowItem/Caret';
-import { debounce } from 'lodash';
-import { view } from '@risingstack/react-easy-state';
-import { noop } from 'lodash';
+
 import { massageTickSpacing } from '../utils/massageTickSpacing';
 import { getClientX, getClientY } from '../utils/editorUtils';
 
@@ -64,6 +63,7 @@ class AlignmentView extends React.Component {
       window.Cypress.scrollAlignmentToPercent = this.scrollAlignmentToPercent;
     this.onShortcutCopy = document.addEventListener('keydown', this.handleAlignmentCopy);
   }
+
   getMaxLength = () => {
     const { alignmentTracks } = this.props;
     const { sequenceData = { sequence: '' }, alignmentData } = alignmentTracks[0];
@@ -73,17 +73,17 @@ class AlignmentView extends React.Component {
 
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
     this.charWidth = this.getCharWidthInLinearView();
-    //loop through all the rendered rows to see if the click event lands in one of them
+    // loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
-    let rowDomNode = this.veTracksAndAlignmentHolder;
-    let boundingRowRect = rowDomNode.getBoundingClientRect();
+    const rowDomNode = this.veTracksAndAlignmentHolder;
+    const boundingRowRect = rowDomNode.getBoundingClientRect();
     const maxEnd = this.getMaxLength();
     if (getClientX(event) - boundingRowRect.left - 140 < 0) {
       nearestCaretPos = 0;
     } else {
-      let clickXPositionRelativeToRowContainer =
+      const clickXPositionRelativeToRowContainer =
         getClientX(event) - boundingRowRect.left - 140;
-      let numberOfBPsInFromRowStart = Math.floor(
+      const numberOfBPsInFromRowStart = Math.floor(
         (clickXPositionRelativeToRowContainer + this.charWidth / 2) / this.charWidth
       );
       nearestCaretPos = numberOfBPsInFromRowStart + 0;
@@ -121,6 +121,7 @@ class AlignmentView extends React.Component {
     this.onShortcutCopy &&
       document.removeEventListener('keydown', this.handleAlignmentCopy);
   }
+
   handleAlignmentCopy = event => {
     if (
       event.key === 'c' &&
@@ -142,13 +143,14 @@ class AlignmentView extends React.Component {
       event.preventDefault();
     }
   };
+
   getAllAlignmentsFastaText = () => {
     const selectionLayer =
       this.props.store.getState().VectorEditor.__allEditorsOptions.alignments[
         this.props.id
       ].selectionLayer || {};
     const { alignmentTracks } = this.props;
-    let seqDataOfAllTracksToCopy = [];
+    const seqDataOfAllTracksToCopy = [];
     alignmentTracks.forEach(track => {
       const seqDataToCopy = getSequenceDataBetweenRange(
         track.alignmentData,
@@ -160,11 +162,13 @@ class AlignmentView extends React.Component {
     });
     return seqDataOfAllTracksToCopy.join('');
   };
+
   state = {
     charWidthInLinearView: charWidthInLinearViewDefault,
     scrollAlignmentView: false,
     width: 0
   };
+
   easyStore = store({
     selectionLayer: { start: -1, end: -1 },
     caretPosition: -1,
@@ -187,6 +191,7 @@ class AlignmentView extends React.Component {
     const { alignmentTracks: [template] = [] } = this.props;
     return template.alignmentData.sequence.length || 1;
   };
+
   componentDidUpdate(prevProps) {
     if (
       prevProps.scrollPercentageToJumpTo !== this.props.scrollPercentageToJumpTo &&
@@ -195,6 +200,7 @@ class AlignmentView extends React.Component {
       this.scrollAlignmentToPercent(this.props.scrollPercentageToJumpTo);
     }
   }
+
   componentDidMount() {
     const updateAlignmentSelection = newRangeOrCaret => {
       this.updateSelectionOrCaret(false, newRangeOrCaret, {
@@ -241,7 +247,7 @@ class AlignmentView extends React.Component {
   };
 
   caretPositionUpdate = position => {
-    let { caretPosition = -1, alignmentId } = this.props;
+    const { caretPosition = -1, alignmentId } = this.props;
     if (caretPosition === position) {
       return;
     }
@@ -261,7 +267,7 @@ class AlignmentView extends React.Component {
   };
 
   selectionLayerUpdate = (newSelection, { forceReduxUpdate } = {}) => {
-    let { selectionLayer = { start: -1, end: -1 }, alignmentId } = this.props;
+    const { selectionLayer = { start: -1, end: -1 }, alignmentId } = this.props;
     if (!newSelection) return;
     const { start, end } = newSelection;
 
@@ -283,14 +289,15 @@ class AlignmentView extends React.Component {
   getCharWidthInLinearView = () => {
     if (this.props.isFullyZoomedOut) {
       return this.getMinCharWidth();
-    } else {
-      return Math.max(this.getMinCharWidth(), this.state.charWidthInLinearView);
     }
+    return Math.max(this.getMinCharWidth(), this.state.charWidthInLinearView);
   };
+
   getNumBpsShownInLinearView = () => {
     const toReturn = (this.state.width - nameDivWidth) / this.getCharWidthInLinearView();
     return toReturn || 0;
   };
+
   setVerticalScrollRange = throttle(() => {
     if (
       this &&
@@ -300,7 +307,7 @@ class AlignmentView extends React.Component {
     ) {
       let [start, end] = this.InfiniteScroller.getFractionalVisibleRange();
       if (this.props.hasTemplate) {
-        end = end + 1;
+        end += 1;
       }
       if (
         this.easyStore.verticalVisibleRange.start !== start ||
@@ -309,6 +316,7 @@ class AlignmentView extends React.Component {
         this.easyStore.verticalVisibleRange = { start, end };
     }
   }, 100);
+
   handleScroll = () => {
     if (this.alignmentHolder.scrollTop !== this.oldAlignmentHolderScrollTop) {
       setTimeout(() => {
@@ -317,7 +325,7 @@ class AlignmentView extends React.Component {
       }, 100);
     }
     if (this.blockScroll) {
-      //we have to block the scroll sometimes when adjusting the minimap so things aren't too jumpy
+      // we have to block the scroll sometimes when adjusting the minimap so things aren't too jumpy
       return;
     }
 
@@ -329,9 +337,11 @@ class AlignmentView extends React.Component {
       this.alignmentHolderTop.scrollLeft = this.alignmentHolder.scrollLeft;
     }
   };
+
   handleTopScroll = () => {
     this.alignmentHolder.scrollLeft = this.alignmentHolderTop.scrollLeft;
   };
+
   onMinimapSizeAdjust = (newSliderSize, newPercent) => {
     const percentageOfSpace = newSliderSize / (this.state.width - nameDivWidth);
     const seqLength = this.getSequenceLength();
@@ -352,6 +362,7 @@ class AlignmentView extends React.Component {
       window.localStorage.getItem('charWidthInLinearViewDefault')
     );
   };
+
   scrollAlignmentToPercent = scrollPercentage => {
     this.easyStore.percentScrolled = scrollPercentage;
     this.alignmentHolder.scrollLeft =
@@ -363,6 +374,7 @@ class AlignmentView extends React.Component {
         (this.alignmentHolderTop.scrollWidth - this.alignmentHolderTop.clientWidth);
     }
   };
+
   scrollYToTrack = trackIndex => {
     this.InfiniteScroller.scrollTo(trackIndex);
   };
@@ -383,7 +395,7 @@ class AlignmentView extends React.Component {
   };
 
   renderItem = (_i, key, isTemplate) => {
-    let charWidthInLinearView = this.getCharWidthInLinearView();
+    const charWidthInLinearView = this.getCharWidthInLinearView();
 
     const {
       alignmentTracks = [],
@@ -418,7 +430,7 @@ class AlignmentView extends React.Component {
     const name = sequenceData.name || sequenceData.id;
 
     function getGapMap(sequence) {
-      const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
+      const gapMap = [0]; // a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
       sequence.split('').forEach(char => {
         if (char === '-') {
           gapMap[Math.max(0, gapMap.length - 1)] =
@@ -434,7 +446,7 @@ class AlignmentView extends React.Component {
       gapsBefore: 0,
       gapsInside: 0
     });
-    //this function is used to calculate the number of spaces that come before or inside a range
+    // this function is used to calculate the number of spaces that come before or inside a range
     getGaps = (rangeOrCaretPosition, sequence) => {
       const gapMap = getGapMap(sequence);
       if (typeof rangeOrCaretPosition !== 'object') {
@@ -442,7 +454,7 @@ class AlignmentView extends React.Component {
           gapsBefore: gapMap[Math.min(rangeOrCaretPosition, gapMap.length - 1)]
         };
       }
-      //otherwise it is a range!
+      // otherwise it is a range!
       const { start, end } = rangeOrCaretPosition;
       const toReturn = {
         gapsBefore: gapMap[start],
@@ -459,10 +471,10 @@ class AlignmentView extends React.Component {
     if (this.props.alignmentType === 'SANGER SEQUENCING') {
       if (i !== 0) {
         sequenceDataWithRefSeqCdsFeatures = cloneDeep(sequenceData);
-        let refSeqCdsFeaturesBpPos = [];
+        const refSeqCdsFeaturesBpPos = [];
         alignmentTracks[0].sequenceData.features.forEach(feature => {
           if (feature.type === 'CDS') {
-            let editedFeature = cloneDeep(feature);
+            const editedFeature = cloneDeep(feature);
             // in seq reads, ref seq's CDS feature translations need to show up at the bp pos of alignment, not the original bp pos
             // actual position in the track
             const absoluteFeatureStart =
@@ -493,7 +505,7 @@ class AlignmentView extends React.Component {
               absoluteFeatureEnd > absoluteSeqReadStart
             ) {
               // if the feature starts before the seq read starts but doesn't end before the seq read starts
-              let arrayOfCodonStartPos = [];
+              const arrayOfCodonStartPos = [];
               for (let i = absoluteFeatureStart; i < absoluteSeqReadStart + 6; i += 3) {
                 arrayOfCodonStartPos.push(i);
               }
@@ -643,7 +655,7 @@ class AlignmentView extends React.Component {
             sequenceData,
             sequenceDataWithRefSeqCdsFeatures,
             tickSpacing,
-            allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
+            allowSeqDataOverride: true, // override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
             editorName: `${isTemplate ? 'template_' : ''}alignmentView${i}`,
             alignmentData,
             chromatogramData,
@@ -677,13 +689,14 @@ class AlignmentView extends React.Component {
       </div>
     );
   };
+
   handleResize = throttle(([e]) => {
     this.easyStore.viewportWidth = e.contentRect.width - nameDivWidth || 400;
     this.setState({ width: e.contentRect.width });
   }, 200);
 
   render() {
-    let charWidthInLinearView = this.getCharWidthInLinearView();
+    const charWidthInLinearView = this.getCharWidthInLinearView();
     const {
       alignmentTracks = [],
       height,
@@ -758,7 +771,7 @@ class AlignmentView extends React.Component {
                 ref={ref => (this.veTracksAndAlignmentHolder = ref)}
                 className="veTracksAndAlignmentHolder"
                 // onContextMenu={
-                //tnrtodo add copy single track/all tracks logic here
+                // tnrtodo add copy single track/all tracks logic here
                 // (event) => {
                 // this.getNearestCursorPositionToMouseEvent(
                 //   rowData,
@@ -814,7 +827,7 @@ class AlignmentView extends React.Component {
                             }
                           });
 
-                          const alignmentData = track.alignmentData;
+                          const { alignmentData } = track;
                           const { name } = alignmentData;
                           showContextMenu(
                             [
@@ -920,7 +933,7 @@ class AlignmentView extends React.Component {
                   sequenceLength={sequenceLength}
                   charWidth={this.getCharWidthInLinearView()}
                   row={{ start: 0, end: sequenceLength - 1 }}
-                ></PerformantSelectionLayer>
+                />
                 <PerformantCaret
                   leftMargin={140}
                   className="veAlignmentSelectionLayer"
@@ -1075,7 +1088,7 @@ class AlignmentView extends React.Component {
                   }
                   intent="warning"
                   icon="warning-sign"
-                ></InfoHelper>
+                />
               )}
               {!isInPairwiseOverviewView && (
                 <UncontrolledSliderWithPlusMinusBtns
@@ -1083,7 +1096,7 @@ class AlignmentView extends React.Component {
                     this.setCharWidthInLinearView({
                       charWidthInLinearView: val
                     });
-                    this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
+                    this.blockScroll = true; // we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
                     const percentScrollage = this.easyStore.percentScrolled;
                     setTimeout(() => {
                       this.blockScroll = false;
@@ -1170,7 +1183,7 @@ class AlignmentView extends React.Component {
                         sequenceLength={sequenceLength}
                         charWidth={this.getMinCharWidth(true)}
                         row={{ start: 0, end: sequenceLength - 1 }}
-                      ></PerformantSelectionLayer>
+                      />
                       <PerformantCaret
                         style={{
                           opacity: 0.2
@@ -1259,7 +1272,7 @@ export default compose(
         'chromatogram',
         'dnaColors'
       ];
-      let togglableAlignmentAnnotationSettings = {};
+      const togglableAlignmentAnnotationSettings = {};
       map(alignmentAnnotationsToToggle, annotation => {
         if (annotation in alignmentAnnotationVisibility) {
           togglableAlignmentAnnotationSettings[annotation] =
@@ -1267,7 +1280,7 @@ export default compose(
         }
       });
 
-      let annotationsWithCounts = [];
+      const annotationsWithCounts = [];
       if (alignmentTracks) {
         let totalNumOfFeatures = 0;
         let totalNumOfParts = 0;
@@ -1309,7 +1322,7 @@ export default compose(
         caretPosition,
         alignmentId,
         sequenceData: {
-          //pass fake seq data in so editor interactions work
+          // pass fake seq data in so editor interactions work
           sequence: Array.from(templateLength)
             .map(() => 'a')
             .join('')
@@ -1319,7 +1332,7 @@ export default compose(
         alignmentTracks,
         scrollPercentageToJumpTo,
         pairwiseOverviewAlignmentTracks,
-        //manipulate the props coming in so we can pass a single clean prop to the visibility options tool
+        // manipulate the props coming in so we can pass a single clean prop to the visibility options tool
         alignmentVisibilityToolOptions: {
           alignmentAnnotationVisibility,
           alignmentAnnotationLabelVisibility,
@@ -1378,12 +1391,11 @@ class UncontrolledSliderWithPlusMinusBtns extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (prevState.oldInitialValue !== nextProps.initialValue) {
       return {
-        value: nextProps.initialValue, //set the state value if a new initial value comes in!
+        value: nextProps.initialValue, // set the state value if a new initial value comes in!
         oldInitialValue: nextProps.initialValue
       };
-    } else {
-      return null;
     }
+    return null;
   }
 
   render() {
@@ -1436,17 +1448,18 @@ class UncontrolledSliderWithPlusMinusBtns extends React.Component {
   }
 }
 
-//this view is shown if we detect pairwise alignments
+// this view is shown if we detect pairwise alignments
 class PairwiseAlignmentView extends React.Component {
   state = {
     currentPairwiseAlignmentIndex: undefined
   };
+
   render() {
     const { pairwiseAlignments, pairwiseOverviewAlignmentTracks } = this.props;
     const { currentPairwiseAlignmentIndex } = this.state;
     if (currentPairwiseAlignmentIndex > -1) {
-      //we can render the AlignmentView directly
-      //get the alignmentTracks based on currentPairwiseAlignmentIndex
+      // we can render the AlignmentView directly
+      // get the alignmentTracks based on currentPairwiseAlignmentIndex
       const alignmentTracks = pairwiseAlignments[currentPairwiseAlignmentIndex];
 
       const templateLength = alignmentTracks[0].alignmentData.sequence.length;
@@ -1455,7 +1468,7 @@ class PairwiseAlignmentView extends React.Component {
           {...{
             ...this.props,
             sequenceData: {
-              //pass fake seq data in so editor interactions work
+              // pass fake seq data in so editor interactions work
               sequence: Array.from(templateLength)
                 .map(() => 'a')
                 .join('')
@@ -1472,29 +1485,28 @@ class PairwiseAlignmentView extends React.Component {
           }}
         />
       );
-    } else {
-      //we haven't yet selected an alignment to view
-      // render the AlignmentView zoomed out for each track in pairwiseOverviewAlignmentTracks
-      // when the view eye icon is hit (maybe next to the name?)
-      return (
-        <AlignmentView
-          {...{
-            ...this.props,
-            alignmentTracks: pairwiseOverviewAlignmentTracks,
-            hasTemplate: true,
-            isPairwise: true,
-            isInPairwiseOverviewView: true,
-            isFullyZoomedOut: true,
-            noClickDragHandlers: true,
-            linearViewOptions: getPairwiseOverviewLinearViewOptions,
-            handleSelectTrack: trackIndex => {
-              //set currentPairwiseAlignmentIndex
-              this.setState({ currentPairwiseAlignmentIndex: trackIndex - 1 });
-            }
-          }}
-        />
-      );
     }
+    // we haven't yet selected an alignment to view
+    // render the AlignmentView zoomed out for each track in pairwiseOverviewAlignmentTracks
+    // when the view eye icon is hit (maybe next to the name?)
+    return (
+      <AlignmentView
+        {...{
+          ...this.props,
+          alignmentTracks: pairwiseOverviewAlignmentTracks,
+          hasTemplate: true,
+          isPairwise: true,
+          isInPairwiseOverviewView: true,
+          isFullyZoomedOut: true,
+          noClickDragHandlers: true,
+          linearViewOptions: getPairwiseOverviewLinearViewOptions,
+          handleSelectTrack: trackIndex => {
+            // set currentPairwiseAlignmentIndex
+            this.setState({ currentPairwiseAlignmentIndex: trackIndex - 1 });
+          }
+        }}
+      />
+    );
   }
 }
 
@@ -1518,23 +1530,22 @@ function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
         axisNumbers: false
       }
     };
-  } else {
-    return {
-      // annotationVisibilityOverrides: {
-      //   features: false,
-      //   yellowAxis: false,
-      //   translations: false,
-      //   parts: false,
-      //   orfs: false,
-      //   orfTranslations: false,
-      //   axis: true,
-      //   cutsites: false,
-      //   primers: false,
-      //   reverseSequence: false,
-      //   axisNumbers: false
-      // }
-    };
   }
+  return {
+    // annotationVisibilityOverrides: {
+    //   features: false,
+    //   yellowAxis: false,
+    //   translations: false,
+    //   parts: false,
+    //   orfs: false,
+    //   orfTranslations: false,
+    //   axis: true,
+    //   cutsites: false,
+    //   primers: false,
+    //   reverseSequence: false,
+    //   axisNumbers: false
+    // }
+  };
 }
 
 const PerformantSelectionLayer = view(({ easyStore, ...rest }) => {
