@@ -10,8 +10,6 @@ import cutsiteLabelColorSelector from './cutsiteLabelColorSelector';
 import { getLowerCaseObj } from '../utils/arrayUtils';
 
 export function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
-  console.log(sequence, circular, enzymeList, cutsiteLabelColors)
-  // get the cutsites grouped by enzyme
   const cutsitesByName = getLowerCaseObj(
     getCutsitesFromSequence(sequence, circular, map(enzymeList))
   );

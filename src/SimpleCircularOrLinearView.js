@@ -6,8 +6,8 @@ import {
 import { map } from 'lodash';
 
 import { CircularView } from './CircularView';
+import { LinearView } from './LinearView';
 import { cutsitesSelector } from './selectors/cutsitesSelector';
-// import { LinearView } from './LinearView';
 import { visibilityDefaultValues } from './redux/annotationVisibility';
 
 const allEnzymes = map(defaultEnzymesByName);
@@ -18,7 +18,7 @@ const SimpleCircularOrLinearView = props => {
     sequenceData: _sequenceData,
     annotationVisibility: _annotationVisibility = {}
   } = props;
-  const Component =  CircularView;
+  const Component = _sequenceData.circular ? CircularView : LinearView;
   const tickSpacing = _sequenceData.circular
     ? undefined
     : Math.floor(

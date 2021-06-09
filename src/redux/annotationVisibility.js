@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 
-//./caretPosition.js
+// ./caretPosition.js
 
 import createAction from './utils/createMetaAction';
 import createMergedDefaultStateReducer from './utils/createMergedDefaultStateReducer';
@@ -30,7 +30,7 @@ export const visibilityDefaultValues = {
 // Actions
 // ------------------------------------
 export const annotationVisibilityToggle = createAction('annotationVisibilityToggle');
-//eg: annotationVisibilityToggle('features')
+// eg: annotationVisibilityToggle('features')
 export const annotationVisibilityHide = createAction('annotationVisibilityHide');
 export const annotationVisibilityShow = createAction('annotationVisibilityShow');
 export const hideFeatureTypes = createAction('hideFeatureTypes');
@@ -40,7 +40,7 @@ export const resetFeatureTypesToHide = createAction('resetFeatureTypesToHide');
 // ------------------------------------
 // Reducer
 // ------------------------------------
-let annotationVisibility = createMergedDefaultStateReducer(
+const annotationVisibility = createMergedDefaultStateReducer(
   {
     [resetFeatureTypesToHide]: state => {
       return {

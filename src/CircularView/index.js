@@ -283,9 +283,6 @@ export function CircularView(props) {
         ...rest
       };
 
-      if (layerName === 'cutsites') {
-        console.log(sharedProps)
-      }
       if (isAnnotation) {
         // we're drawing features/cutsites/primers/orfs/etc (something that lives on the seqData)
         if (!map(sequenceData[layerName]).length) {

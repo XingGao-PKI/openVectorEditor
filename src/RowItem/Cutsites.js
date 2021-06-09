@@ -1,8 +1,11 @@
-import { isPositionWithinRange } from 've-range-utils';
+import {
+  isPositionWithinRange,
+  getOverlapsOfPotentiallyCircularRanges
+} from 've-range-utils';
 import assign from 'lodash/assign';
 import React from 'react';
 import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
-import { getOverlapsOfPotentiallyCircularRanges } from 've-range-utils';
+
 import getXStartAndWidthOfRangeWrtRow from './getXStartAndWidthOfRangeWrtRow';
 import pureNoFunc from '../utils/pureNoFunc';
 
@@ -33,17 +36,17 @@ function getSnipForRow(
 ) {
   if (!isPositionWithinRange(snipPosition, row)) return;
 
-  let { xStart } = getXStartAndWidthOfRangeWrtRow({
+  const { xStart } = getXStartAndWidthOfRangeWrtRow({
     range: { start: snipPosition, end: snipPosition },
     row,
     charWidth,
     sequenceLength
   });
 
-  let newCursorStyle = assign({}, snipStyle, {
+  const newCursorStyle = assign({}, snipStyle, {
     left: xStart + 2
   });
-  let cursorEl = (
+  const cursorEl = (
     <div key={index} className="veRowViewCutsite snip" style={newCursorStyle} />
   );
   return cursorEl;
@@ -58,14 +61,14 @@ function getSnipConnector(
   charWidth,
   index
 ) {
-  //tnr: we basically need to first determine what the range start and end are..
+  // tnr: we basically need to first determine what the range start and end are..
   // var _snipRange = {
   //     ...snipRange,
   //     end: norm(snipRange.end-1,sequenceLength)
   // }
-  //then mask the range by the row
+  // then mask the range by the row
 
-  let overlaps = getOverlapsOfPotentiallyCircularRanges(
+  const overlaps = getOverlapsOfPotentiallyCircularRanges(
     snipRange,
     { ...row, end: row.end + 1 },
     sequenceLength
@@ -78,12 +81,12 @@ function getSnipConnector(
       sequenceLength
     });
     width -= charWidth;
-    //the second logical operator catches the special case where we're at the very end of the sequence..
-    let newCursorStyle = assign({}, snipConnectorStyle, {
+    // the second logical operator catches the special case where we're at the very end of the sequence..
+    const newCursorStyle = assign({}, snipConnectorStyle, {
       left: xStart + 2,
       width
     });
-    let cursorEl = (
+    const cursorEl = (
       <div
         key={index + index2}
         className="veRowViewCutsite snipConnector"
@@ -95,7 +98,7 @@ function getSnipConnector(
 }
 
 function Cutsites(props) {
-  let {
+  const {
     annotationRanges,
     charWidth,
     bpsPerRow,
@@ -105,10 +108,10 @@ function Cutsites(props) {
     sequenceLength,
     topStrand
   } = props;
-  let snips = [];
-  let snipConnectors = [];
+  const snips = [];
+  const snipConnectors = [];
   Object.keys(annotationRanges).forEach(function (key) {
-    let annotationRange = annotationRanges[key];
+    const annotationRange = annotationRanges[key];
     let { annotation } = annotationRange;
     if (!annotation) {
       annotation = annotationRange;
@@ -117,10 +120,9 @@ function Cutsites(props) {
       topSnipPosition,
       bottomSnipPosition,
       upstreamBottomSnip,
-      upstreamTopSnip,
-      upstreamTopBeforeBottom,
-      topSnipBeforeBottom
+      upstreamTopSnip
     } = annotation;
+    const { upstreamTopBeforeBottom, topSnipBeforeBottom } = annotation;
     topSnipPosition = topSnipPosition && Number(topSnipPosition);
     bottomSnipPosition = bottomSnipPosition && Number(bottomSnipPosition);
     upstreamTopSnip = upstreamTopSnip && Number(upstreamTopSnip);
@@ -137,7 +139,7 @@ function Cutsites(props) {
 
     let newSnip;
     let newConnector;
-    let snipRange = {};
+    const snipRange = {};
 
     if (areNonNegativeIntegers([bottomSnipPosition, topSnipPosition])) {
       if (topStrand) {
@@ -149,7 +151,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipStyle,
           charWidth,
-          key + 'downstream'
+          `${key}downstream`
         );
         if (newSnip) {
           snips.push(newSnip);
@@ -162,7 +164,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipStyle,
           charWidth,
-          key + 'downstream'
+          `${key}downstream`
         );
         if (newSnip) {
           snips.push(newSnip);
@@ -181,7 +183,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipConnectorStyle,
           charWidth,
-          key + 'downstreamConnector'
+          `${key}downstreamConnector`
         );
         snipConnectors.push(newConnector);
       }
@@ -195,7 +197,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipStyle,
           charWidth,
-          key + 'upstream'
+          `${key}upstream`
         );
         if (newSnip) {
           snips.push(newSnip);
@@ -208,7 +210,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipStyle,
           charWidth,
-          key + 'upstream'
+          `${key}upstream`
         );
         if (newSnip) {
           snips.push(newSnip);
@@ -227,7 +229,7 @@ function Cutsites(props) {
           bpsPerRow,
           snipConnectorStyle,
           charWidth,
-          key + 'upstreamConnector'
+          `${key}upstreamConnector`
         );
         snipConnectors.push(newConnector);
       }
