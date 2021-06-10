@@ -15,9 +15,8 @@ export const toggleShowGCContent = createAction('toggleShowGCContent');
 export default createReducer(
   {
     [toggleShowGCContent]: (state, val) => {
-      localStorage.setItem('showGCContent', val);
       return val;
     }
   },
-  window.localStorage.getItem('showGCContent')
+  {}
 );

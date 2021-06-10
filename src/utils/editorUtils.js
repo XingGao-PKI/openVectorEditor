@@ -79,24 +79,10 @@ export function tryToRefocusEditor() {
   ed && ed.focus();
 }
 export function getCustomEnzymes() {
-  try {
-    const customEnzymes = JSON.parse(
-      window.localStorage.getItem('customEnzymes') || '{}'
-    );
-    return customEnzymes;
-  } catch (error) {
-    return {};
-  }
+  return {};
 }
 export function addCustomEnzyme(newEnz) {
-  const customEnzymes = getCustomEnzymes();
-  window.localStorage.setItem(
-    'customEnzymes',
-    JSON.stringify({
-      ...customEnzymes,
-      [newEnz.name.toLowerCase()]: newEnz
-    })
-  );
+  return {}
 }
 
 export function pareDownAnnotations(annotations, max) {

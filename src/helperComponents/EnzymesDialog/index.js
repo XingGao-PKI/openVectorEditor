@@ -47,8 +47,6 @@ const upsertLocalEnzymeGroups = newGroups => {
       return !val;
     }
   );
-
-  localStorage.setItem('enzymeGroups', JSON.stringify(toUpsert));
 };
 
 window.createNewEnzymeGroup =
@@ -85,7 +83,7 @@ window.updateEnzymeGroup =
 window.getExistingEnzymeGroups =
   window.getExistingEnzymeGroups ||
   (() => {
-    const existingGroups = JSON.parse(localStorage.getItem('enzymeGroups') || '{}');
+    const existingGroups = {};
     if (!Object.keys(existingGroups || {}).length) {
       return {};
     }

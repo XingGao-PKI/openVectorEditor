@@ -30,7 +30,6 @@ export default createMergedDefaultStateReducer(
       };
     },
     [toggleIsInline]: state => {
-      localStorage.setItem('veFindBarIsExpanded', state.isInline);
       return {
         ...state,
         isInline: !state.isInline
@@ -66,7 +65,7 @@ export default createMergedDefaultStateReducer(
   },
   {
     isOpen: false,
-    isInline: !localStorage.getItem('veFindBarIsExpanded'),
+    isInline: false,
     searchText: '',
     dnaOrAA: 'DNA',
     ambiguousOrLiteral: 'LITERAL',

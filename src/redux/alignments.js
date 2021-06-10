@@ -41,7 +41,7 @@ const defaultVisibilityTypes = Object.keys(defaultVisibilities);
 
 try {
   defaultVisibilityTypes.forEach(type => {
-    const newVal = JSON.parse(window.localStorage.getItem(type));
+    const newVal = {};
     if (newVal)
       defaultVisibilities[type] = {
         ...defaultVisibilities[type],
@@ -121,14 +121,6 @@ export default (state = {}, { payload = {}, type }) => {
           ...defaultVisibilities[type],
           ...payload[type.replace('pairwise_', '')]
         };
-
-        localStorage.setItem(
-          type,
-          JSON.stringify({
-            ...defaultVisibilities[type],
-            ...payload[type.replace('pairwise_', '')]
-          })
-        );
       }
     });
     return {

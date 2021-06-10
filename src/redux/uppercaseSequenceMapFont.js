@@ -9,7 +9,6 @@ import createAction from './utils/createMetaAction';
 // ------------------------------------
 export const updateSequenceCase = createAction('updateSequenceCase');
 
-const newVal = window.localStorage.getItem('uppercaseSequenceMapFont');
 
 // ------------------------------------
 // Reducer
@@ -17,9 +16,8 @@ const newVal = window.localStorage.getItem('uppercaseSequenceMapFont');
 export default createReducer(
   {
     [updateSequenceCase]: (state, payload) => {
-      localStorage.setItem('uppercaseSequenceMapFont', payload);
       return payload;
     }
   },
-  newVal || 'noPreference' //  noPreference || uppercase || lowercase
+  'noPreference' //  noPreference || uppercase || lowercase
 );

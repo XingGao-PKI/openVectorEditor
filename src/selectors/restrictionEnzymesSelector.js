@@ -7,7 +7,6 @@ export default createSelector(
   (state, additionalEnzymes) => {
     return additionalEnzymes;
   },
-  () => localStorage.getItem('enzymeGroups'), //it should recompute if the enzyme groups change in localstorage
   (defaultEnzymesByName, additionalEnzymes) => {
     const enzymesFromGroups = {};
     forEach(window.getExistingEnzymeGroups(), group => {

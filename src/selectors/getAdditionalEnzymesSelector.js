@@ -4,7 +4,7 @@ import { getLowerCaseObj } from '../utils/arrayUtils';
 import { getCustomEnzymes } from '../utils/editorUtils';
 
 export default createSelector(
-  () => window.localStorage.getItem('customEnzymes'),
+  () => [],
   (state, additionalEnzymes) => additionalEnzymes,
   (customEnzymesString, additionalEnzymes) => {
     return getLowerCaseObj(

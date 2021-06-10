@@ -10,7 +10,7 @@
     <a id="backButton"> Back </a> &nbsp;
     <script
       type="text/javascript"
-      src="https://unpkg.com/open-vector-editor/umd/open-vector-editor.js"
+      src="../../umd/open-vector-editor.js"
     ></script>
     <script type="text/javascript">
       const hrefToUse = window.location.href.includes("localhost")
@@ -18,13 +18,7 @@
         : "http://teselagen.github.io/openVectorEditor/#/Editor";
         
       document.getElementById("backButton").setAttribute("href", hrefToUse);
-      const editor = window.createVectorEditor("createDomNodeForMe", {
-        withPreviewMode: true,
-        editorName: "FirstSequence",
-        showMenuBar: true
-      });
-      /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
-      editor.updateEditor({
+      const editor = window.createSimpleCircularOrLinearView({
         sequenceData: {
           circular: true,
           sequence:
@@ -39,6 +33,7 @@
           ]
         }
       });
+
       const editor2 = window.createVectorEditor("createDomNodeForMe", {
         withPreviewMode: true,
         showMenuBar: true,

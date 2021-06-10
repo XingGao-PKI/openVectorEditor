@@ -17,16 +17,15 @@ export const filteredRestrictionEnzymesAdd = createAction(
 // ------------------------------------
 // Reducer
 // ------------------------------------
-let initialState = [specialCutsiteFilterOptions.single];
-// const userEnzymeGroups = window.localStorage.getItem("restrictionEnzymeGroups") || []
+const initialState = [specialCutsiteFilterOptions.single];
 
 export default combineReducers({
-  //filteredRestrictionEnzymes refer to the enzymes actively included in the react-select filter component
+  // filteredRestrictionEnzymes refer to the enzymes actively included in the react-select filter component
   filteredRestrictionEnzymes: createReducer(
     {
       [filteredRestrictionEnzymesReset]: () => initialState,
       [filteredRestrictionEnzymesUpdate]: (state, payload) => payload,
-      [filteredRestrictionEnzymesAdd]: function (state, payload) {
+      [filteredRestrictionEnzymesAdd](state, payload) {
         return [...state, payload];
       }
     },

@@ -49,7 +49,7 @@ import { getClientX, getClientY } from '../utils/editorUtils';
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
 try {
-  const newVal = JSON.parse(window.localStorage.getItem('charWidthInLinearViewDefault'));
+  const newVal = {};
   if (newVal) charWidthInLinearViewDefault = newVal;
 } catch (e) {
   console.error('error setting charWidthInLinearViewDefault from local storage:', e);
@@ -356,11 +356,8 @@ class AlignmentView extends React.Component {
   };
 
   setCharWidthInLinearView = ({ charWidthInLinearView }) => {
-    window.localStorage.setItem('charWidthInLinearViewDefault', charWidthInLinearView);
     this.setState({ charWidthInLinearView });
-    charWidthInLinearViewDefault = JSON.parse(
-      window.localStorage.getItem('charWidthInLinearViewDefault')
-    );
+    charWidthInLinearViewDefault = {};
   };
 
   scrollAlignmentToPercent = scrollPercentage => {
